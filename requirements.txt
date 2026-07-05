@@ -1,0 +1,28 @@
+
+
+
+# ==========================================
+# AI E-Commerce Platform
+# Python Dependencies
+# ==========================================
+
+# Django Framework
+Django>=5.2,<6.0
+
+# Environment Variables
+python-decouple>=3.8
+
+# Image Processing
+Pillow>=11.0
+
+# HTTP Requests
+requests>=2.32
+
+# Production Server
+gunicorn>=23.0
+
+# Database (Future PostgreSQL Support)
+psycopg2-binary>=2.9
+
+# Development Utilities
+django-extensions>=4.1
