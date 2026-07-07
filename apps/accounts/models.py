@@ -3,11 +3,14 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from .managers import UserManager
+
 
 class User(AbstractUser):
     """
     Custom User model for the AI Ecommerce platform.
     """
+    objects=UserManager()
 
     class Role(models.TextChoices):
         CUSTOMER = "CUSTOMER", "Customer"
