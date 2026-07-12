@@ -94,4 +94,3 @@ class ProductReviewForm(forms.ModelForm):
             )
 
         return rating
-
