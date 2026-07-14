@@ -87,4 +87,4 @@ staticfiles/
 # ==========================
 
 *.tmp
-*.bak
+*.bakdb.sqlite3
