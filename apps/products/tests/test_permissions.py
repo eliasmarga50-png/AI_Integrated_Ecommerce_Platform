@@ -19,12 +19,14 @@ class ProductPermissionTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.customer = User.objects.create_user(
-            username="customer",
-            password="password123",
-        )
+    username="customer",
+    email="customer@example.com",
+    password="password123",
+)
 
         cls.staff = User.objects.create_user(
             username="staff",
+            email="emai1234stad",
             password="password123",
             is_staff=True,
         )

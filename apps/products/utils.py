@@ -44,30 +44,47 @@ def calculate_discount_price(price, discount_percentage):
 
 def calculate_tax(price, tax_percentage=15):
     """
-    Calculate tax amount.
+    Return the price including tax.
     """
+
     tax = (
-        Decimal(tax_percentage) / Decimal("100")
+        Decimal(tax_percentage)
+        / Decimal("100")
     ) * price
 
-    return round(tax, 2)
+    return price + tax
+
+def format_price(price):
+    """
+    Format a Decimal for display.
+
+    Example:
+    Decimal("1200.50")
+    ->
+    "1,200.50"
+    """
+
+    return f"{price:,.2f}"
 
 
-def calculate_final_price(price, discount_percentage=0, tax_percentage=15):
+def calculate_final_price(
+    price,
+    discount_percentage=0,
+    tax_percentage=15,
+):
     """
     Calculate the final selling price.
     """
+
     discounted = calculate_discount_price(
         price,
         discount_percentage,
     )
 
-    tax = calculate_tax(
+    return calculate_tax(
         discounted,
         tax_percentage,
     )
-
-    return round(discounted + tax, 2)
 
 
 def stock_status(stock):

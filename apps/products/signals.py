@@ -8,6 +8,7 @@ from django.dispatch import receiver
 
 from .models import Product
 from .utils import generate_sku, generate_slug
+from .services import ProductService
 
 logger = logging.getLogger(__name__)
 

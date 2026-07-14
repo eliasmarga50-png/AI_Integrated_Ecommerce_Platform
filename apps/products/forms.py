@@ -3,7 +3,7 @@
 
 from django import forms
 
-from .models import Product, ProductReview
+from .models import Product, ProductReview, Category
 
 
 class ProductForm(forms.ModelForm):
@@ -94,3 +94,15 @@ class ProductReviewForm(forms.ModelForm):
             )
 
         return rating
+
+from django import forms
+from .models import Category, Product, ProductReview
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = [
+            "name",
+            "description",
+        ]

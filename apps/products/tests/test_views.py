@@ -22,12 +22,14 @@ class ProductViewsTest(TestCase):
     def setUpTestData(cls):
         cls.customer = User.objects.create_user(
             username="customer",
+            email="customer@example.com",
             password="password123",
         )
 
         cls.staff = User.objects.create_user(
             username="staff",
             password="password123",
+            email="staff@example.com",
             is_staff=True,
         )
 

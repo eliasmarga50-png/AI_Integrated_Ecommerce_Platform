@@ -3,6 +3,7 @@
 
 from django.db import models
 from django.utils.text import slugify
+from django.core.validators import MinValueValidator
 
 
 class Category(models.Model):
@@ -21,7 +22,7 @@ class Category(models.Model):
 
     slug = models.SlugField(
         unique=True,
-        blank=True
+        blank=False
     )
 
     description = models.TextField(
@@ -67,15 +68,22 @@ class Product(models.Model):
 
     slug = models.SlugField(
         unique=True,
-        blank=True
+        blank=False
     )
 
     description = models.TextField()
 
     price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2
-    )
+    max_digits=10,
+    decimal_places=2,
+    validators=[
+        MinValueValidator(
+            0,
+            message="Price cannot be negative."
+        )
+    ]
+)
+    
 
     stock = models.PositiveIntegerField(
         default=0

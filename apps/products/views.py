@@ -1,156 +1,127 @@
 
 
 
-from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
 
-from .forms import ProductForm, ProductReviewForm
+from .forms import ProductForm
 from .models import Category, Product
+from .services import ProductService
 
 
-def product_list(request):
+class ProductListView(ListView):
     """
     Display all available products.
     """
-    products = Product.objects.filter(
-        is_available=True
-    ).select_related("category")
 
-    context = {
-        "products": products,
-    }
+    model = Product
+    template_name = "products/product_list.html"
+    context_object_name = "products"
+    paginate_by = 12
 
-    return render(
-        request,
-        "products/product_list.html",
-        context,
-    )
+    def get_queryset(self):
+        return ProductService.available_products()
 
 
-def product_detail(request, slug):
+class ProductDetailView(DetailView):
     """
-    Display a single product and its reviews.
+    Display a single product.
     """
-    product = get_object_or_404(
-        Product.objects.prefetch_related(
-            "images",
-            "reviews",
-        ),
-        slug=slug,
-        is_available=True,
-    )
 
-    review_form = ProductReviewForm()
+    model = Product
+    template_name = "products/product_detail.html"
+    context_object_name = "product"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
 
-    context = {
-        "product": product,
-        "review_form": review_form,
-    }
-
-    return render(
-        request,
-        "products/product_detail.html",
-        context,
-    )
+    def get_object(self, queryset=None):
+        return ProductService.get_product(
+            self.kwargs["slug"]
+        )
 
 
-def category_products(request, slug):
+class CategoryProductListView(ListView):
     """
     Display products belonging to one category.
     """
-    category = get_object_or_404(
-        Category,
-        slug=slug,
-    )
 
-    products = category.products.filter(
-        is_available=True
-    )
+    model = Product
+    template_name = "products/category_products.html"
+    context_object_name = "products"
 
-    context = {
-        "category": category,
-        "products": products,
-    }
-
-    return render(
-        request,
-        "products/category_products.html",
-        context,
-    )
-
-
-def create_product(request):
-    """
-    Create a new product.
-    """
-    if request.method == "POST":
-        form = ProductForm(request.POST)
-
-        if form.is_valid():
-            form.save()
-            return redirect("products:product_list")
-
-    else:
-        form = ProductForm()
-
-    return render(
-        request,
-        "products/product_form.html",
-        {"form": form},
-    )
-
-
-def update_product(request, slug):
-    """
-    Update an existing product.
-    """
-    product = get_object_or_404(
-        Product,
-        slug=slug,
-    )
-
-    if request.method == "POST":
-        form = ProductForm(
-            request.POST,
-            instance=product,
+    def get_queryset(self):
+        self.category = Category.objects.get(
+            slug=self.kwargs["slug"]
         )
 
-        if form.is_valid():
-            form.save()
-            return redirect(
-                "products:product_detail",
-                slug=product.slug,
-            )
+        return ProductService.products_by_category(
+            self.category
+        )
 
-    else:
-        form = ProductForm(instance=product)
-
-    return render(
-        request,
-        "products/product_form.html",
-        {
-            "form": form,
-            "product": product,
-        },
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["category"] = self.category
+        return context
 
 
-def delete_product(request, slug):
+class ProductCreateView(CreateView):
+    """
+    Create a product.
+    """
+
+    model = Product
+    form_class = ProductForm
+    template_name = "products/product_form.html"
+    success_url = reverse_lazy("products:list")
+
+    def form_valid(self, form):
+        ProductService.create_product(form)
+        return super().form_valid(form)
+
+
+class ProductUpdateView(UpdateView):
+    """
+    Update a product.
+    """
+
+    model = Product
+    form_class = ProductForm
+    template_name = "products/product_form.html"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+
+    def form_valid(self, form):
+        ProductService.update_product(form)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "products:detail",
+            kwargs={
+                "slug": self.object.slug,
+            },
+        )
+
+
+class ProductDeleteView(DeleteView):
     """
     Delete a product.
     """
-    product = get_object_or_404(
-        Product,
-        slug=slug,
-    )
 
-    if request.method == "POST":
-        product.delete()
-        return redirect("products:product_list")
+    model = Product
+    template_name = "products/product_confirm_delete.html"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    success_url = reverse_lazy("products:list")
 
-    return render(
-        request,
-        "products/product_confirm_delete.html",
-        {
-            "product": product,
-        },
-    )
+    def form_valid(self, form):
+        ProductService.delete_product(
+            self.get_object()
+        )
+        return super().form_valid(form)

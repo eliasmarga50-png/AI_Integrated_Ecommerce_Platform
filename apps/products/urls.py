@@ -3,41 +3,57 @@
 
 from django.urls import path
 
-from . import views
+from .views import (
+    CategoryProductListView,
+    ProductCreateView,
+    ProductDeleteView,
+    ProductDetailView,
+    ProductListView,
+    ProductUpdateView,
+)
 
 app_name = "products"
 
 urlpatterns = [
+    # Product list
     path(
         "",
-        views.product_list,
-        name="product_list",
+        ProductListView.as_view(),
+        name="list",
     ),
-    path(
-        "<slug:slug>/",
-        views.product_detail,
-        name="product_detail",
-    ),
-    path(
-        "category/<slug:slug>/",
-        views.category_products,
-        name="category_products",
-    ),
+
+    # Create must come BEFORE slug routes
     path(
         "create/",
-        views.create_product,
-        name="create_product",
+        ProductCreateView.as_view(),
+        name="create",
     ),
+
+    # Category
     path(
-        "update/<slug:slug>/",
-        views.update_product,
-        name="update_product",
+        "category/<slug:slug>/",
+        CategoryProductListView.as_view(),
+        name="category",
     ),
+
+    # Update
     path(
-        "delete/<slug:slug>/",
-        views.delete_product,
-        name="delete_product",
+        "<slug:slug>/update/",
+        ProductUpdateView.as_view(),
+        name="update",
+    ),
+
+    # Delete
+    path(
+        "<slug:slug>/delete/",
+        ProductDeleteView.as_view(),
+        name="delete",
+    ),
+
+    # Detail should be LAST
+    path(
+        "<slug:slug>/",
+        ProductDetailView.as_view(),
+        name="detail",
     ),
 ]
-
-
