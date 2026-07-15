@@ -12,6 +12,7 @@ from django.views.generic import (
 
 from .forms import ProductForm
 from .models import Category, Product
+from .permissions import ProductPermission
 from .services import ProductService
 
 
@@ -66,7 +67,9 @@ class CategoryProductListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context["category"] = self.category
+
         return context
 
 
@@ -80,8 +83,22 @@ class ProductCreateView(CreateView):
     template_name = "products/product_form.html"
     success_url = reverse_lazy("products:list")
 
+    def dispatch(self, request, *args, **kwargs):
+        ProductPermission.require(
+            ProductPermission.can_create_product(
+                request.user
+            )
+        )
+
+        return super().dispatch(
+            request,
+            *args,
+            **kwargs
+        )
+
     def form_valid(self, form):
         ProductService.create_product(form)
+
         return super().form_valid(form)
 
 
@@ -96,8 +113,22 @@ class ProductUpdateView(UpdateView):
     slug_field = "slug"
     slug_url_kwarg = "slug"
 
+    def dispatch(self, request, *args, **kwargs):
+        ProductPermission.require(
+            ProductPermission.can_update_product(
+                request.user
+            )
+        )
+
+        return super().dispatch(
+            request,
+            *args,
+            **kwargs
+        )
+
     def form_valid(self, form):
         ProductService.update_product(form)
+
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -120,8 +151,22 @@ class ProductDeleteView(DeleteView):
     slug_url_kwarg = "slug"
     success_url = reverse_lazy("products:list")
 
+    def dispatch(self, request, *args, **kwargs):
+        ProductPermission.require(
+            ProductPermission.can_delete_product(
+                request.user
+            )
+        )
+
+        return super().dispatch(
+            request,
+            *args,
+            **kwargs
+        )
+
     def form_valid(self, form):
         ProductService.delete_product(
             self.get_object()
         )
+
         return super().form_valid(form)
