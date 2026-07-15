@@ -1,34 +1,89 @@
 
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Delete Product</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-    <h1>Delete Product</h1>
 
-    <p>
-        Are you sure you want to delete
-        <strong>{{ product.name }}</strong>?
-    </p>
+{% block title %}
 
-    <form method="post">
+    Delete Product | AI Ecommerce
 
-        {% csrf_token %}
+{% endblock %}
 
-        <button type="submit">
-            Yes, Delete
-        </button>
 
-    </form>
+{% block content %}
 
-    <a href="{% url 'products:detail' product.slug %}">
-        Cancel
-    </a>
+<div class="delete-product-page">
 
-</body>
-</html>
+    <div class="delete-card">
 
+        <div class="delete-icon">
+
+            ⚠️
+
+        </div>
+
+
+        <h1>
+
+            Delete Product
+
+        </h1>
+
+
+        <p>
+
+            Are you sure you want to delete
+
+            <strong>
+
+                "{{ object.name }}"
+
+            </strong>
+
+            ?
+
+        </p>
+
+
+        <p class="warning-text">
+
+            This action cannot be undone.
+
+        </p>
+
+
+        <form
+            method="post"
+            class="delete-form"
+        >
+
+            {% csrf_token %}
+
+
+            <button
+                type="submit"
+                class="btn btn-danger"
+            >
+
+                Delete Product
+
+            </button>
+
+
+            <a
+                href="{% url 'products:detail' object.slug %}"
+                class="btn btn-secondary"
+            >
+
+                Cancel
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
