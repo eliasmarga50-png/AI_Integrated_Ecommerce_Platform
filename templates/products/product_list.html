@@ -3,52 +3,509 @@
 
 {% extends "base.html" %}
 
-
 {% block title %}
-    Products | AI Ecommerce
+Products | AI Ecommerce
 {% endblock %}
-
 
 {% block content %}
 
-    <h1>
-        Products
-    </h1>
+<div class="products-page"><!-- ========================================
+     PAGE HEADER
+     ======================================== -->
 
-    {% for product in products %}
+<div class="page-header">
 
-        <article>
+    <div>
+        <h1 class="page-title">
+            Products
+        </h1>
 
-            <h2>
+        <p class="page-subtitle">
+            Discover products you'll love
+        </p>
+    </div>
+
+    {% if user.is_staff or user.is_superuser %}
+
+        <a
+            href="{% url 'products:create' %}"
+            class="button button-primary"
+        >
+            + Add Product
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+<!-- ========================================
+     PRODUCT CONTENT
+     ======================================== -->
+
+{% if products %}
+
+    <div class="product-grid">
+
+        {% for product in products %}
+
+            <article class="product-card">
+
+                <!-- PRODUCT IMAGE PLACEHOLDER -->
+
+                <div class="product-image">
+
+                    <span>
+                        Product Image
+                    </span>
+
+                </div>
+
+
+                <!-- PRODUCT INFORMATION -->
+
+                <div class="product-info">
+
+                    <p class="product-category">
+                        {{ product.category.name }}
+                    </p>
+
+                    <h2 class="product-name">
+                        {{ product.name }}
+                    </h2>
+
+                    <p class="product-description">
+                        {{ product.description|truncatewords:12 }}
+                    </p>
+
+
+                    <div class="product-bottom">
+
+                        <span class="product-price">
+                            ${{ product.price }}
+                        </span>
+
+                        <a
+                            href="{% url 'products:detail' product.slug %}"
+                            class="view-product-button"
+                        >
+                            View
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- ========================================
+         PAGINATION
+         ======================================== -->
+
+    {% if is_paginated %}
+
+        <div class="pagination">
+
+            {% if page_obj.has_previous %}
 
                 <a
-                    href="{% url 'products:detail' product.slug %}"
+                    href="?page={{ page_obj.previous_page_number }}"
+                    class="pagination-button"
                 >
-                    {{ product.name }}
+                    ← Previous
                 </a>
 
-            </h2>
+            {% endif %}
 
-            <p>
-                {{ product.description }}
-            </p>
 
-            <p>
-                ${{ product.price }}
-            </p>
+            <span class="pagination-current">
 
-            <p>
-                Stock: {{ product.stock }}
-            </p>
+                Page {{ page_obj.number }}
+                of {{ page_obj.paginator.num_pages }}
 
-        </article>
+            </span>
 
-    {% empty %}
+
+            {% if page_obj.has_next %}
+
+                <a
+                    href="?page={{ page_obj.next_page_number }}"
+                    class="pagination-button"
+                >
+                    Next →
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+{% else %}
+
+    <!-- ========================================
+         EMPTY STATE
+         ======================================== -->
+
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            🛍️
+        </div>
+
+        <h3>
+            No products available
+        </h3>
 
         <p>
-            No products available.
+            We are preparing something amazing for you.
         </p>
 
-    {% endfor %}
+        {% if user.is_staff or user.is_superuser %}
 
-{% endblock %}
+            <a
+                href="{% url 'products:create' %}"
+                class="button button-primary empty-button"
+            >
+                Add Your First Product
+            </a>
+
+        {% endif %}
+
+    </div>
+
+{% endif %}
+
+</div><!-- ========================================
+     PAGE STYLES
+     ======================================== --><style>
+
+    /*
+    ========================================
+    PRODUCTS PAGE
+    ========================================
+    */
+
+    .products-page {
+        width: 100%;
+    }
+
+
+    .page-subtitle {
+        margin-top: 6px;
+
+        color: #777777;
+
+        font-size: 14px;
+    }
+
+
+    /*
+    ========================================
+    PRODUCT GRID
+    ========================================
+    */
+
+    .product-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(
+                auto-fill,
+                minmax(220px, 1fr)
+            );
+
+        gap: 22px;
+    }
+
+
+    /*
+    ========================================
+    PRODUCT CARD
+    ========================================
+    */
+
+    .product-card {
+        background-color: #ffffff;
+
+        border: 1px solid #e5e5e5;
+
+        border-radius: 10px;
+
+        overflow: hidden;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .product-card:hover {
+        transform: translateY(-4px);
+
+        box-shadow:
+            0 8px 20px rgba(
+                0,
+                0,
+                0,
+                0.08
+            );
+    }
+
+
+    /*
+    ========================================
+    PRODUCT IMAGE
+    ========================================
+    */
+
+    .product-image {
+        height: 190px;
+
+        background-color: #f1f3f5;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        color: #999999;
+
+        font-size: 13px;
+    }
+
+
+    /*
+    ========================================
+    PRODUCT INFORMATION
+    ========================================
+    */
+
+    .product-info {
+        padding: 16px;
+    }
+
+
+    .product-category {
+        margin-bottom: 6px;
+
+        color: #2563eb;
+
+        font-size: 12px;
+
+        font-weight: bold;
+
+        text-transform: uppercase;
+    }
+
+
+    .product-name {
+        margin-bottom: 8px;
+
+        font-size: 18px;
+
+        color: #212529;
+    }
+
+
+    .product-description {
+        min-height: 40px;
+
+        margin-bottom: 15px;
+
+        color: #777777;
+
+        font-size: 13px;
+
+        line-height: 1.5;
+    }
+
+
+    /*
+    ========================================
+    PRODUCT PRICE
+    ========================================
+    */
+
+    .product-bottom {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+    }
+
+
+    .product-price {
+        color: #212529;
+
+        font-size: 18px;
+
+        font-weight: bold;
+    }
+
+
+    .view-product-button {
+        background-color: #2563eb;
+
+        color: #ffffff;
+
+        padding: 8px 12px;
+
+        border-radius: 6px;
+
+        font-size: 13px;
+    }
+
+
+    .view-product-button:hover {
+        background-color: #1d4ed8;
+    }
+
+
+    /*
+    ========================================
+    EMPTY STATE
+    ========================================
+    */
+
+    .empty-state {
+        min-height: 300px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+    }
+
+
+    .empty-icon {
+        margin-bottom: 15px;
+
+        font-size: 48px;
+    }
+
+
+    .empty-state h3 {
+        margin-bottom: 8px;
+    }
+
+
+    .empty-button {
+        margin-top: 20px;
+    }
+
+
+    /*
+    ========================================
+    PAGINATION
+    ========================================
+    */
+
+    .pagination {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 15px;
+
+        margin-top: 35px;
+    }
+
+
+    .pagination-button {
+        padding: 8px 14px;
+
+        border: 1px solid #2563eb;
+
+        border-radius: 6px;
+
+        color: #2563eb;
+
+        font-size: 13px;
+    }
+
+
+    .pagination-button:hover {
+        background-color: #2563eb;
+
+        color: #ffffff;
+    }
+
+
+    .pagination-current {
+        color: #555555;
+
+        font-size: 13px;
+    }
+
+
+    /*
+    ========================================
+    MOBILE RESPONSIVE DESIGN
+    ========================================
+    */
+
+    @media (max-width: 600px) {
+
+        .product-grid {
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+        }
+
+
+        .product-image {
+            height: 140px;
+        }
+
+
+        .product-info {
+            padding: 12px;
+        }
+
+
+        .product-name {
+            font-size: 15px;
+        }
+
+
+        .product-description {
+            font-size: 12px;
+        }
+
+
+        .product-price {
+            font-size: 15px;
+        }
+
+
+        .view-product-button {
+            padding: 7px 9px;
+
+            font-size: 12px;
+        }
+
+    }
+
+
+    @media (max-width: 380px) {
+
+        .product-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>{% endblock %}
