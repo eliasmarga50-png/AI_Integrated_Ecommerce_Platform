@@ -104,6 +104,7 @@ class ProductViewsTest(TestCase):
         """
         self.client.login(
             username="staff",
+            email="staff@example.com",
             password="password123",
         )
 
@@ -122,6 +123,7 @@ class ProductViewsTest(TestCase):
         """
         self.client.login(
             username="customer",
+            email="customer@example.com",
             password="password123",
         )
 
@@ -140,6 +142,7 @@ class ProductViewsTest(TestCase):
         """
         self.client.login(
             username="staff",
+            email="staff@example.com",
             password="password123",
         )
 
@@ -163,6 +166,7 @@ class ProductViewsTest(TestCase):
         """
         self.client.login(
             username="customer",
+            email="customer@example.com",
             password="password123",
         )
 
@@ -186,6 +190,7 @@ class ProductViewsTest(TestCase):
         """
         self.client.login(
             username="admin",
+            email="admin@example.com",
             password="admin123",
         )
 
