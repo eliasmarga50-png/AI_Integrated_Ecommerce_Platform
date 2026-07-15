@@ -1,33 +1,627 @@
 
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ product.name }}</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-    <h1>{{ product.name }}</h1>
+{% block title %}
+{{ product.name }} | AI Ecommerce
+{% endblock %}
 
-    <p>{{ product.description }}</p>
+{% block content %}
 
-    <p>Price: {{ product.price }}</p>
+<div class="product-detail-page"><!-- ========================================
+     BREADCRUMB
+     ======================================== -->
 
-    <p>Stock: {{ product.stock }}</p>
+<div class="breadcrumb">
 
-    <p>Category: {{ product.category.name }}</p>
+    <a href="{% url 'products:list' %}">
+        Products
+    </a>
 
-    <h2>Reviews</h2>
+    <span>
+        /
+    </span>
 
-    {% for review in product.reviews.all %}
-        <div>
-            <p>{{ review.rating }}/5</p>
-            <p>{{ review.comment }}</p>
+    <span>
+        {{ product.name }}
+    </span>
+
+</div>
+
+
+<!-- ========================================
+     PRODUCT DETAIL
+     ======================================== -->
+
+<div class="product-detail-card">
+
+    <!-- PRODUCT IMAGE -->
+
+    <div class="product-detail-image">
+
+        <span>
+            Product Image
+        </span>
+
+    </div>
+
+
+    <!-- PRODUCT INFORMATION -->
+
+    <div class="product-detail-info">
+
+        <p class="product-category">
+            {{ product.category.name }}
+        </p>
+
+
+        <h1 class="product-title">
+            {{ product.name }}
+        </h1>
+
+
+        <p class="product-description">
+
+            {{ product.description }}
+
+        </p>
+
+
+        <!-- PRICE -->
+
+        <div class="price-section">
+
+            <span class="product-price">
+
+                ${{ product.price }}
+
+            </span>
+
         </div>
-    {% empty %}
-        <p>No reviews yet.</p>
-    {% endfor %}
 
-</body>
-</html>
+
+        <!-- STOCK STATUS -->
+
+        <div class="stock-section">
+
+            {% if product.stock > 0 %}
+
+                <span class="stock-available">
+                    ✓ In Stock
+                </span>
+
+                <p class="stock-count">
+                    {{ product.stock }} available
+                </p>
+
+            {% else %}
+
+                <span class="stock-unavailable">
+                    ✕ Out of Stock
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="product-actions">
+
+            {% if product.stock > 0 %}
+
+                <button
+                    class="button button-primary add-to-cart-button"
+                    type="button"
+                >
+                    🛒 Add to Cart
+                </button>
+
+            {% else %}
+
+                <button
+                    class="button disabled-button"
+                    type="button"
+                    disabled
+                >
+                    Out of Stock
+                </button>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- STAFF ACTIONS -->
+
+        {% if user.is_staff or user.is_superuser %}
+
+            <div class="management-actions">
+
+                <a
+                    href="{% url 'products:update' product.slug %}"
+                    class="edit-button"
+                >
+                    Edit Product
+                </a>
+
+                {% if user.is_superuser %}
+
+                    <a
+                        href="{% url 'products:delete' product.slug %}"
+                        class="delete-button"
+                    >
+                        Delete Product
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- ========================================
+     PRODUCT INFORMATION
+     ======================================== -->
+
+<div class="product-extra-info">
+
+    <h2>
+        Product Information
+    </h2>
+
+
+    <div class="information-grid">
+
+        <div class="information-item">
+
+            <span class="information-label">
+                SKU
+            </span>
+
+            <span class="information-value">
+                {{ product.sku }}
+            </span>
+
+        </div>
+
+
+        <div class="information-item">
+
+            <span class="information-label">
+                Category
+            </span>
+
+            <span class="information-value">
+                {{ product.category.name }}
+            </span>
+
+        </div>
+
+
+        <div class="information-item">
+
+            <span class="information-label">
+                Availability
+            </span>
+
+            <span class="information-value">
+
+                {% if product.is_available %}
+                    Available
+                {% else %}
+                    Not Available
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+        <div class="information-item">
+
+            <span class="information-label">
+                Added
+            </span>
+
+            <span class="information-value">
+                {{ product.created_at|date:"M d, Y" }}
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div><!-- ========================================
+     PAGE STYLES
+     ======================================== --><style>
+
+    /*
+    ========================================
+    PRODUCT DETAIL PAGE
+    ========================================
+    */
+
+    .product-detail-page {
+        width: 100%;
+    }
+
+
+    /*
+    ========================================
+    BREADCRUMB
+    ========================================
+    */
+
+    .breadcrumb {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin-bottom: 25px;
+
+        color: #777777;
+
+        font-size: 13px;
+    }
+
+
+    .breadcrumb a {
+        color: #2563eb;
+    }
+
+
+    .breadcrumb a:hover {
+        text-decoration: underline;
+    }
+
+
+    /*
+    ========================================
+    PRODUCT DETAIL CARD
+    ========================================
+    */
+
+    .product-detail-card {
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+
+        gap: 40px;
+
+        background-color: #ffffff;
+
+        border: 1px solid #e5e5e5;
+
+        border-radius: 10px;
+
+        padding: 25px;
+
+        margin-bottom: 25px;
+    }
+
+
+    /*
+    ========================================
+    PRODUCT IMAGE
+    ========================================
+    */
+
+    .product-detail-image {
+        min-height: 400px;
+
+        background-color: #f1f3f5;
+
+        border-radius: 8px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        color: #999999;
+
+        font-size: 15px;
+    }
+
+
+    /*
+    ========================================
+    PRODUCT INFORMATION
+    ========================================
+    */
+
+    .product-detail-info {
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+    }
+
+
+    .product-category {
+        margin-bottom: 10px;
+
+        color: #2563eb;
+
+        font-size: 13px;
+
+        font-weight: bold;
+
+        text-transform: uppercase;
+    }
+
+
+    .product-title {
+        margin-bottom: 18px;
+
+        color: #212529;
+
+        font-size: 34px;
+
+        line-height: 1.2;
+    }
+
+
+    .product-description {
+        margin-bottom: 25px;
+
+        color: #666666;
+
+        font-size: 15px;
+
+        line-height: 1.7;
+    }
+
+
+    /*
+    ========================================
+    PRICE
+    ========================================
+    */
+
+    .price-section {
+        margin-bottom: 20px;
+    }
+
+
+    .product-price {
+        color: #212529;
+
+        font-size: 30px;
+
+        font-weight: bold;
+    }
+
+
+    /*
+    ========================================
+    STOCK
+    ========================================
+    */
+
+    .stock-section {
+        margin-bottom: 25px;
+    }
+
+
+    .stock-available {
+        color: #198754;
+
+        font-size: 14px;
+
+        font-weight: bold;
+    }
+
+
+    .stock-unavailable {
+        color: #dc3545;
+
+        font-size: 14px;
+
+        font-weight: bold;
+    }
+
+
+    .stock-count {
+        margin-top: 5px;
+
+        color: #777777;
+
+        font-size: 13px;
+    }
+
+
+    /*
+    ========================================
+    ACTIONS
+    ========================================
+    */
+
+    .add-to-cart-button {
+        width: 100%;
+
+        font-size: 15px;
+
+        padding: 14px;
+    }
+
+
+    .disabled-button {
+        width: 100%;
+
+        background-color: #adb5bd;
+
+        color: #ffffff;
+
+        cursor: not-allowed;
+
+        padding: 14px;
+    }
+
+
+    /*
+    ========================================
+    MANAGEMENT ACTIONS
+    ========================================
+    */
+
+    .management-actions {
+        display: flex;
+
+        gap: 10px;
+
+        margin-top: 20px;
+
+        padding-top: 20px;
+
+        border-top: 1px solid #e5e5e5;
+    }
+
+
+    .edit-button,
+    .delete-button {
+        padding: 9px 12px;
+
+        border-radius: 6px;
+
+        font-size: 13px;
+    }
+
+
+    .edit-button {
+        background-color: #ffc107;
+
+        color: #212529;
+    }
+
+
+    .delete-button {
+        background-color: #dc3545;
+
+        color: #ffffff;
+    }
+
+
+    /*
+    ========================================
+    PRODUCT INFORMATION
+    ========================================
+    */
+
+    .product-extra-info {
+        background-color: #ffffff;
+
+        border: 1px solid #e5e5e5;
+
+        border-radius: 10px;
+
+        padding: 25px;
+    }
+
+
+    .product-extra-info h2 {
+        margin-bottom: 20px;
+
+        font-size: 20px;
+    }
+
+
+    .information-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+
+        gap: 15px;
+    }
+
+
+    .information-item {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 5px;
+
+        padding: 12px;
+
+        background-color: #f8f9fa;
+
+        border-radius: 6px;
+    }
+
+
+    .information-label {
+        color: #777777;
+
+        font-size: 12px;
+    }
+
+
+    .information-value {
+        color: #212529;
+
+        font-size: 14px;
+
+        font-weight: bold;
+    }
+
+
+    /*
+    ========================================
+    MOBILE RESPONSIVE DESIGN
+    ========================================
+    */
+
+    @media (max-width: 700px) {
+
+        .product-detail-card {
+            grid-template-columns: 1fr;
+
+            gap: 25px;
+
+            padding: 15px;
+        }
+
+
+        .product-detail-image {
+            min-height: 260px;
+        }
+
+
+        .product-title {
+            font-size: 27px;
+        }
+
+
+        .product-price {
+            font-size: 26px;
+        }
+
+
+        .information-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>{% endblock %}
