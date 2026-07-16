@@ -61,6 +61,12 @@ class Product(models.Model):
         on_delete=models.CASCADE,
         related_name="products"
     )
+    
+    image=models.ImageField(
+      upload_to="products/",
+      blank=True,
+      null=True
+    )
 
     name = models.CharField(
         max_length=255
