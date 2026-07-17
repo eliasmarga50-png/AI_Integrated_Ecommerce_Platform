@@ -42,6 +42,11 @@ urlpatterns = [
         home,
         name="home",
     ),
+    
+    path(
+      "shops/",
+      include("apps.shops.urls")
+    ),
 ]
 
 urlpatterns+=static(
