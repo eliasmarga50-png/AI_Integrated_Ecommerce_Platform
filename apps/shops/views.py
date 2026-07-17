@@ -16,9 +16,7 @@ def shop_list(request):
     """
     # Optimized query by leveraging relation managers if configured,
     # or optimizing owner joins via select_related to prevent N+1 issues.
-    shops = Shop.objects.filter(
-    owner=request.user
-    ).select_related("owner")
+    shops = Shop.objects.filter(owner=request.user).select_related("owner")
 
     return render(
         request,
@@ -141,25 +139,11 @@ def shop_deactivate(request, slug):
     if request.method == "POST":
         try:
             ShopService.deactivate_shop(shop=shop)
-            messages.warning(
-            request, 
-            f"'{shop.name}' has been deactivated."
-            )
-            
-            return redirect(
-            "shops:shop_list"
-            )
-            
+            messages.warning(request, f"'{shop.name}' has been deactivated.")
+            return redirect("shops:shop_list")
         except Exception as e:
-            messages.error(
-            request, 
-            f"Could not deactivate storefront: {e}"
-            )
-            
-            return redirect(
-            "shops:shop_detail", 
-            slug=shop.slug
-            )
+            messages.error(request, f"Could not deactivate storefront: {e}")
+            return redirect("shops:shop_detail", slug=shop.slug)
 
     return render(
         request,
