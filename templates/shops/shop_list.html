@@ -1,3 +1,185 @@
 
 
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Shops</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0;
+            color: #222;
+        }
+
+        .create-button {
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+        }
+
+        .shops-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .shop-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .shop-card h2 {
+            margin-top: 0;
+            color: #222;
+        }
+
+        .shop-description {
+            color: #666;
+            min-height: 45px;
+        }
+
+        .status {
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .active {
+            color: green;
+        }
+
+        .inactive {
+            color: red;
+        }
+
+        .view-button {
+            display: inline-block;
+            text-decoration: none;
+            background: #111827;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .empty-state {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>My Shops</h1>
+
+        <a
+            href="{% url 'shops:shop_create' %}"
+            class="create-button"
+        >
+            Create Shop
+        </a>
+    </div>
+
+    {% if shops %}
+
+        <div class="shops-grid">
+
+            {% for shop in shops %}
+
+                <div class="shop-card">
+
+                    <h2>
+                        {{ shop.name }}
+                    </h2>
+
+                    <p class="shop-description">
+                        {% if shop.description %}
+                            {{ shop.description }}
+                        {% else %}
+                            No description provided.
+                        {% endif %}
+                    </p>
+
+                    {% if shop.is_active %}
+
+                        <p class="status active">
+                            Active
+                        </p>
+
+                    {% else %}
+
+                        <p class="status inactive">
+                            Inactive
+                        </p>
+
+                    {% endif %}
+
+                    <a
+                        href="{% url 'shops:shop_detail' shop.slug %}"
+                        class="view-button"
+                    >
+                        View Shop
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h2>You don't have any shops yet.</h2>
+
+            <p>
+                Create your first shop and start building your store.
+            </p>
+
+            <a
+                href="{% url 'shops:shop_create' %}"
+                class="create-button"
+            >
+                Create Your First Shop
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
