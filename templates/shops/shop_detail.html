@@ -1,0 +1,198 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ shop.name }}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .shop-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .shop-logo {
+            max-width: 180px;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #222;
+        }
+
+        .description {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .status {
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .active {
+            color: green;
+        }
+
+        .inactive {
+            color: red;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .button {
+            text-decoration: none;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .back-button {
+            background: #6b7280;
+        }
+
+        .update-button {
+            background: #2563eb;
+        }
+
+        .deactivate-button {
+            background: #dc2626;
+        }
+
+        .shop-meta {
+            color: #777;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="shop-card">
+
+        {% if shop.logo %}
+
+            <img
+                src="{{ shop.logo.url }}"
+                alt="{{ shop.name }} logo"
+                class="shop-logo"
+            >
+
+        {% endif %}
+
+        <h1>
+            {{ shop.name }}
+        </h1>
+
+        {% if shop.description %}
+
+            <p class="description">
+                {{ shop.description }}
+            </p>
+
+        {% else %}
+
+            <p class="description">
+                This shop has no description yet.
+            </p>
+
+        {% endif %}
+
+        {% if shop.is_active %}
+
+            <p class="status active">
+                ● Active Shop
+            </p>
+
+        {% else %}
+
+            <p class="status inactive">
+                ● Inactive Shop
+            </p>
+
+        {% endif %}
+
+        <div class="shop-meta">
+
+            <p>
+                Created:
+                {{ shop.created_at|date:"F d, Y" }}
+            </p>
+
+            <p>
+                Last updated:
+                {{ shop.updated_at|date:"F d, Y" }}
+            </p>
+
+        </div>
+
+        <div class="actions">
+
+            <a
+                href="{% url 'shops:shop_list' %}"
+                class="button back-button"
+            >
+                Back to Shops
+            </a>
+
+            <a
+                href="{% url 'shops:shop_update' shop.slug %}"
+                class="button update-button"
+            >
+                Update Shop
+            </a>
+
+            {% if shop.is_active %}
+
+                <a
+                    href="{% url 'shops:shop_deactivate' shop.slug %}"
+                    class="button deactivate-button"
+                >
+                    Deactivate Shop
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
