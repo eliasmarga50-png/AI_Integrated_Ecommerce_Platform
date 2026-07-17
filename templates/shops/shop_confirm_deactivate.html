@@ -1,0 +1,139 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Deactivate Shop</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 80px auto;
+        }
+
+        .confirm-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        h1 {
+            color: #dc2626;
+            margin-top: 0;
+        }
+
+        p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .warning {
+            background: #fef2f2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .button {
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .confirm-button {
+            background: #dc2626;
+            color: white;
+        }
+
+        .cancel-button {
+            background: #6b7280;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="confirm-card">
+
+        <h1>
+            Deactivate Shop?
+        </h1>
+
+        <p>
+            Are you sure you want to deactivate
+            <strong>{{ shop.name }}</strong>?
+        </p>
+
+        <div class="warning">
+
+            <strong>Important:</strong>
+
+            <br>
+
+            Your shop will no longer be active.
+            However, your shop data and business history
+            will be preserved.
+
+        </div>
+
+        <form
+            method="POST"
+        >
+
+            {% csrf_token %}
+
+            <div class="actions">
+
+                <button
+                    type="submit"
+                    class="button confirm-button"
+                >
+                    Yes, Deactivate Shop
+                </button>
+
+                <a
+                    href="{% url 'shops:shop_detail' shop.slug %}"
+                    class="button cancel-button"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
