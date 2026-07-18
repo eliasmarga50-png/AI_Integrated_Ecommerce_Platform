@@ -5,6 +5,7 @@ from decimal import Decimal
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
+from django.http import HttpResponse
 from django.test import TestCase
 from django.urls import reverse
 
@@ -425,7 +426,12 @@ class CartViewTests(TestCase):
             password="StrongPassword123!",
         )
 
-    @patch("apps.cart.views.render")
+    @patch(
+        "apps.cart.views.render",
+        return_value=HttpResponse(
+            "Cart detail"
+        ),
+    )
     def test_cart_detail_creates_cart_for_user(
         self,
         mock_render,
@@ -481,6 +487,7 @@ class CartViewTests(TestCase):
 
     def test_unavailable_product_cannot_be_added(self):
         self.product.is_available = False
+
         self.product.save(
             update_fields=[
                 "is_available",
@@ -501,7 +508,7 @@ class CartViewTests(TestCase):
 
         self.assertEqual(
             response.status_code,
-            404,
+            302,
         )
 
     def test_update_cart_item(self):
@@ -670,4 +677,3 @@ class CartViewTests(TestCase):
             response.status_code,
             302,
         )
-

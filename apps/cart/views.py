@@ -39,8 +39,13 @@ def add_to_cart(request, product_id):
     product = get_object_or_404(
         Product,
         id=product_id,
-        is_available=True,
     )
+
+    if not product.is_available:
+        return redirect(
+            "products:product_detail",
+            slug=product.slug,
+        )
 
     cart = CartService.get_or_create_cart(
         user=request.user
