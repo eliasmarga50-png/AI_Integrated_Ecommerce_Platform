@@ -1,0 +1,162 @@
+
+
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="checkout-container">
+
+    <h1>Checkout</h1>
+
+    <p class="checkout-intro">
+        Enter your shipping information to complete your order.
+    </p>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="{{ form.shipping_address.id_for_label }}">
+                {{ form.shipping_address.label }}
+            </label>
+
+            {{ form.shipping_address }}
+
+            {% if form.shipping_address.errors %}
+                <div class="field-error">
+                    {{ form.shipping_address.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.shipping_city.id_for_label }}">
+                {{ form.shipping_city.label }}
+            </label>
+
+            {{ form.shipping_city }}
+
+            {% if form.shipping_city.errors %}
+                <div class="field-error">
+                    {{ form.shipping_city.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.shipping_phone.id_for_label }}">
+                {{ form.shipping_phone.label }}
+            </label>
+
+            {{ form.shipping_phone }}
+
+            {% if form.shipping_phone.errors %}
+                <div class="field-error">
+                    {{ form.shipping_phone.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="checkout-actions">
+            <button type="submit" class="btn btn-primary">
+                Place Order
+            </button>
+
+            <a href="{% url 'cart:cart_detail' %}"
+               class="btn btn-secondary">
+                Back to Cart
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+<style>
+    .checkout-container {
+        max-width: 700px;
+        margin: 30px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .checkout-container h1 {
+        margin-top: 0;
+    }
+
+    .checkout-intro {
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 15px;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+    }
+
+    .form-errors,
+    .field-error {
+        margin-top: 6px;
+        color: #dc3545;
+        font-size: 14px;
+    }
+
+    .checkout-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 18px;
+        border-radius: 4px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .btn-primary {
+        background: #007bff;
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+</style>
+
+{% endblock %}
+
+
