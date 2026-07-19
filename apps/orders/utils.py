@@ -19,3 +19,5 @@ def generate_order_number():
     )
 
     return f"ORD-{timestamp}-{random_part}"
+
+
