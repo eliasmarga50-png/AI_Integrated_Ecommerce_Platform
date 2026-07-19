@@ -1,2 +1,322 @@
 
 
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="order-detail-container">
+
+    <div class="order-detail-header">
+
+        <div>
+            <h1>Order Details</h1>
+
+            <p class="order-number">
+                {{ order.order_number }}
+            </p>
+        </div>
+
+        <span class="status status-{{ order.status }}">
+            {{ order.get_status_display }}
+        </span>
+
+    </div>
+
+    <div class="order-summary">
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Order Date
+            </span>
+
+            <strong>
+                {{ order.created_at|date:"M d, Y H:i" }}
+            </strong>
+        </div>
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Total Amount
+            </span>
+
+            <strong>
+                {{ order.total_amount }} birr
+            </strong>
+        </div>
+
+    </div>
+
+    <div class="order-section">
+
+        <h2>Shipping Information</h2>
+
+        <div class="shipping-info">
+
+            <p>
+                <strong>Address:</strong>
+                {{ order.shipping_address }}
+            </p>
+
+            <p>
+                <strong>City:</strong>
+                {{ order.shipping_city }}
+            </p>
+
+            <p>
+                <strong>Phone:</strong>
+                {{ order.shipping_phone }}
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="order-section">
+
+        <h2>Order Items</h2>
+
+        <div class="order-items">
+
+            {% for item in order.items.all %}
+
+                <div class="order-item">
+
+                    <div class="item-details">
+
+                        <h3>
+                            {{ item.product_name }}
+                        </h3>
+
+                        <p>
+                            {{ item.unit_price }} birr
+                            ×
+                            {{ item.quantity }}
+                        </p>
+
+                    </div>
+
+                    <strong class="item-subtotal">
+                        {{ item.subtotal }} birr
+                    </strong>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <div class="order-total">
+
+        <span>
+            Order Total
+        </span>
+
+        <strong>
+            {{ order.total_amount }} birr
+        </strong>
+
+    </div>
+
+    <div class="order-actions">
+
+        <a href="{% url 'orders:order_list' %}"
+           class="btn btn-secondary">
+            Back to Orders
+        </a>
+
+    </div>
+
+</div>
+
+<style>
+    .order-detail-container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 30px;
+    }
+
+    .order-detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        gap: 20px;
+    }
+
+    .order-detail-header h1 {
+        margin-bottom: 5px;
+    }
+
+    .order-number {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .status {
+        padding: 7px 14px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-confirmed {
+        background: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .status-processing {
+        background: #cce5ff;
+        color: #004085;
+    }
+
+    .status-shipped {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-delivered {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-cancelled {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .order-summary {
+        display: flex;
+        gap: 60px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        margin-bottom: 25px;
+    }
+
+    .summary-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .summary-label {
+        color: #777;
+        font-size: 14px;
+    }
+
+    .order-section {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        margin-bottom: 25px;
+    }
+
+    .order-section h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
+
+    .shipping-info p {
+        margin: 10px 0;
+    }
+
+    .order-items {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 0;
+        border-bottom: 1px solid #eee;
+        gap: 20px;
+    }
+
+    .order-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-details h3 {
+        margin: 0 0 6px;
+        font-size: 17px;
+    }
+
+    .item-details p {
+        margin: 0;
+        color: #777;
+    }
+
+    .item-subtotal {
+        white-space: nowrap;
+    }
+
+    .order-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        padding: 20px 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        font-size: 20px;
+        margin-bottom: 25px;
+    }
+
+    .order-actions {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 18px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 15px;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    @media (max-width: 600px) {
+        .order-detail-container {
+            padding: 15px;
+        }
+
+        .order-detail-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .order-summary {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-item {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .order-total {
+            font-size: 18px;
+        }
+    }
+</style>
+
+{% endblock %}
