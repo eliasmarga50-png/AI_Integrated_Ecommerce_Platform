@@ -58,7 +58,7 @@ class OrderTestMixin:
 
     def create_cart(self, user):
         return Cart.objects.create(
-            user=user,
+            owner=user,
         )
 
 
