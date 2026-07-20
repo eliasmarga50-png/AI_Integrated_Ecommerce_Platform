@@ -43,7 +43,7 @@ class OrderService:
         """
 
         order = Order.objects.create(
-            user=cart.user,
+            user=cart.owner,
             order_number=generate_order_number(),
             total_amount=Decimal("0.00"),
             shipping_address=shipping_address,
