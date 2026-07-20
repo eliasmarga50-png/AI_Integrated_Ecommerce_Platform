@@ -3,10 +3,13 @@
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import  redirect, render
+from django.http import Http404
 
 from .forms import CheckoutForm
 from .services import OrderService
+from .models import Order
+
 
 
 @login_required
@@ -30,16 +33,20 @@ def order_list(request):
 
 @login_required
 def order_detail(request, order_number):
+    
+    try:
+    	order=OrderService.get_order(
+    	     order_number=order_number,
+    	     user=request.user,
+    	   )
+    	
+    except Order.DoesNotExist:
+    	raise Http404
     """
     Display a specific order belonging to the logged-in user.
     """
 
-    order = get_object_or_404(
-        OrderService.get_order(
-            order_number=order_number,
-            user=request.user,
-        )
-    )
+    
 
     return render(
         request,
