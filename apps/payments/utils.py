@@ -20,7 +20,18 @@ def generate_idempotency_key()->str:
 def generate_nonce(length:int=32)->str:
 	return secrets.token_urlsafe(length)
 	
-def calculate_hmac_signature()->str:
+def calculate_hmac_signature(
+    payload: bytes,
+    secret: str,
+    algorithm=hashlib.sha-256,
+)->str:
+	
+	return hmac.new(
+	  key=secret.encode("utf-8"),
+	  msg=payload,
+	  digestmod=algorithm,
+	).hexdigest()
+	
 	
 def verify_hmac_signature()->bool:
 	
