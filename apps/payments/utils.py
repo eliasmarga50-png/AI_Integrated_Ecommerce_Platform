@@ -9,6 +9,9 @@ from datetime import timedelta
 from django.utils import timezone
 
 def generate_transaction_reference(prefix:str="PAY")->str:
+	token=secrets.token_hex(8).upper()
+	
+	return f"{prefix} - {token}"
 
 def generate_idempotency_key()->str:
 	
