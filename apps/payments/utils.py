@@ -1,0 +1,23 @@
+
+
+from __future__ import annotations
+import hashlib
+import hmac
+import secrets
+import uuid
+from datetime import timedelta
+from django.utils import timezone
+
+def generate_transaction_reference(prefix:str="PAY")->str:
+
+def generate_idempotency_key()->str:
+	
+def generate_nonce(length:int=32)->str:
+	
+def calculate_hmac_signature()->str:
+	
+def verify_hmac_signature()->bool:
+	
+def calculate_payload_hash()->str:
+	
+def is_timestamp_valid()->bool:
