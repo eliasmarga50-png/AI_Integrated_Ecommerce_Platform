@@ -15,7 +15,10 @@ def generate_transaction_reference(prefix:str="PAY")->str:
 
 def generate_idempotency_key()->str:
 	
+	return str(uuid.uuid4())
+	
 def generate_nonce(length:int=32)->str:
+	return secrets.token_urlsafe(length)
 	
 def calculate_hmac_signature()->str:
 	
