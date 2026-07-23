@@ -101,6 +101,19 @@ class PaymentService:
 	     payment, 
 	     verification
 	     ):
+	     	amount=Decimal(
+	     	    str(
+	     	       verification["amount"]
+	     	    )
+	     	)
+	     	
+	     	if amount != payment.amount:
+	     		raise AmountMismatchError()
+	     	
+	     	if (
+	     	   verification["currency"] != amount.curreny
+	     	):
+	     		raise CurrencyMismatchError():
 		
 	@classmethod
 	@transaction.atomic
