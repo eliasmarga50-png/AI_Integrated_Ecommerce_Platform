@@ -34,6 +34,12 @@ class PaymentService:
 	  cls, 
 	  provider
 	  ):
+	  	gateway_class = cls.GATEWAYS.get(provider.lower())
+	  	
+	  	if gateways_class is None:
+	  		raise ValueError(f"Unsupported Gateway {provider} ")
+	  	
+	  	return gateway_class()
 	
 	@classmethod
 	@transaction.atomic
@@ -41,6 +47,11 @@ class PaymentService:
    	cls, 
    	provider
    	):
+   		gateway=cls.get_gateway(
+   		   payment.gateway
+   		)
+   		
+   		return gateway.initialize_payment(payment)
 		
 	
 	@classmethod
