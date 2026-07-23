@@ -60,9 +60,41 @@ class PaymentService:
 	    cls, 
 	    payment
 	    ):
-		
-	
-	
+	    	
+	    	gateway=cls.get_gateway(
+	    	   payment.gateway
+	    	)
+	    	
+	    	verification=gateway.verify_payment(
+	    	   payment.transaction_reference
+	    	)
+	    	
+	    	if hasattr(
+	    	   gateway,
+	    	   "normalize_verification"
+	    	   ):
+	    	   	verification=(
+	    	   	   gateway.normalize_verification(
+	    	   	      verification
+	    	   	   )
+	    	   )
+	    	if not verification["verified"]:
+	    		raise InvalidTransactionError(
+	    		 "Gateway verification failed. "
+	    			)
+	    	cls.validate_payment(
+	    	   payment,
+	    	   verification,
+	    		)
+	    	cls.mark_completed(
+	    	   payment,
+	    	   gateway_reference=verification.get(
+	    	      "gateway reference"
+	    	   )
+	    	)
+	    	
+	    	return verification
+	    	
 	@classmethod
 	def validate_payment(
 	     cls, 
