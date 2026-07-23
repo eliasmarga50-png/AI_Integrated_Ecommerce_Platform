@@ -27,8 +27,23 @@ class StripeGateway(BasePaymentGateway):
 		    f"AI Ecommerce order {payment.order.id}"
 		),
 		)
+		
+		return (
+		   "success" : True,
+		   "payment_intent_id" : intent.id,
+		   "client_secret" : intent.client_secret,
+		   "status" : intent.status,
+		   "raw" : intent,
+		)
 	
 	def verify_payment(self, payment_intent_id):
+		intent=stripe.PaymentIntent.retrieve(
+		     payment_intent_id
+		)
+		
+		return self.normalize_verification(
+		      intent
+		)
 		
 		
 	def refund_payment(self, payment_intent_id):
