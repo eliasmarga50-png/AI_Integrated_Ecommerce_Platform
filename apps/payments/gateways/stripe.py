@@ -12,8 +12,24 @@ class StripeGateway(BasePaymentGateway):
 			stripe.api_key=settings.STRIPE_SECRET_KEY
 	
 	def initialize_payment(self, payment):
+		intent=stripe.PaymentIntent.create(
+		amount=int(payment.amount*100)
+		currency=payment.currency.lower()
+		automatic_payment_methods = {
+		    "enabled" : True
+		}
+		metadata={
+		      "order_id": str(payment.order.id),
+		      "payment_id": str(payment.id),
+		      "user_id": (payment.user.id),
+		}
+		description=(
+		    f"AI Ecommerce order {payment.order.id}"
+		),
+		)
 	
 	def verify_payment(self, payment_intent_id):
+		
 		
 	def refund_payment(self, payment_intent_id):
 		
