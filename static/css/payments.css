@@ -1,0 +1,272 @@
+
+
+
+/* ==========================================
+   AI_Ecommerce Payments Stylesheet
+   ========================================== */
+
+
+/* ---------- General ---------- */
+
+body {
+    background-color: #f8f9fa;
+}
+
+
+/* ---------- Headings ---------- */
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #212529;
+}
+
+.page-subtitle {
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+
+
+/* ---------- Cards ---------- */
+
+.payment-card {
+
+    border: none;
+
+    border-radius: 16px;
+
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+
+    overflow: hidden;
+
+    transition: transform .3s ease,
+                box-shadow .3s ease;
+
+}
+
+.payment-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 12px 30px rgba(0,0,0,.12);
+
+}
+
+
+.payment-card .card-header {
+
+    background: linear-gradient(
+        135deg,
+        #0d6efd,
+        #0b5ed7
+    );
+
+    color: white;
+
+    padding: 1rem 1.5rem;
+
+}
+
+.payment-card .card-header h3 {
+
+    margin: 0;
+
+    font-weight: 600;
+
+}
+
+
+/* ---------- Tables ---------- */
+
+.payment-table th {
+
+    width: 35%;
+
+    font-weight: 600;
+
+    color: #495057;
+
+    padding: .85rem;
+
+}
+
+.payment-table td {
+
+    padding: .85rem;
+
+    color: #212529;
+
+}
+
+
+/* ---------- Status Badges ---------- */
+
+.status-completed {
+
+    background: #198754;
+
+    color: white;
+
+}
+
+.status-pending {
+
+    background: #ffc107;
+
+    color: #212529;
+
+}
+
+.status-failed {
+
+    background: #dc3545;
+
+    color: white;
+
+}
+
+.status-cancelled {
+
+    background: #6c757d;
+
+    color: white;
+
+}
+
+.status-processing {
+
+    background: #0dcaf0;
+
+    color: white;
+
+}
+
+.badge {
+
+    padding: .55rem .9rem;
+
+    border-radius: 50rem;
+
+    font-size: .85rem;
+
+}
+
+
+/* ---------- Transaction Code ---------- */
+
+.reference-box {
+
+    background: #f1f3f5;
+
+    border-radius: 8px;
+
+    padding: .45rem .75rem;
+
+    font-family: monospace;
+
+    word-break: break-word;
+
+}
+
+
+/* ---------- Buttons ---------- */
+
+.btn-payment {
+
+    border-radius: 10px;
+
+    padding: .65rem 1.4rem;
+
+    font-weight: 600;
+
+    transition: all .25s ease;
+
+}
+
+.btn-payment:hover {
+
+    transform: translateY(-2px);
+
+}
+
+
+/* ---------- Empty State ---------- */
+
+.empty-payment {
+
+    text-align: center;
+
+    padding: 4rem 2rem;
+
+}
+
+.empty-payment h3 {
+
+    font-weight: 700;
+
+    margin-bottom: 1rem;
+
+}
+
+.empty-payment p {
+
+    color: #6c757d;
+
+}
+
+
+/* ---------- Gateway Badge ---------- */
+
+.gateway-badge {
+
+    display: inline-block;
+
+    padding: .4rem .8rem;
+
+    border-radius: 50rem;
+
+    background: #e9ecef;
+
+    font-size: .85rem;
+
+    font-weight: 600;
+
+}
+
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+
+    .payment-card {
+
+        margin: 1rem;
+
+    }
+
+    .payment-table th,
+    .payment-table td {
+
+        display: block;
+
+        width: 100%;
+
+    }
+
+    .payment-table tr {
+
+        border-bottom: 1px solid #dee2e6;
+
+        margin-bottom: 1rem;
+
+    }
+
+    .page-title {
+
+        font-size: 1.6rem;
+
+    }
+
+}
+
+

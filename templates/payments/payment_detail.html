@@ -1,0 +1,237 @@
+
+
+
+{% extends "base.html" %}
+
+<link rel="stylesheet"  href="{% static 'css/payments.css'  %}"
+
+{% block title %}
+Payment Details
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-dark text-white">
+
+                    <h3 class="mb-0">
+                        Payment Details
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-borderless">
+
+                        <tr>
+
+                            <th width="35%">
+                                Order
+                            </th>
+
+                            <td>
+
+                                #{{ payment.order.id }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Payment Gateway
+                            </th>
+
+                            <td>
+
+                                {{ payment.get_gateway_display }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <td>
+
+                                {{ payment.amount }}
+                                {{ payment.currency }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <td>
+
+                                {% if payment.status == "completed" %}
+
+                                    <span class="badge bg-success">
+
+                                        Completed
+
+                                    </span>
+
+                                {% elif payment.status == "pending" %}
+
+                                    <span class="badge bg-warning text-dark">
+
+                                        Pending
+
+                                    </span>
+
+                                {% elif payment.status == "failed" %}
+
+                                    <span class="badge bg-danger">
+
+                                        Failed
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+
+                                        {{ payment.status }}
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Currency
+                            </th>
+
+                            <td>
+
+                                {{ payment.currency }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Transaction Reference
+                            </th>
+
+                            <td>
+
+                                <code>
+
+                                    {{ payment.transaction_reference }}
+
+                                </code>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Gateway Reference
+                            </th>
+
+                            <td>
+
+                                {% if payment.gateway_reference %}
+
+                                    <code>
+
+                                        {{ payment.gateway_reference }}
+
+                                    </code>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+
+                                        Not Available
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+                                Created At
+                            </th>
+
+                            <td>
+
+                                {{ payment.created_at|date:"F d, Y H:i" }}
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+                <div class="card-footer d-flex justify-content-between">
+
+                    <a
+                        href="{% url 'payments:list' %}"
+                        class="btn btn-secondary">
+
+                        ← Back to Payments
+
+                    </a>
+
+                    {% if payment.status == "pending" %}
+
+                    <a
+                        href="{% url 'payments:initialize' payment.pk %}"
+                        class="btn btn-success">
+
+                        Continue Payment
+
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
