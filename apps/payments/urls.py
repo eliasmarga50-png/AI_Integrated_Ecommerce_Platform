@@ -70,9 +70,33 @@ urlpatterns = [
     # Gateway webhooks
     # -------------------------------------------------
 
-    path(
-        "webhook/",
-        PaymentWebhookView.as_view(),
-        name="webhook",
+    
     ),
+    path(
+    "webhooks/chapa/",
+    PaymentWebhookView.as_view(),
+    {"gateway": "chapa"},
+    name="chapa-webhook",
+),
+
+path(
+    "webhooks/stripe/",
+    PaymentWebhookView.as_view(),
+    {"gateway": "stripe"},
+    name="stripe-webhook",
+),
+
+path(
+    "webhooks/paypal/",
+    PaymentWebhookView.as_view(),
+    {"gateway": "paypal"},
+    name="paypal-webhook",
+),
+
+path(
+    "webhooks/telebirr/",
+    PaymentWebhookView.as_view(),
+    {"gateway": "telebirr"},
+    name="telebirr-webhook",
+),
 ]
