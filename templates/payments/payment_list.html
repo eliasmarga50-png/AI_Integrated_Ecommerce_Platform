@@ -1,0 +1,180 @@
+
+
+
+{% extends "base.html" %}
+
+{% block title %}
+My Payments
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2>My Payments</h2>
+            <p class="text-muted">
+                View and track all of your payment transactions.
+            </p>
+        </div>
+
+    </div>
+
+    {% if payments %}
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-hover align-middle">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>Order</th>
+
+                    <th>Gateway</th>
+
+                    <th>Amount</th>
+
+                    <th>Status</th>
+
+                    <th>Date</th>
+
+                    <th class="text-center">
+                        Actions
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for payment in payments %}
+
+                <tr>
+
+                    <td>
+
+                        #{{ payment.order.id }}
+
+                    </td>
+
+                    <td>
+
+                        {{ payment.get_gateway_display }}
+
+                    </td>
+
+                    <td>
+
+                        {{ payment.amount }}
+                        {{ payment.currency }}
+
+                    </td>
+
+                    <td>
+
+                        {% if payment.status == "completed" %}
+
+                            <span class="badge bg-success">
+                                Completed
+                            </span>
+
+                        {% elif payment.status == "pending" %}
+
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+
+                        {% elif payment.status == "failed" %}
+
+                            <span class="badge bg-danger">
+                                Failed
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-secondary">
+                                {{ payment.status }}
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {{ payment.created_at|date:"M d, Y" }}
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <a
+                            href="{% url 'payments:detail' payment.pk %}"
+                            class="btn btn-sm btn-primary">
+
+                            View
+
+                        </a>
+
+                        {% if payment.status == "pending" %}
+
+                        <a
+                            href="{% url 'payments:initialize' payment.pk %}"
+                            class="btn btn-sm btn-success">
+
+                            Continue
+
+                        </a>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="card shadow-sm">
+
+        <div class="card-body text-center">
+
+            <h4>No Payments Found</h4>
+
+            <p class="text-muted">
+
+                You haven't made any payments yet.
+
+            </p>
+
+            <a
+                href="{% url 'orders:list' %}"
+                class="btn btn-primary">
+
+                View Orders
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
+
