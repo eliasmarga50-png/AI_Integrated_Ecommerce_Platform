@@ -46,6 +46,11 @@ class Order(models.Model):
             MinValueValidator(Decimal("0.00")),
         ],
     )
+    
+    currency=models.CharField(
+         max_length=3,
+         default = "ETB"
+    )
 
     shipping_address = models.TextField()
 
