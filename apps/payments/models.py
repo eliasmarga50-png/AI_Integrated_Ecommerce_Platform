@@ -2,6 +2,7 @@
 
 
 from decimal import Decimal
+import uuid  
 
 from django.conf import settings
 from django.core.validators import MinValueValidator
@@ -78,8 +79,16 @@ class Payment(models.Model):
     transaction_reference = models.CharField(
         max_length=100,
         unique=True,
-        editable = False,
+        editable=False,
+        default=False,
     )
+
+    def save(self, *args, **kwargs):
+        if not self.transaction_reference:
+            self.transaction_reference = (
+                f"PAY-{uuid.uuid4().hex[:12].upper()}"
+            )
+        super().save(*args, **kwargs)
 
     created_at = models.DateTimeField(
         auto_now_add=True,

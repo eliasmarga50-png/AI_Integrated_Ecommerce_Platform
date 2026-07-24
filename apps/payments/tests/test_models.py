@@ -110,12 +110,16 @@ class PaymentModelTests(TestCase):
         )
 
     def test_string_representation(self):
-        """
-        str should return a useful value.
-        """
+        expected = (
+            f"Payment {self.payment.id} "
+            f"- {self.payment.amount} "
+            f"{self.payment.currency} "
+            f"- {self.payment.get_status_display()}"
+        )
+        
         self.assertEqual(
             str(self.payment),
-            f"Payment {self.payment.transaction_reference}",
+            expected,
         )
 
     def test_created_timestamp_exists(self):
