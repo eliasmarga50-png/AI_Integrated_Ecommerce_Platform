@@ -72,10 +72,9 @@ class PaymentServiceTests(TestCase):
     @patch(
         "apps.payments.services.Payment.objects.create"
     )
-    def test_create_payment(
-        self,
-        mock_create,
-    ):
+    def test_create_payment(self):
+    	
+    	self.Payment.delete()
 
         mock_create.return_value = self.payment
 
@@ -85,10 +84,8 @@ class PaymentServiceTests(TestCase):
             gateway="chapa",
         )
 
-        self.assertEqual(
-            payment,
-            self.payment,
-        )
+        self.assertEqual(payment.order, self.order)
+        self.assertEqual(payment.user, self.user)
 
 
     def test_duplicate_payment_not_allowed(self):
