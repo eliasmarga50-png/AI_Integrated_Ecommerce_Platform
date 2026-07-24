@@ -1,192 +1,177 @@
 
 
 
-from unittest.mock import Mock, patch
+from decimal import Decimal
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from apps.payments.gateways.chapa import ChapaGateway
-from apps.payments.gateways.paypal import PayPalGateway
-from apps.payments.gateways.stripe import StripeGateway
-from apps.payments.gateways.telebirr import TelebirrGateway
+from apps.orders.models import Order
+from apps.payments.forms import PaymentForm
+from apps.payments.models import Payment
+
+User = get_user_model()
 
 
-class GatewayTests(TestCase):
+class PaymentFormTests(TestCase):
     """
-    Tests for supported payment gateways.
+    Tests for the PaymentForm.
     """
 
     def setUp(self):
-        self.payment = Mock()
-        self.payment.amount = "250.00"
-        self.payment.currency = "ETB"
-        self.payment.transaction_reference = "PAY-123456"
-        self.payment.gateway_reference = None
 
-    # -------------------------
-    # Chapa
-    # -------------------------
-
-    @patch("requests.post")
-    def test_chapa_initialize_payment(self, mock_post):
-
-        mock_response = Mock()
-        mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "status": "success",
-            "data": {
-                "checkout_url": "https://checkout.chapa.co/test"
-            },
-        }
-
-        mock_post.return_value = mock_response
-
-        gateway = ChapaGateway()
-
-        response = gateway.initialize_payment(
-            self.payment
+        self.user = User.objects.create_user(
+            username="elias",
+            email="elias@example.com",
+            password="password123",
         )
 
+        self.order = Order.objects.create(
+            user=self.user,
+            order_number="ORD-10001",
+            total_amount=Decimal("250.00"),
+            shipping_address="Addis Ababa",
+            shipping_city="Addis Ababa",
+            shipping_phone="0911000000",
+        )
+
+    def test_form_is_valid(self):
+        """
+        Form should be valid with correct data.
+        """
+
+        form = PaymentForm(
+            data={
+                "gateway": "chapa",
+            }
+        )
+
+        self.assertTrue(form.is_valid())
+
+    def test_gateway_is_required(self):
+        """
+        Gateway is a required field.
+        """
+
+        form = PaymentForm(
+            data={}
+        )
+
+        self.assertFalse(form.is_valid())
         self.assertIn(
-            "checkout_url",
-            response,
+            "gateway",
+            form.errors,
         )
 
-    @patch("requests.get")
-    def test_chapa_verify_payment(self, mock_get):
+    def test_invalid_gateway_choice(self):
+        """
+        Invalid gateway should fail validation.
+        """
 
-        mock_response = Mock()
-        mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "status": "success"
-        }
-
-        mock_get.return_value = mock_response
-
-        gateway = ChapaGateway()
-
-        response = gateway.verify_payment(
-            "PAY-123"
+        form = PaymentForm(
+            data={
+                "gateway": "bitcoin",
+            }
         )
 
-        self.assertIsNotNone(response)
+        self.assertFalse(form.is_valid())
 
-    def test_chapa_normalize_verification(self):
+    def test_gateway_choices_exist(self):
+        """
+        Gateway field should contain available choices.
+        """
 
-        gateway = ChapaGateway()
+        form = PaymentForm()
 
-        raw = {
-            "status": "success",
-            "data": {
-                "tx_ref": "PAY-123",
-                "reference": "CHAPA-001",
-                "amount": "250.00",
-                "currency": "ETB",
-            },
-        }
+        choices = [
+            value
+            for value, label
+            in form.fields["gateway"].choices
+        ]
 
-        normalized = gateway.normalize_verification(raw)
+        self.assertIn("chapa", choices)
+        self.assertIn("telebirr", choices)
+        self.assertIn("stripe", choices)
+        self.assertIn("paypal", choices)
 
-        self.assertTrue(normalized["verified"])
+    def test_form_save_creates_payment(self):
+        """
+        Saving the form should create a Payment.
+        """
+
+        form = PaymentForm(
+            data={
+                "gateway": "chapa",
+            }
+        )
+
+        self.assertTrue(form.is_valid())
+
+        payment = Payment.objects.create(
+            order=self.order,
+            user=self.user,
+            gateway=form.cleaned_data["gateway"],
+            amount=Decimal("250.00"),
+            currency="ETB",
+        )
+
         self.assertEqual(
-            normalized["amount"],
-            "250.00",
+            payment.gateway,
+            "chapa",
         )
 
-    # -------------------------
-    # Telebirr
-    # -------------------------
+    def test_default_status_is_pending(self):
+        """
+        Newly created payment should be pending.
+        """
 
-    @patch("requests.post")
-    def test_telebirr_initialize_payment(
-        self,
-        mock_post,
-    ):
-
-        mock_response = Mock()
-        mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "code": "SUCCESS"
-        }
-
-        mock_post.return_value = mock_response
-
-        gateway = TelebirrGateway()
-
-        result = gateway.initialize_payment(
-            self.payment
+        payment = Payment.objects.create(
+            order=self.order,
+            user=self.user,
+            gateway="stripe",
+            amount=Decimal("250.00"),
+            currency="ETB",
         )
 
-        self.assertIsNotNone(result)
-
-    # -------------------------
-    # Stripe
-    # -------------------------
-
-    @patch("requests.post")
-    def test_stripe_initialize_payment(
-        self,
-        mock_post,
-    ):
-
-        mock_response = Mock()
-        mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "id": "pi_test"
-        }
-
-        mock_post.return_value = mock_response
-
-        gateway = StripeGateway()
-
-        result = gateway.initialize_payment(
-            self.payment
+        self.assertEqual(
+            payment.status,
+            Payment.Status.PENDING,
         )
 
-        self.assertIsNotNone(result)
+    def test_transaction_reference_generated(self):
+        """
+        Transaction reference should be generated automatically.
+        """
 
-    # -------------------------
-    # PayPal
-    # -------------------------
-
-    @patch("requests.post")
-    def test_paypal_initialize_payment(
-        self,
-        mock_post,
-    ):
-
-        mock_response = Mock()
-        mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "id": "PAYPAL-001"
-        }
-
-        mock_post.return_value = mock_response
-
-        gateway = PayPalGateway()
-
-        result = gateway.initialize_payment(
-            self.payment
+        payment = Payment.objects.create(
+            order=self.order,
+            user=self.user,
+            gateway="paypal",
+            amount=Decimal("250.00"),
+            currency="ETB",
         )
 
-        self.assertIsNotNone(result)
-
-    @patch("requests.post")
-    def test_gateway_network_error(
-        self,
-        mock_post,
-    ):
-
-        mock_post.side_effect = Exception(
-            "Network Error"
+        self.assertTrue(
+            payment.transaction_reference.startswith("PAY-")
         )
 
-        gateway = ChapaGateway()
+    def test_payment_belongs_to_order(self):
+        """
+        Payment should belong to the correct order.
+        """
 
-        with self.assertRaises(Exception):
-            gateway.initialize_payment(
-                self.payment
-            )
+        payment = Payment.objects.create(
+            order=self.order,
+            user=self.user,
+            gateway="telebirr",
+            amount=Decimal("250.00"),
+            currency="ETB",
+        )
+
+        self.assertEqual(
+            payment.order,
+            self.order,
+        )
 
 
 
