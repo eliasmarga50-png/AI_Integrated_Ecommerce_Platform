@@ -76,10 +76,9 @@ class Payment(models.Model):
     )
 
     transaction_reference = models.CharField(
-        max_length=255,
+        max_length=100,
         unique=True,
-        null=True,
-        blank=True,
+        editable = False,
     )
 
     created_at = models.DateTimeField(
