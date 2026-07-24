@@ -1,0 +1,157 @@
+
+
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Choose Payment Method
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/payments.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card payment-card">
+
+                <div class="card-header">
+
+                    <h3>Choose Your Payment Method</h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p class="page-subtitle">
+
+                        Select your preferred payment gateway to complete your order securely.
+
+                    </p>
+
+                    {% if order %}
+
+                    <div class="order-summary">
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+
+                                <strong>Order</strong><br>
+
+                                #{{ order.id }}
+
+                            </div>
+
+                            <div class="col-md-6 text-md-end">
+
+                                <strong>Total</strong><br>
+
+                                {{ order.total_amount }}
+                                {{ order.currency }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+
+                            {% for radio in form.gateway %}
+
+                            <label class="card mb-3 p-3 gateway-option">
+
+                                <div class="form-check">
+
+                                    {{ radio.tag }}
+
+                                    <span class="ms-2">
+
+                                        <strong>{{ radio.choice_label }}</strong>
+
+                                    </span>
+
+                                </div>
+
+                                <div class="mt-2 text-muted">
+
+                                    {% if radio.data.value == "chapa" %}
+                                        Fast and secure payments across Ethiopia and Africa.
+
+                                    {% elif radio.data.value == "telebirr" %}
+                                        Pay directly using your Telebirr wallet.
+
+                                    {% elif radio.data.value == "stripe" %}
+                                        Secure international card payments.
+
+                                    {% elif radio.data.value == "paypal" %}
+                                        Pay with your PayPal account or supported cards.
+
+                                    {% endif %}
+
+                                </div>
+
+                            </label>
+
+                            {% endfor %}
+
+                        </div>
+
+                        {% if form.gateway.errors %}
+
+                        <div class="alert alert-danger">
+
+                            {{ form.gateway.errors }}
+
+                        </div>
+
+                        {% endif %}
+
+                        <div class="payment-actions">
+
+                            <a href="{% url 'orders:list' %}"
+                               class="btn btn-outline-secondary btn-payment">
+
+                                Cancel
+
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary btn-payment">
+
+                                Continue to Payment
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+
