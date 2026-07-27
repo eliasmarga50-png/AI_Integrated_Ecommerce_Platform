@@ -90,3 +90,5 @@ class PaymentRefundForm(forms.Form):
         ).strip()
 
         return reason
+
+PaymentForm=PaymentCreateForm

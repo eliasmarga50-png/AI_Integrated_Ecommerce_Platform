@@ -57,6 +57,11 @@ urlpatterns = [
     "orders/",
     include("apps.orders.urls")
     ),
+    
+    path (
+     "payments/",
+     include("apps.payments.urls")
+    ),
 
 ]
 

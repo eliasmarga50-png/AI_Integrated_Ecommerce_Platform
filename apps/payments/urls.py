@@ -71,7 +71,7 @@ urlpatterns = [
     # -------------------------------------------------
 
     
-    ),
+   
     path(
     "webhooks/chapa/",
     PaymentWebhookView.as_view(),
@@ -99,4 +99,5 @@ path(
     {"gateway": "telebirr"},
     name="telebirr-webhook",
 ),
+
 ]
