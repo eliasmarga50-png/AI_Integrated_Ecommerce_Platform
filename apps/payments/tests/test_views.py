@@ -30,6 +30,7 @@ class PaymentViewTests(TestCase):
 
         self.client.login(
             username="elias",
+            email="elias@example.com",
             password="password123",
         )
 
@@ -166,6 +167,7 @@ class PaymentViewTests(TestCase):
 
         another_user = User.objects.create_user(
             username="other",
+            email="elias@exam.com",
             password="password123",
         )
 
