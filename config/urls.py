@@ -62,6 +62,11 @@ urlpatterns = [
      "payments/",
      include("apps.payments.urls")
     ),
+    
+    path(
+      "reviews/",
+      include("apps.reviews.urls")
+    ),
 
 ]
 
