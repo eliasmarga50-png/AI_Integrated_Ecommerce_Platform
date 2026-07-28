@@ -1,0 +1,58 @@
+
+
+
+{% extends "base.html" %}
+
+{% block title %}
+{% if review %}
+Edit Review
+{% else %}
+Write a Review
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<h1>
+    {% if review %}
+        Edit Review
+    {% else %}
+        Write a Review
+    {% endif %}
+</h1>
+
+{% if product %}
+    <h2>{{ product.name }}</h2>
+{% elif review %}
+    <h2>{{ review.product.name }}</h2>
+{% endif %}
+
+<hr>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+
+        {% if review %}
+            Update Review
+        {% else %}
+            Submit Review
+        {% endif %}
+
+    </button>
+
+</form>
+
+<br>
+
+<a href="{% url 'reviews:review_list' review.product.id|default:product.id %}">
+    Cancel
+</a>
+
+{% endblock %}
+
+

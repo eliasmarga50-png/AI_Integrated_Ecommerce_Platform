@@ -1,0 +1,82 @@
+
+
+
+{% extends "base.html" %}
+
+{% block title %}
+Review Details
+{% endblock %}
+
+{% block content %}
+
+<h1>Review Details</h1>
+
+<hr>
+
+<h2>{{ review.product.name }}</h2>
+
+<p>
+
+    {% for star in "12345" %}
+
+        {% if forloop.counter <= review.rating %}
+            ★
+        {% else %}
+            ☆
+        {% endif %}
+
+    {% endfor %}
+
+</p>
+
+<h3>{{ review.title }}</h3>
+
+<p>
+    {{ review.comment }}
+</p>
+
+<p>
+
+    Reviewed by
+
+    <strong>{{ review.user.username }}</strong>
+
+</p>
+
+<p>
+
+    Posted on
+
+    {{ review.created_at|date:"F j, Y" }}
+
+    {% if review.is_edited %}
+        (Edited)
+    {% endif %}
+
+</p>
+
+<hr>
+
+{% if request.user == review.user %}
+
+    <a href="{% url 'reviews:update_review' review.pk %}">
+        Edit
+    </a>
+
+    |
+
+    <a href="{% url 'reviews:delete_review' review.pk %}">
+        Delete
+    </a>
+
+    <br><br>
+
+{% endif %}
+
+<a href="{% url 'reviews:review_list' review.product.pk %}">
+    Back to Reviews
+</a>
+
+{% endblock %}
+
+
