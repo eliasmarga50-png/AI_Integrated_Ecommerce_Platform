@@ -80,6 +80,7 @@ class ReviewAdminTests(TestCase):
             "product",
             "user",
             "rating",
+            "is_edited",
             "created_at",
         )
 
@@ -94,10 +95,10 @@ class ReviewAdminTests(TestCase):
 
     def test_search_fields(self):
         expected = (
-            "product__name",
-            "user__username",
             "title",
             "comment",
+            "user__username",
+            "product__name",
         )
 
         self.assertEqual(
@@ -112,6 +113,7 @@ class ReviewAdminTests(TestCase):
     def test_list_filter(self):
         expected = (
             "rating",
+            "is_edited",
             "created_at",
         )
 
