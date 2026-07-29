@@ -64,6 +64,12 @@ class Product(models.Model):
     name = models.CharField(
         max_length=255
     )
+    
+    image=models.ImageField(
+       upload_to="products/",
+       null=True,
+       blank=True,
+    )
 
     slug = models.SlugField(
         unique=True,
@@ -117,7 +123,9 @@ class ProductImage(models.Model):
     )
 
     image = models.ImageField(
-        upload_to="products/"
+        upload_to="products/",
+        null=True,
+        blank=True,
     )
 
     is_primary = models.BooleanField(

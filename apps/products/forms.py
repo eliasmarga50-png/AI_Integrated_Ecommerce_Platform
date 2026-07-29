@@ -3,7 +3,7 @@
 
 from django import forms
 
-from .models import Product, ProductReview, Category
+from .models import Product, Category
 
 
 class ProductForm(forms.ModelForm):
@@ -64,40 +64,9 @@ class ProductForm(forms.ModelForm):
         return stock
 
 
-class ProductReviewForm(forms.ModelForm):
-    """
-    Form for customer reviews.
-    """
 
-    class Meta:
-        model = ProductReview
-        fields = [
-            "name",
-            "rating",
-            "comment",
-        ]
 
-        widgets = {
-            "comment": forms.Textarea(
-                attrs={
-                    "rows": 4,
-                    "placeholder": "Write your review..."
-                }
-            )
-        }
 
-    def clean_rating(self):
-        rating = self.cleaned_data["rating"]
-
-        if rating < 1 or rating > 5:
-            raise forms.ValidationError(
-                "Rating must be between 1 and 5."
-            )
-
-        return rating
-
-from django import forms
-from .models import Category, Product, ProductReview
 
 
 class CategoryForm(forms.ModelForm):
