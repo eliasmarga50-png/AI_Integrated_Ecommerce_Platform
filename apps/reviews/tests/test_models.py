@@ -106,9 +106,14 @@ class ReviewModelTests(TestCase):
             review.full_clean()
 
     def test_valid_rating_passes_validation(self):
+        other_user = User.objects.create_user(
+            username="validation_user",
+            email="val@example.com",
+            password="password123",
+        )
         review = Review(
             product=self.product,
-            user=self.user,
+            user=other_user,
             rating=4,
             title="Nice",
             comment="Good",
@@ -161,6 +166,7 @@ class ReviewModelTests(TestCase):
 
         self.assertEqual(reviews[0], newer)
         self.assertEqual(reviews[1], self.review)
+
 
 
 
