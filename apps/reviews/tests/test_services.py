@@ -4,6 +4,7 @@
 from decimal import Decimal
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from apps.products.models import Category, Product
@@ -64,6 +65,36 @@ class ReviewServiceTests(TestCase):
         self.assertEqual(review.user, self.user)
         self.assertEqual(review.product, self.product)
 
+    def test_create_review_invalid_rating(self):
+        """Should raise ValidationError if rating is out of bounds."""
+        with self.assertRaises(ValidationError):
+            ReviewService.create_review(
+                user=self.user,
+                product=self.product,
+                rating=6,  # Invalid
+                title="Bad Rating",
+                comment="Testing bounds",
+            )
+
+    def test_create_review_duplicate_prevention(self):
+        """Should raise ValidationError on duplicate product reviews by same user."""
+        Review.objects.create(
+            user=self.user,
+            product=self.product,
+            rating=4,
+            title="First Review",
+            comment="Nice",
+        )
+
+        with self.assertRaises(ValidationError):
+            ReviewService.create_review(
+                user=self.user,
+                product=self.product,
+                rating=5,
+                title="Second Review",
+                comment="Trying to review again",
+            )
+
     # --------------------------------------------------
     # Update Review
     # --------------------------------------------------
@@ -77,8 +108,9 @@ class ReviewServiceTests(TestCase):
             comment="Okay",
         )
 
+        # FIX: Passed review.id as review_id to match service signature
         updated = ReviewService.update_review(
-            review=review,
+            review.id,
             rating=5,
             title="Excellent",
             comment="Changed my mind.",
@@ -87,6 +119,25 @@ class ReviewServiceTests(TestCase):
         self.assertEqual(updated.rating, 5)
         self.assertEqual(updated.title, "Excellent")
         self.assertEqual(updated.comment, "Changed my mind.")
+        self.assertTrue(updated.is_edited)
+
+    def test_update_review_invalid_rating(self):
+        """Should raise ValidationError if updated rating is out of bounds."""
+        review = Review.objects.create(
+            user=self.user,
+            product=self.product,
+            rating=3,
+            title="Average",
+            comment="Okay",
+        )
+
+        with self.assertRaises(ValidationError):
+            ReviewService.update_review(
+                review.id,
+                rating=0,  # Invalid
+                title="Updated Title",
+                comment="Updated comment",
+            )
 
     # --------------------------------------------------
     # Delete Review
@@ -101,8 +152,10 @@ class ReviewServiceTests(TestCase):
             comment="Nice",
         )
 
-        ReviewService.delete_review(review)
+        # FIX: Passed review.id instead of the model object instance
+        deleted = ReviewService.delete_review(review.id)
 
+        self.assertTrue(deleted)
         self.assertEqual(Review.objects.count(), 0)
 
     # --------------------------------------------------
@@ -202,4 +255,3 @@ class ReviewServiceTests(TestCase):
                 self.product,
             )
         )
-

@@ -1,6 +1,5 @@
 
 
-
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.db.models import Avg
@@ -97,3 +96,31 @@ class ReviewService:
         )
         
         return round(result["average"] or 0.0, 2)
+    
+    @staticmethod
+    def get_average_rating(product):
+        return ReviewService.calculate_average_rating(product)
+
+    @staticmethod
+    def get_review_count(product):
+        return Review.objects.filter(
+            product=product
+        ).count()
+
+    @staticmethod
+    def get_user_review(user, product):
+        return (
+            Review.objects
+            .filter(
+                user=user,
+                product=product,
+            )
+            .first()
+        )
+
+    @staticmethod
+    def user_has_reviewed(user, product):
+        return Review.objects.filter(
+            user=user,
+            product=product,
+        ).exists()
