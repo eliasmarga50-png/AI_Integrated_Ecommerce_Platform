@@ -7,7 +7,6 @@ from .models import (
     Category,
     Product,
     ProductImage,
-    ProductReview,
 )
 
 
@@ -86,26 +85,4 @@ class ProductImageAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(ProductReview)
-class ProductReviewAdmin(admin.ModelAdmin):
-    list_display = (
-        "product",
-        "name",
-        "rating",
-        "created_at",
-    )
-
-    list_filter = (
-        "rating",
-        "created_at",
-    )
-
-    search_fields = (
-        "product__name",
-        "name",
-    )
-
-    ordering = (
-        "-created_at",
-    )
 

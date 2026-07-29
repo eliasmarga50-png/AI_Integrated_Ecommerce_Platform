@@ -3,7 +3,6 @@
 
 from django.db import models
 from django.utils.text import slugify
-from django.core.validators import MinValueValidator
 
 
 class Category(models.Model):
@@ -22,7 +21,7 @@ class Category(models.Model):
 
     slug = models.SlugField(
         unique=True,
-        blank=False
+        blank=True
     )
 
     description = models.TextField(
@@ -61,12 +60,6 @@ class Product(models.Model):
         on_delete=models.CASCADE,
         related_name="products"
     )
-    
-    image=models.ImageField(
-      upload_to="products/",
-      blank=True,
-      null=True
-    )
 
     name = models.CharField(
         max_length=255
@@ -74,22 +67,15 @@ class Product(models.Model):
 
     slug = models.SlugField(
         unique=True,
-        blank=False
+        blank=True
     )
 
     description = models.TextField()
 
     price = models.DecimalField(
-    max_digits=10,
-    decimal_places=2,
-    validators=[
-        MinValueValidator(
-            0,
-            message="Price cannot be negative."
-        )
-    ]
-)
-    
+        max_digits=10,
+        decimal_places=2
+    )
 
     stock = models.PositiveIntegerField(
         default=0
@@ -146,31 +132,4 @@ class ProductImage(models.Model):
         return f"{self.product.name} Image"
 
 
-class ProductReview(models.Model):
-    """
-    Customer reviews.
-    """
 
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE,
-        related_name="reviews"
-    )
-
-    name = models.CharField(
-        max_length=100
-    )
-
-    rating = models.PositiveSmallIntegerField()
-
-    comment = models.TextField()
-
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
-
-    class Meta:
-        ordering = ["-created_at"]
-
-    def __str__(self):
-        return f"{self.product.name} ({self.rating}/5)"
