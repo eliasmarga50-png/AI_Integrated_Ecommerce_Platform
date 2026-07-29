@@ -84,8 +84,9 @@ def update_review(request, pk):
         form = ReviewForm(request.POST, instance=review)
 
         if form.is_valid():
+            # FIX: Passed review.id instead of the model instance object
             ReviewService.update_review(
-                review,
+                review.id,
                 rating=form.cleaned_data["rating"],
                 title=form.cleaned_data["title"],
                 comment=form.cleaned_data["comment"],
@@ -123,7 +124,8 @@ def delete_review(request, pk):
     product_id = review.product.id
 
     if request.method == "POST":
-        ReviewService.delete_review(review)
+        # FIX: Passed review.id instead of the model instance object
+        ReviewService.delete_review(review.id)
 
         messages.success(
             request,
@@ -142,7 +144,4 @@ def delete_review(request, pk):
             "review": review,
         },
     )
-    
-    
-    
     

@@ -16,7 +16,7 @@ urlpatterns = [
     path(
         "products/<int:product_id>/reviews/create/",
         views.create_review,
-        name="create_review",
+        name="review_create",  # FIX: Changed from 'create_review'
     ),
     path(
         "reviews/<int:pk>/",
@@ -26,13 +26,11 @@ urlpatterns = [
     path(
         "reviews/<int:pk>/edit/",
         views.update_review,
-        name="update_review",
+        name="review_update",  # FIX: Changed from 'update_review'
     ),
     path(
         "reviews/<int:pk>/delete/",
         views.delete_review,
-        name="delete_review",
+        name="review_delete",  # FIX: Changed from 'delete_review'
     ),
 ]
-
-

@@ -46,6 +46,7 @@ class ReviewViewsTests(TestCase):
             stock=10,
         )
 
+        # self.user owns a review out of the gate for this product
         self.review = Review.objects.create(
             user=self.user,
             product=self.product,
@@ -59,7 +60,10 @@ class ReviewViewsTests(TestCase):
     # --------------------------------------------------
 
     def test_review_list_page(self):
-        response = self.client.get(reverse("reviews:review_list"))
+        # FIX: Appended product_id kwargs dictionary item
+        response = self.client.get(
+            reverse("reviews:review_list", kwargs={"product_id": self.product.pk})
+        )
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
@@ -100,8 +104,9 @@ class ReviewViewsTests(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_create_review(self):
+        # FIX: Using alternate user context profile to skip integrity flags
         self.client.login(
-            username="elias",
+            username="john",
             password="password123",
         )
 
@@ -169,7 +174,7 @@ class ReviewViewsTests(TestCase):
             },
         )
 
-        self.assertIn(response.status_code, [403, 404])
+        self.assertEqual(response.status_code, 403)
 
     # --------------------------------------------------
     # Delete Review
@@ -207,7 +212,7 @@ class ReviewViewsTests(TestCase):
             )
         )
 
-        self.assertIn(response.status_code, [403, 404])
+        self.assertEqual(response.status_code, 403)
 
     # --------------------------------------------------
     # Invalid Form
@@ -215,7 +220,7 @@ class ReviewViewsTests(TestCase):
 
     def test_create_review_invalid_data(self):
         self.client.login(
-            username="elias",
+            username="john",
             password="password123",
         )
 
@@ -232,7 +237,9 @@ class ReviewViewsTests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertFormError(response, "form", "title", "This field is required.")
+        
+        # FIX: Updated to support modern Django syntax
+        self.assertFormError(response.context["form"], "title", "This field is required.")
 
     # --------------------------------------------------
     # Context
@@ -250,5 +257,3 @@ class ReviewViewsTests(TestCase):
             response.context["review"],
             self.review,
         )
-
-
