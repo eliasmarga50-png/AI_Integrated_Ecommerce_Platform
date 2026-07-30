@@ -1,0 +1,154 @@
+
+
+
+/*
+===========================================
+AI_Ecommerce Grid System
+-------------------------------------------
+Purpose:
+    Reusable CSS Grid utilities for the
+    entire AI_Ecommerce project.
+
+===========================================
+*/
+
+
+/* =====================================
+   Base Grid
+===================================== */
+
+.grid {
+    display: grid;
+    gap: var(--space-6);
+}
+
+
+/* =====================================
+   Fixed Column Grids
+===================================== */
+
+.grid-1 {
+    grid-template-columns: 1fr;
+}
+
+.grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.grid-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+
+/* =====================================
+   Auto Responsive Grid
+===================================== */
+
+.grid-auto-sm {
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.grid-auto-md {
+    grid-template-columns:
+        repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.grid-auto-lg {
+    grid-template-columns:
+        repeat(auto-fit, minmax(320px, 1fr));
+}
+
+
+/* =====================================
+   Column Span
+===================================== */
+
+.col-span-1 {
+    grid-column: span 1;
+}
+
+.col-span-2 {
+    grid-column: span 2;
+}
+
+.col-span-3 {
+    grid-column: span 3;
+}
+
+.col-span-4 {
+    grid-column: span 4;
+}
+
+.col-span-full {
+    grid-column: 1 / -1;
+}
+
+
+/* =====================================
+   Row Span
+===================================== */
+
+.row-span-1 {
+    grid-row: span 1;
+}
+
+.row-span-2 {
+    grid-row: span 2;
+}
+
+.row-span-3 {
+    grid-row: span 3;
+}
+
+
+/* =====================================
+   Grid Alignment
+===================================== */
+
+.grid-center {
+    place-items: center;
+}
+
+.grid-start {
+    place-items: start;
+}
+
+.grid-end {
+    place-items: end;
+}
+
+
+/* =====================================
+   Gap Utilities
+===================================== */
+
+.grid-gap-sm {
+    gap: var(--space-2);
+}
+
+.grid-gap-md {
+    gap: var(--space-4);
+}
+
+.grid-gap-lg {
+    gap: var(--space-6);
+}
+
+.grid-gap-xl {
+    gap: var(--space-8);
+}
+
+
