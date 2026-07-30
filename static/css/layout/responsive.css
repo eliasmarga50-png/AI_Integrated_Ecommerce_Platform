@@ -1,0 +1,125 @@
+
+
+
+/*
+=================================================
+Responsive Layout
+AI_Ecommerce
+=================================================
+
+This file centralizes every media query
+used throughout the project.
+
+Mobile First approach.
+
+Breakpoints
+
+480px   Large phones
+768px   Tablets
+1024px  Laptops
+1280px  Desktop
+1536px  Large desktop
+=================================================
+*/
+
+
+/* ==========================================
+   Large Phones
+   480px+
+========================================== */
+
+@media (min-width: 480px) {
+
+    .container {
+        padding-inline: 1.25rem;
+    }
+
+}
+
+
+/* ==========================================
+   Tablets
+   768px+
+========================================== */
+
+@media (min-width: 768px) {
+
+    .container {
+        padding-inline: 2rem;
+    }
+
+    .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-auto {
+        grid-template-columns:
+            repeat(auto-fill, minmax(220px, 1fr));
+    }
+
+}
+
+
+/* ==========================================
+   Laptops
+   1024px+
+========================================== */
+
+@media (min-width: 1024px) {
+
+    .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .grid-5 {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .grid-auto {
+        grid-template-columns:
+            repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+}
+
+
+/* ==========================================
+   Large Desktop
+   1280px+
+========================================== */
+
+@media (min-width: 1280px) {
+
+    .container {
+        max-width: 1280px;
+    }
+
+}
+
+
+/* ==========================================
+   Ultra-wide Screens
+   1536px+
+========================================== */
+
+@media (min-width: 1536px) {
+
+    .container {
+        max-width: 1440px;
+    }
+
+}
+
+
