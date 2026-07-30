@@ -1,0 +1,86 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+            AI_Ecommerce Dashboard
+        {% endblock %}
+    </title>
+
+    {% block styles %}
+    <link rel="stylesheet" href="{% static 'dashboard/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/cards.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/tables.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/alerts.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/responsive.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+
+<div class="dashboard-wrapper">
+
+    <aside>
+        <h2>AI_Ecommerce</h2>
+        {% block sidebar %}
+        <ul>
+            <li>
+                <a href="#">Dashboard</a>
+            </li>
+        </ul>
+        {% endblock %}
+    </aside>
+
+    <div class="main-area">
+
+        <header>
+            {% block header %}
+            <h1>Dashboard</h1>
+            {% endblock %}
+        </header>
+
+        <main>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer>
+            {% block footer %}
+            <p>
+                &copy; {% now "Y" %} AI_Ecommerce. All rights reserved.
+            </p>
+            {% endblock %}
+        </footer>
+
+    </div>
+
+</div>
+
+{% block scripts %}
+{% endblock %}
+
+</body>
+</html>
+
+
+
