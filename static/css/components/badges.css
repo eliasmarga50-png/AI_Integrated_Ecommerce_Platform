@@ -1,0 +1,125 @@
+
+
+
+/*
+=================================================
+Badges
+AI_Ecommerce Design System
+=================================================
+*/
+
+/* ==========================
+   Base Badge
+========================== */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.35rem 0.75rem;
+
+    border-radius: 9999px;
+
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+
+    white-space: nowrap;
+}
+
+/* ==========================
+   Primary
+========================== */
+
+.badge-primary {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+/* ==========================
+   Secondary
+========================== */
+
+.badge-secondary {
+    background: var(--color-secondary);
+    color: #fff;
+}
+
+/* ==========================
+   Success
+========================== */
+
+.badge-success {
+    background: var(--color-success);
+    color: #fff;
+}
+
+/* ==========================
+   Danger
+========================== */
+
+.badge-danger {
+    background: var(--color-danger);
+    color: #fff;
+}
+
+/* ==========================
+   Warning
+========================== */
+
+.badge-warning {
+    background: var(--color-warning);
+    color: #111;
+}
+
+/* ==========================
+   Info
+========================== */
+
+.badge-info {
+    background: var(--color-info);
+    color: #fff;
+}
+
+/* ==========================
+   Outline
+========================== */
+
+.badge-outline {
+    background: transparent;
+    border: 1px solid currentColor;
+    color: var(--color-primary);
+}
+
+/* ==========================
+   Sizes
+========================== */
+
+.badge-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+.badge-md {
+    font-size: 0.875rem;
+}
+
+.badge-lg {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+/* ==========================
+   Rounded Square Variant
+========================== */
+
+.badge-pill {
+    border-radius: 9999px;
+}
+
+.badge-rounded {
+    border-radius: var(--radius-md);
+}
+
+
