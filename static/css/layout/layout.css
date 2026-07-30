@@ -1,0 +1,254 @@
+
+
+
+/*
+===========================================
+AI_Ecommerce Layout System
+-------------------------------------------
+Purpose:
+    Define reusable layout primitives used
+    across the entire application.
+
+
+===========================================
+*/
+
+
+/* =====================================
+   Main Container
+===================================== */
+
+.container {
+
+    width: min(100% - 2rem, var(--container-width));
+
+    margin-inline: auto;
+
+}
+
+
+/* =====================================
+   Section
+===================================== */
+
+.section {
+
+    padding-block: var(--space-8);
+
+}
+
+
+/* =====================================
+   Page Content
+===================================== */
+
+.page {
+
+    min-height: 100vh;
+
+}
+
+
+/* =====================================
+   Flex Utilities
+===================================== */
+
+.flex {
+
+    display: flex;
+
+}
+
+.flex-column {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+.flex-wrap {
+
+    flex-wrap: wrap;
+
+}
+
+.justify-between {
+
+    justify-content: space-between;
+
+}
+
+.justify-center {
+
+    justify-content: center;
+
+}
+
+.align-center {
+
+    align-items: center;
+
+}
+
+.align-start {
+
+    align-items: flex-start;
+
+}
+
+.align-end {
+
+    align-items: flex-end;
+
+}
+
+
+/* =====================================
+   Grid System
+===================================== */
+
+.grid {
+
+    display: grid;
+
+    gap: var(--space-6);
+
+}
+
+.grid-2 {
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+}
+
+.grid-3 {
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+}
+
+.grid-4 {
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+}
+
+
+/* =====================================
+   Gap Utilities
+===================================== */
+
+.gap-sm {
+
+    gap: var(--space-2);
+
+}
+
+.gap-md {
+
+    gap: var(--space-4);
+
+}
+
+.gap-lg {
+
+    gap: var(--space-6);
+
+}
+
+
+/* =====================================
+   Width Utilities
+===================================== */
+
+.w-full {
+
+    width: 100%;
+
+}
+
+.w-auto {
+
+    width: auto;
+
+}
+
+
+/* =====================================
+   Height Utilities
+===================================== */
+
+.h-full {
+
+    height: 100%;
+
+}
+
+
+/* =====================================
+   Overflow
+===================================== */
+
+.overflow-hidden {
+
+    overflow: hidden;
+
+}
+
+.overflow-auto {
+
+    overflow: auto;
+
+}
+
+
+/* =====================================
+   Position Helpers
+===================================== */
+
+.relative {
+
+    position: relative;
+
+}
+
+.absolute {
+
+    position: absolute;
+
+}
+
+.fixed {
+
+    position: fixed;
+
+}
+
+
+/* =====================================
+   Display Helpers
+===================================== */
+
+.block {
+
+    display: block;
+
+}
+
+.inline-block {
+
+    display: inline-block;
+
+}
+
+.hidden {
+
+    display: none;
+
+}
+
+
