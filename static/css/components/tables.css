@@ -1,0 +1,138 @@
+
+
+
+/*
+=================================================
+Tables
+AI_Ecommerce Design System
+=================================================
+*/
+
+/* ==========================
+   Responsive Wrapper
+========================== */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* ==========================
+   Base Table
+========================== */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+/* ==========================
+   Caption
+========================== */
+
+.table caption {
+    padding: 1rem;
+    font-weight: 600;
+    text-align: left;
+    color: var(--color-text);
+}
+
+/* ==========================
+   Header
+========================== */
+
+.table thead {
+    background: var(--color-background);
+}
+
+.table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* ==========================
+   Cells
+========================== */
+
+.table td {
+    padding: 1rem;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+}
+
+/* ==========================
+   Last Row
+========================== */
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==========================
+   Hover
+========================== */
+
+.table tbody tr:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+/* ==========================
+   Zebra Stripes
+========================== */
+
+.table-striped tbody tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.015);
+}
+
+/* ==========================
+   Bordered
+========================== */
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid var(--color-border);
+}
+
+/* ==========================
+   Compact
+========================== */
+
+.table-sm th,
+.table-sm td {
+    padding: 0.75rem;
+}
+
+/* ==========================
+   Large
+========================== */
+
+.table-lg th,
+.table-lg td {
+    padding: 1.5rem;
+}
+
+/* ==========================
+   Alignment Utilities
+========================== */
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+
