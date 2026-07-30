@@ -1,0 +1,185 @@
+
+
+
+/*
+===========================================
+AI_Ecommerce Design Tokens
+-------------------------------------------
+Purpose:
+    Define reusable design variables for the
+    entire AI_Ecommerce project.
+
+
+===========================================
+*/
+
+:root {
+
+    /* =====================================
+       Brand Colours
+    ===================================== */
+
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-primary-light: #dbeafe;
+
+    --color-secondary: #64748b;
+    --color-secondary-light: #f1f5f9;
+
+
+    /* =====================================
+       Status Colours
+    ===================================== */
+
+    --color-success: #16a34a;
+    --color-warning: #f59e0b;
+    --color-danger: #dc2626;
+    --color-info: #0ea5e9;
+
+
+    /* =====================================
+       Neutral Colours
+    ===================================== */
+
+    --color-white: #ffffff;
+
+    --color-gray-50: #f8fafc;
+    --color-gray-100: #f1f5f9;
+    --color-gray-200: #e2e8f0;
+    --color-gray-300: #cbd5e1;
+    --color-gray-400: #94a3b8;
+    --color-gray-500: #64748b;
+    --color-gray-600: #475569;
+    --color-gray-700: #334155;
+    --color-gray-800: #1e293b;
+    --color-gray-900: #0f172a;
+
+    --color-black: #000000;
+
+
+    /* =====================================
+       Typography
+    ===================================== */
+
+    --font-family-base:
+        "Inter",
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    --font-family-heading:
+        "Inter",
+        "Segoe UI",
+        sans-serif;
+
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+
+
+    /* =====================================
+       Font Weight
+    ===================================== */
+
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+
+    /* =====================================
+       Line Height
+    ===================================== */
+
+    --line-height-base: 1.5;
+    --line-height-heading: 1.2;
+
+
+    /* =====================================
+       Spacing Scale
+    ===================================== */
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+
+
+    /* =====================================
+       Border Radius
+    ===================================== */
+
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+
+    /* =====================================
+       Shadows
+    ===================================== */
+
+    --shadow-sm:
+        0 1px 2px rgba(0, 0, 0, 0.05);
+
+    --shadow-md:
+        0 4px 6px rgba(0, 0, 0, 0.10);
+
+    --shadow-lg:
+        0 10px 20px rgba(0, 0, 0, 0.15);
+
+
+    /* =====================================
+       Borders
+    ===================================== */
+
+    --border-width: 1px;
+    --border-color: var(--color-gray-200);
+
+
+    /* =====================================
+       Transitions
+    ===================================== */
+
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+
+    /* =====================================
+       Layout
+    ===================================== */
+
+    --container-width: 1280px;
+
+    --sidebar-width: 260px;
+
+    --navbar-height: 70px;
+
+    --footer-height: 60px;
+
+
+    /* =====================================
+       Z-Index Layers
+    ===================================== */
+
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-tooltip: 1060;
+}
+
+
