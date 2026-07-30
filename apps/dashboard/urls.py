@@ -3,37 +3,30 @@
 
 from django.urls import path
 
-from . import views
-
+from .views import (
+    AdminDashboardView,
+    CustomerDashboardView,
+    SellerDashboardView,
+)
 
 app_name = "dashboard"
 
-
 urlpatterns = [
-
-    # Customer dashboard
     path(
         "customer/",
-        views.customer_dashboard,
+        CustomerDashboardView.as_view(),
         name="customer_dashboard",
     ),
-
-
-    # Seller dashboard
     path(
         "seller/",
-        views.seller_dashboard,
+        SellerDashboardView.as_view(),
         name="seller_dashboard",
     ),
-
-
-    # Admin dashboard
     path(
         "admin/",
-        views.admin_dashboard,
+        AdminDashboardView.as_view(),
         name="admin_dashboard",
     ),
-
 ]
 
 
