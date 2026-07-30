@@ -1,0 +1,165 @@
+
+
+
+
+/*
+=================================================
+Cards
+AI_Ecommerce Design System
+=================================================
+*/
+
+/* ==========================
+   Base Card
+========================== */
+
+.card {
+    display: flex;
+    flex-direction: column;
+
+    background: var(--color-surface);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+/* ==========================
+   Hover
+========================== */
+
+.card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================
+   Image
+========================== */
+
+.card-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+}
+
+/* ==========================
+   Header
+========================== */
+
+.card-header {
+    padding: 1rem 1.25rem;
+
+    border-bottom: 1px solid var(--color-border);
+
+    font-weight: 600;
+}
+
+/* ==========================
+   Body
+========================== */
+
+.card-body {
+    padding: 1.25rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.75rem;
+
+    flex: 1;
+}
+
+/* ==========================
+   Title
+========================== */
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+/* ==========================
+   Subtitle
+========================== */
+
+.card-subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+/* ==========================
+   Description
+========================== */
+
+.card-text {
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+/* ==========================
+   Footer
+========================== */
+
+.card-footer {
+    padding: 1rem 1.25rem;
+
+    border-top: 1px solid var(--color-border);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ==========================
+   Actions
+========================== */
+
+.card-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* ==========================
+   Compact Card
+========================== */
+
+.card-sm .card-body {
+    padding: 1rem;
+}
+
+/* ==========================
+   Large Card
+========================== */
+
+.card-lg .card-body {
+    padding: 2rem;
+}
+
+/* ==========================
+   Flat Card
+========================== */
+
+.card-flat {
+    box-shadow: none;
+}
+
+/* ==========================
+   Elevated Card
+========================== */
+
+.card-elevated {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+
