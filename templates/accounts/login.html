@@ -1,0 +1,149 @@
+
+
+
+{% extends "base.html" %}
+
+{% block title %}
+Login | AI Ecommerce
+{% endblock %}
+
+{% block content %}
+
+<section class="container">
+
+    <!-- ========================================== -->
+    <!-- Breadcrumbs -->
+    <!-- ========================================== -->
+
+    {% include "includes/breadcrumbs.html" %}
+
+    <!-- ========================================== -->
+    <!-- Login Card -->
+    <!-- ========================================== -->
+
+    <div class="border rounded shadow-sm p-4 mt-4">
+
+        <header class="mb-4 text-center">
+
+            <h1>
+
+                Welcome Back
+
+            </h1>
+
+            <p>
+
+                Sign in to your AI Ecommerce account.
+
+            </p>
+
+        </header>
+
+        <!-- ====================================== -->
+        <!-- Login Form -->
+        <!-- ====================================== -->
+
+        <form method="post" novalidate>
+
+            {% csrf_token %}
+
+            <!-- Non-field Errors -->
+
+            {% if form.non_field_errors %}
+
+                <div class="mb-3">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+            <!-- Username -->
+
+            <div class="mb-3">
+
+                <label for="{{ form.username.id_for_label }}">
+
+                    Username
+
+                </label>
+
+                {{ form.username }}
+
+                {% if form.username.errors %}
+
+                    <div>
+
+                        {{ form.username.errors }}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- Password -->
+
+            <div class="mb-4">
+
+                <label for="{{ form.password.id_for_label }}">
+
+                    Password
+
+                </label>
+
+                {{ form.password }}
+
+                {% if form.password.errors %}
+
+                    <div>
+
+                        {{ form.password.errors }}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- Submit -->
+
+            <button
+                type="submit"
+                class="btn"
+            >
+
+                Login
+
+            </button>
+
+        </form>
+
+        <!-- ====================================== -->
+        <!-- Additional Links -->
+        <!-- ====================================== -->
+
+        <div class="mt-4 text-center">
+
+            <p>
+
+                Don't have an account?
+
+                <a href="{% url 'register' %}">
+
+                    Register
+
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
