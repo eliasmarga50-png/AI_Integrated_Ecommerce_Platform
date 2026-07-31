@@ -1,0 +1,152 @@
+
+
+
+<footer class="border-top py-4 mt-5">
+
+    <div class="container">
+
+        <!-- ============================================== -->
+        <!-- Footer Content -->
+        <!-- ============================================== -->
+
+        <div class="d-flex justify-between flex-wrap gap-4">
+
+            <!-- ========================================== -->
+            <!-- Brand -->
+            <!-- ========================================== -->
+
+            <section>
+
+                <h3>AI Ecommerce</h3>
+
+                <p>
+                    A modern marketplace connecting customers
+                    with trusted shops and quality products.
+                </p>
+
+            </section>
+
+            <!-- ========================================== -->
+            <!-- Quick Links -->
+            <!-- ========================================== -->
+
+            <section>
+
+                <h4>Quick Links</h4>
+
+                <ul>
+
+                    <li>
+                        <a href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'product_list' %}">
+                            Products
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'shop_list' %}">
+                            Shops
+                        </a>
+                    </li>
+
+                </ul>
+
+            </section>
+
+            <!-- ========================================== -->
+            <!-- Customer -->
+            <!-- ========================================== -->
+
+            <section>
+
+                <h4>Customer</h4>
+
+                <ul>
+
+                    {% if user.is_authenticated %}
+
+                        <li>
+                            <a href="{% url 'profile' %}">
+                                My Profile
+                            </a>
+                        </li>
+
+                    {% else %}
+
+                        <li>
+                            <a href="{% url 'login' %}">
+                                Login
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'register' %}">
+                                Register
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+                    <li>
+                        <a href="{% url 'cart_detail' %}">
+                            Shopping Cart
+                        </a>
+                    </li>
+
+                </ul>
+
+            </section>
+
+            <!-- ========================================== -->
+            <!-- Legal -->
+            <!-- ========================================== -->
+
+            <section>
+
+                <h4>Legal</h4>
+
+                <ul>
+
+                    <li>
+                        <a href="#">
+                            Privacy Policy
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            Terms of Service
+                        </a>
+                    </li>
+
+                </ul>
+
+            </section>
+
+        </div>
+
+        <!-- ============================================== -->
+        <!-- Bottom Footer -->
+        <!-- ============================================== -->
+
+        <div class="text-center mt-4 pt-3 border-top">
+
+            <p>
+
+                &copy; {% now "Y" %} AI Ecommerce.
+                All rights reserved.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
