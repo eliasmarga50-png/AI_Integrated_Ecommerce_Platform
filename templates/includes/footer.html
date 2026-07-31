@@ -43,13 +43,13 @@
                     </li>
 
                     <li>
-                        <a href="{% url 'product_list' %}">
+                        <a href="{% url 'products:list' %}">
                             Products
                         </a>
                     </li>
 
                     <li>
-                        <a href="{% url 'shop_list' %}">
+                        <a href="{% url 'shops:shop_list' %}">
                             Shops
                         </a>
                     </li>
@@ -71,7 +71,7 @@
                     {% if user.is_authenticated %}
 
                         <li>
-                            <a href="{% url 'profile' %}">
+                            <a href="{% url 'accounts:profile' %}">
                                 My Profile
                             </a>
                         </li>
@@ -79,13 +79,13 @@
                     {% else %}
 
                         <li>
-                            <a href="{% url 'login' %}">
+                            <a href="{% url 'accounts:login' %}">
                                 Login
                             </a>
                         </li>
 
                         <li>
-                            <a href="{% url 'register' %}">
+                            <a href="{% url 'accounts:register' %}">
                                 Register
                             </a>
                         </li>
@@ -93,7 +93,7 @@
                     {% endif %}
 
                     <li>
-                        <a href="{% url 'cart_detail' %}">
+                        <a href="{% url 'cart:cart_detail' %}">
                             Shopping Cart
                         </a>
                     </li>
