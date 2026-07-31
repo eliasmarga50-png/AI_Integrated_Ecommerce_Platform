@@ -1,0 +1,110 @@
+
+
+
+<nav class="border-bottom bg-white">
+
+    <div class="container">
+
+        <div class="d-flex justify-between align-center py-3">
+
+            <!-- ============================================== -->
+            <!-- Brand -->
+            <!-- ============================================== -->
+
+            <a href="{% url 'home' %}"
+               class="text-decoration-none">
+
+                <strong>AI Ecommerce</strong>
+
+            </a>
+
+            <!-- ============================================== -->
+            <!-- Main Navigation -->
+            <!-- ============================================== -->
+
+            <ul class="d-flex gap-3 list-unstyled">
+
+                <li>
+                    <a href="{% url 'home' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'product_list' %}">
+                        Products
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'shop_list' %}">
+                        Shops
+                    </a>
+                </li>
+
+            </ul>
+
+            <!-- ============================================== -->
+            <!-- Search -->
+            <!-- ============================================== -->
+
+            <form action="{% url 'product_list' %}"
+                  method="get"
+                  class="d-flex">
+
+                <input
+                    type="search"
+                    name="q"
+                    placeholder="Search products..."
+                >
+
+                <button type="submit">
+                    Search
+                </button>
+
+            </form>
+
+            <!-- ============================================== -->
+            <!-- Right Side -->
+            <!-- ============================================== -->
+
+            <div class="d-flex align-center gap-2">
+
+                <a href="{% url 'cart_detail' %}">
+                    Cart
+                    {% if cart_count %}
+                        ({{ cart_count }})
+                    {% endif %}
+                </a>
+
+                {% if user.is_authenticated %}
+
+                    <a href="{% url 'profile' %}">
+                        {{ user.username }}
+                    </a>
+
+                    <a href="{% url 'logout' %}">
+                        Logout
+                    </a>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}">
+                        Login
+                    </a>
+
+                    <a href="{% url 'register' %}">
+                        Register
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
