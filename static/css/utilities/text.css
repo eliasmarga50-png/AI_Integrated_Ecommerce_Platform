@@ -1,0 +1,198 @@
+
+
+
+/*
+=================================================
+Text Utilities
+AI_Ecommerce Design System
+=================================================
+*/
+
+/* ==========================
+   Text Alignment
+========================== */
+
+.text-start {
+    text-align: start;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-end {
+    text-align: end;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+/* ==========================
+   Font Weight
+========================== */
+
+.fw-light {
+    font-weight: 300;
+}
+
+.fw-normal {
+    font-weight: 400;
+}
+
+.fw-medium {
+    font-weight: 500;
+}
+
+.fw-semibold {
+    font-weight: 600;
+}
+
+.fw-bold {
+    font-weight: 700;
+}
+
+/* ==========================
+   Font Size
+========================== */
+
+.fs-xs {
+    font-size: 0.75rem;
+}
+
+.fs-sm {
+    font-size: 0.875rem;
+}
+
+.fs-md {
+    font-size: 1rem;
+}
+
+.fs-lg {
+    font-size: 1.125rem;
+}
+
+.fs-xl {
+    font-size: 1.25rem;
+}
+
+.fs-2xl {
+    font-size: 1.5rem;
+}
+
+.fs-3xl {
+    font-size: 2rem;
+}
+
+/* ==========================
+   Text Transform
+========================== */
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-lowercase {
+    text-transform: lowercase;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+/* ==========================
+   Text Decoration
+========================== */
+
+.text-underline {
+    text-decoration: underline;
+}
+
+.text-no-decoration {
+    text-decoration: none;
+}
+
+/* ==========================
+   Line Height
+========================== */
+
+.lh-1 {
+    line-height: 1;
+}
+
+.lh-sm {
+    line-height: 1.25;
+}
+
+.lh-md {
+    line-height: 1.5;
+}
+
+.lh-lg {
+    line-height: 1.75;
+}
+
+/* ==========================
+   Text Wrapping
+========================== */
+
+.text-wrap {
+    white-space: normal;
+}
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.text-break {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* ==========================
+   Text Truncation
+========================== */
+
+.text-truncate {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* ==========================
+   Text Colors
+========================== */
+
+.text-primary {
+    color: var(--color-primary);
+}
+
+.text-secondary {
+    color: var(--color-secondary);
+}
+
+.text-success {
+    color: var(--color-success);
+}
+
+.text-danger {
+    color: var(--color-danger);
+}
+
+.text-warning {
+    color: var(--color-warning);
+}
+
+.text-info {
+    color: var(--color-info);
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.text-body {
+    color: var(--color-text);
+}
+
+

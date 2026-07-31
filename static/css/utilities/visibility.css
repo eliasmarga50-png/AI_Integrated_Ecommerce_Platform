@@ -1,0 +1,128 @@
+
+
+
+
+/*
+=================================================
+Visibility Utilities
+AI_Ecommerce Design System
+=================================================
+*/
+
+/* ==========================
+   Visibility
+========================== */
+
+.visible {
+    visibility: visible;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+/* ==========================
+   Opacity
+========================== */
+
+.opacity-0 {
+    opacity: 0;
+}
+
+.opacity-25 {
+    opacity: 0.25;
+}
+
+.opacity-50 {
+    opacity: 0.5;
+}
+
+.opacity-75 {
+    opacity: 0.75;
+}
+
+.opacity-100 {
+    opacity: 1;
+}
+
+/* ==========================
+   Pointer Events
+========================== */
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.pointer-events-auto {
+    pointer-events: auto;
+}
+
+/* ==========================
+   User Selection
+========================== */
+
+.select-none {
+    user-select: none;
+}
+
+.select-text {
+    user-select: text;
+}
+
+.select-all {
+    user-select: all;
+}
+
+/* ==========================
+   Screen Reader Only
+========================== */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ==========================
+   Restore Screen Reader Element
+========================== */
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+
+    overflow: visible;
+    clip: auto;
+
+    white-space: normal;
+}
+
+/* ==========================
+   Print Utilities
+========================== */
+
+@media print {
+
+    .print-hidden {
+        display: none !important;
+    }
+
+    .print-visible {
+        display: block !important;
+    }
+
+}
+
+
+

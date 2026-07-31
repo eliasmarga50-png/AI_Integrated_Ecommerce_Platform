@@ -1,0 +1,140 @@
+
+
+
+
+/*
+=================================================
+Color Utilities
+AI_Ecommerce Design System
+=================================================
+*/
+
+/* ==========================
+   Text Colors
+========================== */
+
+.text-white {
+    color: #ffffff;
+}
+
+.text-black {
+    color: #000000;
+}
+
+.text-primary {
+    color: var(--color-primary);
+}
+
+.text-secondary {
+    color: var(--color-secondary);
+}
+
+.text-success {
+    color: var(--color-success);
+}
+
+.text-danger {
+    color: var(--color-danger);
+}
+
+.text-warning {
+    color: var(--color-warning);
+}
+
+.text-info {
+    color: var(--color-info);
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.text-body {
+    color: var(--color-text);
+}
+
+/* ==========================
+   Background Colors
+========================== */
+
+.bg-primary {
+    background-color: var(--color-primary);
+}
+
+.bg-secondary {
+    background-color: var(--color-secondary);
+}
+
+.bg-success {
+    background-color: var(--color-success);
+}
+
+.bg-danger {
+    background-color: var(--color-danger);
+}
+
+.bg-warning {
+    background-color: var(--color-warning);
+}
+
+.bg-info {
+    background-color: var(--color-info);
+}
+
+.bg-surface {
+    background-color: var(--color-surface);
+}
+
+.bg-body {
+    background-color: var(--color-background);
+}
+
+.bg-transparent {
+    background-color: transparent;
+}
+
+/* ==========================
+   Border Colors
+========================== */
+
+.border-primary {
+    border-color: var(--color-primary);
+}
+
+.border-secondary {
+    border-color: var(--color-secondary);
+}
+
+.border-success {
+    border-color: var(--color-success);
+}
+
+.border-danger {
+    border-color: var(--color-danger);
+}
+
+.border-warning {
+    border-color: var(--color-warning);
+}
+
+.border-info {
+    border-color: var(--color-info);
+}
+
+.border-default {
+    border-color: var(--color-border);
+}
+
+/* ==========================
+   Common Helpers
+========================== */
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.bg-black {
+    background-color: #000000;
+}
+
+

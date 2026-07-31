@@ -1,14 +1,31 @@
 
 
 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
+    <!-- ========================================================= -->
+    <!-- Basic Page Metadata                                        -->
+    <!-- ========================================================= -->
+
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="AI Ecommerce Platform"
+    >
+
+    <meta
+        name="author"
+        content="AI Ecommerce"
     >
 
     <title>
@@ -17,324 +34,111 @@
         {% endblock %}
     </title>
 
-    <style>
-
-        /*
-        ========================================
-        GLOBAL RESET
-        ========================================
-        */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #212529;
-            min-height: 100vh;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        /*
-        ========================================
-        NAVBAR
-        ========================================
-        */
-
-        .navbar {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e5e5e5;
-            padding: 15px 20px;
-        }
-
-        .navbar-container {
-            max-width: 1200px;
-            margin: 0 auto;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .brand {
-            font-size: 22px;
-            font-weight: bold;
-            color: #2563eb;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-link {
-            font-size: 14px;
-            color: #555555;
-        }
-
-        .nav-link:hover {
-            color: #2563eb;
-        }
-
-        .user-greeting {
-            font-size: 14px;
-            color: #555555;
-        }
-
-        .logout-button {
-            background-color: #dc3545;
-            color: #ffffff;
-
-            padding: 8px 12px;
-            border-radius: 6px;
-
-            font-size: 13px;
-        }
-
-        .logout-button:hover {
-            background-color: #bb2d3b;
-        }
-
-        /*
-        ========================================
-        MAIN CONTENT
-        ========================================
-        */
+    <!-- ========================================================= -->
+    <!-- Base CSS                                                   -->
+    <!-- ========================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base/reset.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base/variables.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base/typography.css' %}"
+    >
+
+    <!-- ========================================================= -->
+    <!-- Layout                                                     -->
+    <!-- ========================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/layout/layout.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/layout/grid.css' %}"
+    >
+
+    <!-- ========================================================= -->
+    <!-- Utility Classes                                            -->
+    <!-- ========================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/utilities/spacing.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/utilities/display.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/utilities/flex.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/utilities/text.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/utilities/colors.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/utilities/borders.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/utilities/shadows.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/utilities/visibility.css' %}"
+    >
+
+    <!-- ========================================================= -->
+    <!-- Page Specific CSS                                          -->
+    <!-- ========================================================= -->
+
+    {% block extra_css %}
+    {% endblock %}
 
-        .main-content {
-            max-width: 1200px;
-            margin: 0 auto;
-
-            padding: 30px 20px;
-
-            min-height: calc(100vh - 130px);
-        }
-
-        /*
-        ========================================
-        PAGE HEADER
-        ========================================
-        */
-
-        .page-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            margin-bottom: 25px;
-        }
-
-        .page-title {
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        /*
-        ========================================
-        BUTTONS
-        ========================================
-        */
-
-        .button {
-            display: inline-block;
-
-            padding: 10px 16px;
-
-            border-radius: 6px;
-
-            font-size: 14px;
-
-            border: none;
-
-            cursor: pointer;
-        }
-
-        .button-primary {
-            background-color: #2563eb;
-            color: #ffffff;
-        }
-
-        .button-primary:hover {
-            background-color: #1d4ed8;
-        }
-
-        /*
-        ========================================
-        EMPTY STATE
-        ========================================
-        */
-
-        .empty-state {
-            background-color: #ffffff;
-
-            border: 1px solid #e5e5e5;
-
-            border-radius: 8px;
-
-            padding: 50px 20px;
-
-            text-align: center;
-        }
-
-        .empty-state h3 {
-            margin-bottom: 10px;
-
-            font-size: 20px;
-        }
-
-        .empty-state p {
-            color: #777777;
-
-            font-size: 14px;
-        }
-
-        /*
-        ========================================
-        FOOTER
-        ========================================
-        */
-
-        .footer {
-            background-color: #ffffff;
-
-            border-top: 1px solid #e5e5e5;
-
-            padding: 20px;
-
-            text-align: center;
-
-            color: #777777;
-
-            font-size: 13px;
-        }
-
-        /*
-        ========================================
-        MOBILE RESPONSIVE DESIGN
-        ========================================
-        */
-
-        @media (max-width: 600px) {
-
-            .navbar-container {
-                flex-direction: column;
-
-                align-items: flex-start;
-
-                gap: 15px;
-            }
-
-            .nav-links {
-                width: 100%;
-
-                justify-content: space-between;
-
-                flex-wrap: wrap;
-            }
-
-            .main-content {
-                padding: 25px 15px;
-            }
-
-            .page-header {
-                flex-direction: column;
-
-                align-items: flex-start;
-
-                gap: 15px;
-            }
-
-            .page-title {
-                font-size: 24px;
-            }
-
-        }
-
-    </style>
 </head>
 
 <body>
 
-    <!--
-    ========================================
-    NAVIGATION BAR
-    ========================================
-    -->
+    <!-- ========================================================= -->
+    <!-- Navigation                                                 -->
+    <!-- ========================================================= -->
 
-    <header class="navbar">
+    {% include "includes/navbar.html" %}
 
-        <div class="navbar-container">
+    <!-- ========================================================= -->
+    <!-- Flash Messages                                             -->
+    <!-- ========================================================= -->
 
-            <a
-                href="{% url 'home' %}"
-                class="brand"
-            >
-                AI Ecommerce
-            </a>
+    {% include "includes/alerts.html" %}
 
-            <nav class="nav-links">
+    <!-- ========================================================= -->
+    <!-- Main Page Content                                          -->
+    <!-- ========================================================= -->
 
-                <a
-                    href="{% url 'products:list' %}"
-                    class="nav-link"
-                >
-                    Products
-                </a>
-
-                {% if user.is_authenticated %}
-
-                    <span class="user-greeting">
-                        Hello, {{ user.username }}
-                    </span>
-
-                    <a
-                        href="{% url 'accounts:logout' %}"
-                        class="logout-button"
-                    >
-                        Logout
-                    </a>
-
-                {% else %}
-
-                    <a
-                        href="{% url 'accounts:login' %}"
-                        class="nav-link"
-                    >
-                        Login
-                    </a>
-
-                    <a
-                        href="{% url 'accounts:register' %}"
-                        class="button button-primary"
-                    >
-                        Register
-                    </a>
-
-                {% endif %}
-
-            </nav>
-
-        </div>
-
-    </header>
-
-
-    <!--
-    ========================================
-    MAIN CONTENT
-    ========================================
-    -->
-
-    <main class="main-content">
+    <main class="container py-4">
 
         {% block content %}
 
@@ -342,20 +146,19 @@
 
     </main>
 
+    <!-- ========================================================= -->
+    <!-- Footer                                                     -->
+    <!-- ========================================================= -->
 
-    <!--
-    ========================================
-    FOOTER
-    ========================================
-    -->
+    {% include "includes/footer.html" %}
 
-    <footer class="footer">
+    <!-- ========================================================= -->
+    <!-- Page Specific JavaScript                                   -->
+    <!-- ========================================================= -->
 
-        <p>
-            © 2026 AI Ecommerce
-        </p>
-
-    </footer>
+    {% block extra_js %}
+    {% endblock %}
 
 </body>
+
 </html>
