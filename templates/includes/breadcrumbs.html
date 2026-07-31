@@ -1,0 +1,48 @@
+
+
+
+{% if breadcrumbs %}
+
+<nav
+    aria-label="Breadcrumb"
+    class="container py-3"
+>
+
+    <ol class="d-flex flex-wrap align-center gap-2 list-unstyled">
+
+        {% for label, url in breadcrumbs %}
+
+            <li class="d-flex align-center gap-2">
+
+                {% if url %}
+
+                    <a href="{{ url }}">
+                        {{ label }}
+                    </a>
+
+                {% else %}
+
+                    <span
+                        aria-current="page"
+                        class="text-muted"
+                    >
+                        {{ label }}
+                    </span>
+
+                {% endif %}
+
+                {% if not forloop.last %}
+                    <span>/</span>
+                {% endif %}
+
+            </li>
+
+        {% endfor %}
+
+    </ol>
+
+</nav>
+
+{% endif %}
+
+
