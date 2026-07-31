@@ -1,0 +1,59 @@
+
+
+
+{% if messages %}
+
+<div class="container mt-3">
+
+    {% for message in messages %}
+
+        <div
+            class="
+                border
+                rounded
+                p-3
+                mb-3
+
+                {% if message.tags == 'success' %}
+                    bg-success text-white
+                {% elif message.tags == 'error' %}
+                    bg-danger text-white
+                {% elif message.tags == 'warning' %}
+                    bg-warning
+                {% else %}
+                    bg-light
+                {% endif %}
+            "
+            role="alert"
+            aria-live="polite"
+        >
+
+            <!-- ========================================== -->
+            <!-- Alert Icon -->
+            <!-- ========================================== -->
+
+            {% if message.tags == "success" %}
+                ✓
+            {% elif message.tags == "error" %}
+                ✕
+            {% elif message.tags == "warning" %}
+                ⚠
+            {% else %}
+                ℹ
+            {% endif %}
+
+            <!-- ========================================== -->
+            <!-- Alert Text -->
+            <!-- ========================================== -->
+
+            {{ message }}
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+
