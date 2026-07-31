@@ -1,0 +1,140 @@
+
+
+
+{% extends "base.html" %}
+
+{% block title %}
+My Profile | AI Ecommerce
+{% endblock %}
+
+{% block content %}
+
+<section class="container">
+
+    <!-- ========================================== -->
+    <!-- Breadcrumbs -->
+    <!-- ========================================== -->
+
+    {% include "includes/breadcrumbs.html" %}
+
+    <!-- ========================================== -->
+    <!-- Profile Layout -->
+    <!-- ========================================== -->
+
+    <div class="grid mt-4">
+
+        <!-- ====================================== -->
+        <!-- Sidebar -->
+        <!-- ====================================== -->
+
+        <aside>
+
+            {% include "includes/sidebar.html" %}
+
+        </aside>
+
+        <!-- ====================================== -->
+        <!-- Profile Content -->
+        <!-- ====================================== -->
+
+        <section class="border rounded shadow-sm p-4">
+
+            <header class="mb-4">
+
+                <h1>
+
+                    My Profile
+
+                </h1>
+
+                <p>
+
+                    Manage your account information.
+
+                </p>
+
+            </header>
+
+            <!-- ================================== -->
+            <!-- User Information -->
+            <!-- ================================== -->
+
+            <div class="mb-4">
+
+                <p>
+
+                    <strong>Username:</strong>
+
+                    {{ user.username }}
+
+                </p>
+
+                <p>
+
+                    <strong>Email:</strong>
+
+                    {{ user.email }}
+
+                </p>
+
+                <p>
+
+                    <strong>First Name:</strong>
+
+                    {{ user.first_name|default:"Not provided" }}
+
+                </p>
+
+                <p>
+
+                    <strong>Last Name:</strong>
+
+                    {{ user.last_name|default:"Not provided" }}
+
+                </p>
+
+                <p>
+
+                    <strong>Date Joined:</strong>
+
+                    {{ user.date_joined|date:"F j, Y" }}
+
+                </p>
+
+            </div>
+
+            <!-- ================================== -->
+            <!-- Account Actions -->
+            <!-- ================================== -->
+
+            <div class="d-flex gap-2 flex-wrap">
+
+                <a
+                    href="{% url 'profile_edit' %}"
+                    class="btn"
+                >
+
+                    Edit Profile
+
+                </a>
+
+                <a
+                    href="{% url 'password_change' %}"
+                    class="btn"
+                >
+
+                    Change Password
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
