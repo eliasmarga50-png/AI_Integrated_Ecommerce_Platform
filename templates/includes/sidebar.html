@@ -1,0 +1,65 @@
+
+
+
+{% if sidebar_items %}
+
+<aside class="border rounded p-3 shadow-sm">
+
+    <!-- ============================================== -->
+    <!-- Sidebar Title -->
+    <!-- ============================================== -->
+
+    {% if sidebar_title %}
+
+        <h3 class="mb-3">
+
+            {{ sidebar_title }}
+
+        </h3>
+
+    {% endif %}
+
+    <!-- ============================================== -->
+    <!-- Navigation -->
+    <!-- ============================================== -->
+
+    <nav aria-label="{{ sidebar_title|default:'Sidebar Navigation' }}">
+
+        <ul class="list-unstyled">
+
+            {% for item in sidebar_items %}
+
+                <li class="mb-2">
+
+                    {% if item.active %}
+
+                        <span
+                            class="fw-bold"
+                            aria-current="page"
+                        >
+                            {{ item.label }}
+                        </span>
+
+                    {% else %}
+
+                        <a href="{{ item.url }}">
+
+                            {{ item.label }}
+
+                        </a>
+
+                    {% endif %}
+
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </nav>
+
+</aside>
+
+{% endif %}
+
+
