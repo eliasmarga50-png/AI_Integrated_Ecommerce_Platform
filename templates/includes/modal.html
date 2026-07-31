@@ -1,0 +1,90 @@
+
+
+
+{% if modal_id %}
+
+<div
+    id="{{ modal_id }}"
+    class="modal visibility-hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="{{ modal_id }}-title"
+>
+
+    <!-- ============================================== -->
+    <!-- Modal Overlay -->
+    <!-- ============================================== -->
+
+    <div class="modal-overlay"></div>
+
+    <!-- ============================================== -->
+    <!-- Modal Window -->
+    <!-- ============================================== -->
+
+    <div class="modal-content border rounded shadow-sm bg-white p-4">
+
+        <!-- ========================================== -->
+        <!-- Header -->
+        <!-- ========================================== -->
+
+        <header class="mb-3">
+
+            <h2 id="{{ modal_id }}-title">
+
+                {{ modal_title }}
+
+            </h2>
+
+        </header>
+
+        <!-- ========================================== -->
+        <!-- Body -->
+        <!-- ========================================== -->
+
+        <section class="mb-4">
+
+            {{ modal_body }}
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- Footer -->
+        <!-- ========================================== -->
+
+        <footer class="d-flex justify-end gap-2">
+
+            {% if modal_cancel_url %}
+
+                <a
+                    href="{{ modal_cancel_url }}"
+                    class="btn"
+                >
+
+                    Cancel
+
+                </a>
+
+            {% endif %}
+
+            {% if modal_confirm_url %}
+
+                <a
+                    href="{{ modal_confirm_url }}"
+                    class="btn"
+                >
+
+                    Confirm
+
+                </a>
+
+            {% endif %}
+
+        </footer>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
