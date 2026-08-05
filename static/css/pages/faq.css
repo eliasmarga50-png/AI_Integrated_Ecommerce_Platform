@@ -1,0 +1,197 @@
+
+
+
+/* ==========================================================
+   FAQ PAGE
+   AI_Ecommerce
+   ----------------------------------------------------------
+   Page-specific styles for the Frequently Asked Questions
+   page. Shared typography, buttons, forms, cards, alerts,
+   layout helpers and utilities are inherited from the
+   global stylesheet architecture.
+==========================================================*/
+
+
+/* ==========================================================
+   PAGE CONTAINER
+==========================================================*/
+
+.faq-page {
+    padding: 2rem 0 4rem;
+}
+
+
+/* ==========================================================
+   HERO SECTION
+==========================================================*/
+
+.faq-hero {
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.faq-title {
+    margin-bottom: 1rem;
+}
+
+.faq-description {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    color: var(--text-muted);
+}
+
+.faq-search {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+
+/* ==========================================================
+   FAQ CATEGORIES
+==========================================================*/
+
+.faq-categories {
+    padding: 3rem 0;
+}
+
+.faq-category-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.faq-category-card {
+    text-align: center;
+    padding: 1.25rem;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.faq-category-card:hover {
+    transform: translateY(-4px);
+}
+
+
+/* ==========================================================
+   FAQ ACCORDION
+==========================================================*/
+
+.faq-section {
+    padding: 2rem 0 4rem;
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.faq-item {
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    background: var(--surface-color);
+}
+
+.faq-question {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.faq-answer {
+    padding: 0 1.5rem 1.5rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+
+/* ==========================================================
+   STILL NEED HELP
+==========================================================*/
+
+.faq-support {
+    padding: 4rem 0;
+}
+
+.support-box {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+
+/* ==========================================================
+   CALL TO ACTION
+==========================================================*/
+
+.faq-cta {
+    padding: 4rem 0;
+}
+
+.faq-cta-box {
+    padding: 3rem 2rem;
+    text-align: center;
+    border-radius: var(--border-radius);
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.faq-cta-box p {
+    color: rgba(255,255,255,.85);
+}
+
+
+/* ==========================================================
+   SIMPLE ANIMATIONS
+==========================================================*/
+
+.faq-category-card,
+.faq-item {
+    transition: var(--transition);
+}
+
+.faq-item:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================================
+   TABLET
+==========================================================*/
+
+@media (min-width: 768px) {
+
+    .faq-category-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
+/* ==========================================================
+   DESKTOP
+==========================================================*/
+
+@media (min-width: 1024px) {
+
+    .faq-category-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .faq-list {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .support-box {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+}
+
+
+
