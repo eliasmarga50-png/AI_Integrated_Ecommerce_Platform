@@ -1,0 +1,254 @@
+
+
+
+/* ==========================================================
+   CATEGORY PAGE
+   AI_Ecommerce
+   ----------------------------------------------------------
+   Page-specific styles for the category page.
+   Global buttons, typography, cards, forms, utilities
+   and layout helpers are inherited from the shared CSS
+   architecture.
+==========================================================*/
+
+
+/* ==========================================================
+   PAGE CONTAINER
+==========================================================*/
+
+.category-page {
+    padding: 2rem 0 4rem;
+}
+
+
+/* ==========================================================
+   CATEGORY HERO
+==========================================================*/
+
+.category-hero {
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    border-radius: var(--border-radius);
+    background: linear-gradient(
+        135deg,
+        rgba(37, 99, 235, .08),
+        rgba(255, 255, 255, 1)
+    );
+}
+
+.category-title {
+    margin-bottom: .75rem;
+}
+
+.category-description {
+    max-width: 700px;
+    color: var(--text-muted);
+}
+
+.category-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+
+/* ==========================================================
+   SUBCATEGORIES
+==========================================================*/
+
+.subcategories {
+    margin-bottom: 3rem;
+}
+
+.subcategory-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.subcategory-card {
+    padding: 1.25rem;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.subcategory-card:hover {
+    transform: translateY(-4px);
+}
+
+
+/* ==========================================================
+   TOOLBAR
+==========================================================*/
+
+.category-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+.toolbar-left,
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.category-count {
+    color: var(--text-muted);
+}
+
+
+/* ==========================================================
+   MAIN LAYOUT
+==========================================================*/
+
+.category-layout {
+    display: grid;
+    gap: 2rem;
+}
+
+
+/* ==========================================================
+   FILTER SIDEBAR
+==========================================================*/
+
+.category-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.filter-group {
+    padding: 1.25rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+.filter-group-title {
+    margin-bottom: 1rem;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+
+/* ==========================================================
+   PRODUCTS
+==========================================================*/
+
+.category-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.category-products-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.product-card {
+    transition: var(--transition);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+
+/* ==========================================================
+   EMPTY STATE
+==========================================================*/
+
+.category-empty {
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.category-empty p {
+    color: var(--text-muted);
+}
+
+
+/* ==========================================================
+   PAGINATION
+==========================================================*/
+
+.category-pagination {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* ==========================================================
+   TABLET
+==========================================================*/
+
+@media (min-width: 768px) {
+
+    .subcategory-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .category-toolbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .category-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* ==========================================================
+   DESKTOP
+==========================================================*/
+
+@media (min-width: 1024px) {
+
+    .category-layout {
+        grid-template-columns: 280px 1fr;
+        align-items: start;
+    }
+
+    .category-sidebar {
+        position: sticky;
+        top: 2rem;
+    }
+
+    .subcategory-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .category-products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
+/* ==========================================================
+   LARGE DESKTOP
+==========================================================*/
+
+@media (min-width: 1280px) {
+
+    .category-products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+
