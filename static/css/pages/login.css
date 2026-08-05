@@ -1,0 +1,192 @@
+
+
+
+/* ==========================================================
+   LOGIN PAGE
+   AI_Ecommerce
+   ----------------------------------------------------------
+   Page-specific styles for user authentication.
+   Shared forms, buttons, typography, alerts, cards,
+   layout helpers and utilities are inherited from the
+   global stylesheet architecture.
+==========================================================*/
+
+
+/* ==========================================================
+   PAGE CONTAINER
+==========================================================*/
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+    background: linear-gradient(
+        135deg,
+        rgba(37, 99, 235, .06),
+        rgba(255,255,255,1)
+    );
+}
+
+
+/* ==========================================================
+   AUTHENTICATION LAYOUT
+==========================================================*/
+
+.auth-layout {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+}
+
+
+/* ==========================================================
+   WELCOME PANEL
+==========================================================*/
+
+.auth-welcome {
+    text-align: center;
+}
+
+.auth-logo {
+    margin-bottom: 1.5rem;
+}
+
+.auth-title {
+    margin-bottom: 1rem;
+}
+
+.auth-description {
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    color: var(--text-muted);
+}
+
+.auth-illustration img {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    display: block;
+}
+
+
+/* ==========================================================
+   LOGIN CARD
+==========================================================*/
+
+.login-card {
+    padding: 2rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+}
+
+
+/* ==========================================================
+   LOGIN FORM
+==========================================================*/
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+
+/* ==========================================================
+   FORM OPTIONS
+==========================================================*/
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.forgot-password {
+    text-decoration: none;
+}
+
+
+/* ==========================================================
+   SOCIAL LOGIN
+==========================================================*/
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+}
+
+.social-login {
+    display: grid;
+    gap: 1rem;
+}
+
+
+/* ==========================================================
+   REGISTER LINK
+==========================================================*/
+
+.auth-footer {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.auth-footer p {
+    color: var(--text-muted);
+}
+
+
+/* ==========================================================
+   TABLET
+==========================================================*/
+
+@media (min-width: 768px) {
+
+    .login-card {
+        max-width: 520px;
+        margin: 0 auto;
+    }
+
+}
+
+
+/* ==========================================================
+   DESKTOP
+==========================================================*/
+
+@media (min-width: 1024px) {
+
+    .auth-layout {
+        grid-template-columns: 1fr 480px;
+    }
+
+    .auth-welcome {
+        text-align: left;
+    }
+
+    .auth-description {
+        margin-left: 0;
+    }
+
+}
+
+
