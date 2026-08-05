@@ -1,0 +1,228 @@
+
+
+
+/* ==========================================================
+   PRODUCTS PAGE
+   AI_Ecommerce
+   ----------------------------------------------------------
+   Page-specific styles for the product listing page.
+   Shared components such as cards, buttons, forms,
+   typography and utilities are inherited from the
+   global stylesheet architecture.
+==========================================================*/
+
+
+/* ==========================================================
+   PAGE HEADER
+==========================================================*/
+
+.products-page {
+    padding: 2rem 0 4rem;
+}
+
+.products-header {
+    margin-bottom: 2rem;
+}
+
+.products-title {
+    margin-bottom: .5rem;
+}
+
+.products-description {
+    max-width: 700px;
+    color: var(--text-muted);
+}
+
+
+/* ==========================================================
+   TOOLBAR
+==========================================================*/
+
+.products-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+.toolbar-left,
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.product-count {
+    color: var(--text-muted);
+}
+
+.sort-select {
+    min-width: 180px;
+}
+
+.view-toggle {
+    display: flex;
+    gap: .5rem;
+}
+
+
+/* ==========================================================
+   MAIN LAYOUT
+==========================================================*/
+
+.products-layout {
+    display: grid;
+    gap: 2rem;
+}
+
+
+/* ==========================================================
+   FILTER SIDEBAR
+==========================================================*/
+
+.filters-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.filter-section {
+    padding: 1.25rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+.filter-title {
+    margin-bottom: 1rem;
+}
+
+.filter-list {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.price-range {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+
+/* ==========================================================
+   PRODUCTS GRID
+==========================================================*/
+
+.products-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.products-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.product-card {
+    transition: var(--transition);
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+}
+
+
+/* ==========================================================
+   EMPTY STATE
+==========================================================*/
+
+.empty-products {
+    text-align: center;
+    padding: 4rem 1rem;
+}
+
+.empty-products h3 {
+    margin-bottom: 1rem;
+}
+
+.empty-products p {
+    color: var(--text-muted);
+}
+
+
+/* ==========================================================
+   PAGINATION
+==========================================================*/
+
+.products-pagination {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* ==========================================================
+   TABLET
+==========================================================*/
+
+@media (min-width: 768px) {
+
+    .products-toolbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* ==========================================================
+   DESKTOP
+==========================================================*/
+
+@media (min-width: 1024px) {
+
+    .products-layout {
+        grid-template-columns: 280px 1fr;
+        align-items: start;
+    }
+
+    .filters-sidebar {
+        position: sticky;
+        top: 2rem;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
+/* ==========================================================
+   LARGE DESKTOP
+==========================================================*/
+
+@media (min-width: 1280px) {
+
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+
