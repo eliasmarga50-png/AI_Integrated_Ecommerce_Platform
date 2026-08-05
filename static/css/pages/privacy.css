@@ -1,0 +1,207 @@
+
+
+
+/* ==========================================================
+   PRIVACY POLICY PAGE
+   AI_Ecommerce
+   ----------------------------------------------------------
+   Page-specific styles for the Privacy Policy page.
+   Shared typography, buttons, layout helpers, cards
+   and utilities are inherited from the global CSS
+   architecture.
+==========================================================*/
+
+
+/* ==========================================================
+   PAGE CONTAINER
+==========================================================*/
+
+.privacy-page {
+    padding: 2rem 0 4rem;
+}
+
+
+/* ==========================================================
+   HERO SECTION
+==========================================================*/
+
+.privacy-hero {
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.privacy-title {
+    margin-bottom: .75rem;
+}
+
+.privacy-updated {
+    color: var(--text-muted);
+}
+
+.privacy-intro {
+    max-width: 760px;
+    margin: 2rem auto 0;
+    color: var(--text-muted);
+}
+
+
+/* ==========================================================
+   CONTENT LAYOUT
+==========================================================*/
+
+.privacy-layout {
+    display: grid;
+    gap: 2rem;
+    padding: 2rem 0 4rem;
+}
+
+
+/* ==========================================================
+   TABLE OF CONTENTS
+==========================================================*/
+
+.privacy-toc {
+    padding: 1.5rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+.privacy-toc-title {
+    margin-bottom: 1rem;
+}
+
+.privacy-toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.privacy-toc-list a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+.privacy-toc-list a:hover {
+    color: var(--primary-color);
+}
+
+
+/* ==========================================================
+   DOCUMENT CONTENT
+==========================================================*/
+
+.privacy-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.policy-section {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.policy-section:last-child {
+    border-bottom: none;
+}
+
+.policy-section h2 {
+    margin-bottom: 1rem;
+}
+
+.policy-section p,
+.policy-section li {
+    line-height: 1.8;
+    color: var(--text-muted);
+}
+
+.policy-section ul {
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+}
+
+
+/* ==========================================================
+   INFORMATION BOXES
+==========================================================*/
+
+.policy-note {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: var(--surface-color);
+    border-left: 4px solid var(--primary-color);
+    border-radius: var(--border-radius);
+}
+
+
+/* ==========================================================
+   CONTACT SECTION
+==========================================================*/
+
+.privacy-contact {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+
+/* ==========================================================
+   CALL TO ACTION
+==========================================================*/
+
+.privacy-cta {
+    padding: 4rem 0;
+}
+
+.privacy-cta-box {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: var(--border-radius);
+}
+
+.privacy-cta-box p {
+    color: rgba(255,255,255,.85);
+}
+
+
+/* ==========================================================
+   TABLET
+==========================================================*/
+
+@media (min-width: 768px) {
+
+    .privacy-layout {
+        grid-template-columns: 260px 1fr;
+        align-items: start;
+    }
+
+    .privacy-toc {
+        position: sticky;
+        top: 2rem;
+    }
+
+}
+
+
+/* ==========================================================
+   DESKTOP
+==========================================================*/
+
+@media (min-width: 1024px) {
+
+    .privacy-layout {
+        grid-template-columns: 300px 1fr;
+        gap: 3rem;
+    }
+
+    .privacy-content {
+        max-width: 900px;
+    }
+
+}
+
+
