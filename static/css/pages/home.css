@@ -1,0 +1,329 @@
+
+
+
+/* ==========================================================
+   HOME PAGE STYLES
+   AI_Ecommerce
+   ----------------------------------------------------------
+   Contains only page-specific styling.
+   Global typography, buttons, cards and layouts are inherited
+   from the base/component CSS architecture.
+========================================================== */
+
+
+/* ==========================================================
+   HERO SECTION
+========================================================== */
+
+.hero {
+    padding: 5rem 0;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(37,99,235,.08),
+            rgba(255,255,255,1)
+        );
+}
+
+.hero-container {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.hero-title {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.hero-text {
+    max-width: 600px;
+    color: var(--text-muted);
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.hero-image img {
+    width: 100%;
+    display: block;
+}
+
+
+/* ==========================================================
+   FEATURED CATEGORIES
+========================================================== */
+
+.featured-categories {
+    padding: 5rem 0;
+}
+
+.category-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.category-card {
+    transition: var(--transition);
+}
+
+.category-card:hover {
+    transform: translateY(-6px);
+}
+
+
+/* ==========================================================
+   FEATURED PRODUCTS
+========================================================== */
+
+.featured-products {
+    padding: 5rem 0;
+}
+
+.product-grid {
+    display: grid;
+    gap: 2rem;
+}
+
+
+/* ==========================================================
+   WHY CHOOSE US
+========================================================== */
+
+.features {
+    padding: 5rem 0;
+    background: var(--surface-color);
+}
+
+.features-grid {
+    display: grid;
+    gap: 2rem;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 2rem;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.feature-title {
+    margin-bottom: .75rem;
+}
+
+
+/* ==========================================================
+   HOW IT WORKS
+========================================================== */
+
+.how-it-works {
+    padding: 5rem 0;
+}
+
+.steps-grid {
+    display: grid;
+    gap: 2rem;
+}
+
+.step {
+    text-align: center;
+}
+
+.step-number {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto auto 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
+/* ==========================================================
+   FEATURED SHOPS
+========================================================== */
+
+.featured-shops {
+    padding: 5rem 0;
+}
+
+.shop-grid {
+    display: grid;
+    gap: 2rem;
+}
+
+
+/* ==========================================================
+   TESTIMONIALS
+========================================================== */
+
+.testimonials {
+    padding: 5rem 0;
+    background: var(--surface-color);
+}
+
+.testimonial-grid {
+    display: grid;
+    gap: 2rem;
+}
+
+.testimonial-card {
+    padding: 2rem;
+}
+
+
+/* ==========================================================
+   NEWSLETTER
+========================================================== */
+
+.newsletter {
+    padding: 5rem 0;
+}
+
+.newsletter-box {
+    max-width: 700px;
+    margin: auto;
+    text-align: center;
+}
+
+.newsletter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.newsletter-form input {
+    flex: 1;
+}
+
+
+/* ==========================================================
+   CTA SECTION
+========================================================== */
+
+.cta-section {
+    padding: 5rem 0;
+}
+
+.cta-box {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+}
+
+.cta-box h2 {
+    color: inherit;
+}
+
+.cta-box p {
+    color: rgba(255,255,255,.85);
+}
+
+
+/* ==========================================================
+   SIMPLE ANIMATIONS
+========================================================== */
+
+.hero-image img,
+.category-card,
+.product-card,
+.shop-card,
+.feature-item,
+.testimonial-card {
+    transition: var(--transition);
+}
+
+.product-card:hover,
+.shop-card:hover,
+.testimonial-card:hover {
+    transform: translateY(-6px);
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (min-width: 768px) {
+
+    .hero-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .shop-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .testimonial-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* ==========================================================
+   DESKTOP
+========================================================== */
+
+@media (min-width: 1024px) {
+
+    .category-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .shop-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .testimonial-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
