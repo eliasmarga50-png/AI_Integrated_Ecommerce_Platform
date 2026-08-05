@@ -1,0 +1,209 @@
+
+
+
+
+/* ==========================================================
+   TERMS & CONDITIONS PAGE
+   AI_Ecommerce
+   ----------------------------------------------------------
+   Page-specific styles for the Terms & Conditions page.
+   Shared typography, buttons, cards, layout helpers and
+   utilities are inherited from the global stylesheet
+   architecture.
+==========================================================*/
+
+
+/* ==========================================================
+   PAGE CONTAINER
+==========================================================*/
+
+.terms-page {
+    padding: 2rem 0 4rem;
+}
+
+
+/* ==========================================================
+   HERO SECTION
+==========================================================*/
+
+.terms-hero {
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.terms-title {
+    margin-bottom: .75rem;
+}
+
+.terms-updated {
+    color: var(--text-muted);
+}
+
+.terms-introduction {
+    max-width: 760px;
+    margin: 2rem auto 0;
+    color: var(--text-muted);
+}
+
+
+/* ==========================================================
+   CONTENT LAYOUT
+==========================================================*/
+
+.terms-layout {
+    display: grid;
+    gap: 2rem;
+    padding: 2rem 0 4rem;
+}
+
+
+/* ==========================================================
+   TABLE OF CONTENTS
+==========================================================*/
+
+.terms-toc {
+    padding: 1.5rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+.terms-toc-title {
+    margin-bottom: 1rem;
+}
+
+.terms-toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.terms-toc-list a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.terms-toc-list a:hover {
+    color: var(--primary-color);
+}
+
+
+/* ==========================================================
+   TERMS DOCUMENT
+==========================================================*/
+
+.terms-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.terms-section {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.terms-section:last-child {
+    border-bottom: none;
+}
+
+.terms-section h2 {
+    margin-bottom: 1rem;
+}
+
+.terms-section p,
+.terms-section li {
+    line-height: 1.8;
+    color: var(--text-muted);
+}
+
+.terms-section ul,
+.terms-section ol {
+    margin-top: 1rem;
+    padding-left: 1.5rem;
+}
+
+
+/* ==========================================================
+   IMPORTANT NOTICE
+==========================================================*/
+
+.terms-notice {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: var(--surface-color);
+    border-left: 4px solid var(--primary-color);
+    border-radius: var(--border-radius);
+}
+
+
+/* ==========================================================
+   CONTACT INFORMATION
+==========================================================*/
+
+.terms-contact {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+
+/* ==========================================================
+   CALL TO ACTION
+==========================================================*/
+
+.terms-cta {
+    padding: 4rem 0;
+}
+
+.terms-cta-box {
+    padding: 3rem 2rem;
+    text-align: center;
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: var(--border-radius);
+}
+
+.terms-cta-box p {
+    color: rgba(255,255,255,.85);
+}
+
+
+/* ==========================================================
+   TABLET
+==========================================================*/
+
+@media (min-width: 768px) {
+
+    .terms-layout {
+        grid-template-columns: 260px 1fr;
+        align-items: start;
+    }
+
+    .terms-toc {
+        position: sticky;
+        top: 2rem;
+    }
+
+}
+
+
+/* ==========================================================
+   DESKTOP
+==========================================================*/
+
+@media (min-width: 1024px) {
+
+    .terms-layout {
+        grid-template-columns: 300px 1fr;
+        gap: 3rem;
+    }
+
+    .terms-content {
+        max-width: 900px;
+    }
+
+}
+
+
