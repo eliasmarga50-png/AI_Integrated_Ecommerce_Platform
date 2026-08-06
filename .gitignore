@@ -3,7 +3,6 @@
 # ==========================
 # Python
 # ==========================
-
 __pycache__/
 *.py[cod]
 *$py.class
@@ -11,80 +10,52 @@ __pycache__/
 # ==========================
 # Django
 # ==========================
-
-db.sqlite3
+/db.sqlite3
 *.sqlite3
-
-media/
-
-# Django migrations cache
-*.pyc
-
-# ==========================
-# Virtual Environment
-# ==========================
-
-venv/
-env/
-ENV/
+/media/
+/staticfiles/
 
 # ==========================
 # Environment Variables
 # ==========================
-
 .env
+.env.*
 
 # ==========================
-# IDE / Editors
+# Virtual Environments
 # ==========================
+venv/
+env/
+ENV/
+.venv/
 
+# ==========================
+# IDE / Editors / Mobile Dev
+# ==========================
 .vscode/
 .idea/
-
-# ==========================
-# Pydroid 3
-# ==========================
-
 .pydroid/
+*.swp
 
 # ==========================
-# OS Files
+# OS Files & Logs
 # ==========================
-
 .DS_Store
 Thumbs.db
-
-# ==========================
-# Logs
-# ==========================
-
 *.log
 
 # ==========================
-# Coverage / Testing
+# Testing & Build Files
 # ==========================
-
 .coverage
 htmlcov/
 .pytest_cache/
-
-# ==========================
-# Build Files
-# ==========================
-
 build/
 dist/
 *.egg-info/
 
 # ==========================
-# Static Collection
-# ==========================
-
-staticfiles/
-
-# ==========================
 # Temporary Files
 # ==========================
-
 *.tmp
-*.bakdb.sqlite3
+*.bak
