@@ -1,0 +1,177 @@
+
+
+
+"""
+Views for AI services.
+"""
+
+import json
+
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET, require_POST
+
+from .services import AIService
+
+ai_service = AIService()
+
+
+# --------------------------------------------------
+# Chatbot
+# --------------------------------------------------
+
+@login_required
+@require_POST
+def chatbot(request):
+    """
+    AI chatbot endpoint.
+    """
+
+    try:
+
+        data = json.loads(request.body)
+
+        message = data.get("message", "").strip()
+
+        if not message:
+            return JsonResponse(
+                {
+                    "success": False,
+                    "error": "Message is required.",
+                },
+                status=400,
+            )
+
+        response = ai_service.chat(
+            user=request.user,
+            message=message,
+        )
+
+        return JsonResponse(
+            {
+                "success": True,
+                "message": response.message,
+                "tokens_used": response.tokens_used,
+                "response_time": response.response_time,
+            }
+        )
+
+    except json.JSONDecodeError:
+
+        return JsonResponse(
+            {
+                "success": False,
+                "error": "Invalid JSON.",
+            },
+            status=400,
+        )
+
+
+# --------------------------------------------------
+# Search
+# --------------------------------------------------
+
+@login_required
+@require_GET
+def search(request):
+    """
+    AI search endpoint.
+    """
+
+    query = request.GET.get("q", "").strip()
+
+    results = ai_service.search_products(
+        query=query,
+        user=request.user,
+    )
+
+    return JsonResponse(
+        {
+            "success": True,
+            "query": query,
+            "results": results,
+        }
+    )
+
+
+# --------------------------------------------------
+# Recommendation
+# --------------------------------------------------
+
+@login_required
+@require_GET
+def recommendations(request):
+    """
+    Personalized recommendations.
+    """
+
+    products = ai_service.recommend_products(
+        request.user,
+    )
+
+    return JsonResponse(
+        {
+            "success": True,
+            "recommendations": products,
+        }
+    )
+
+
+# --------------------------------------------------
+# Sentiment
+# --------------------------------------------------
+
+@login_required
+@require_POST
+def sentiment(request):
+    """
+    Analyze text sentiment.
+    """
+
+    try:
+
+        data = json.loads(request.body)
+
+        text = data.get("text", "")
+
+        result = ai_service.analyze_sentiment(text)
+
+        return JsonResponse(
+            {
+                "success": True,
+                "result": result,
+            }
+        )
+
+    except json.JSONDecodeError:
+
+        return JsonResponse(
+            {
+                "success": False,
+                "error": "Invalid JSON.",
+            },
+            status=400,
+        )
+
+
+# --------------------------------------------------
+# Dashboard Analytics
+# --------------------------------------------------
+
+@login_required
+@require_GET
+def analytics(request):
+    """
+    AI dashboard analytics.
+    """
+
+    dashboard = ai_service.analytics.dashboard()
+
+    return JsonResponse(
+        {
+            "success": True,
+            "analytics": dashboard,
+        }
+    )
+
+
