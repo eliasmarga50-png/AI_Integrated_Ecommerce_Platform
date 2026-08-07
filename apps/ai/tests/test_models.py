@@ -4,7 +4,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from ai.models import (
+from apps.ai.models import (
     AIAnalyticsLog,
     AIChatMessage,
     AIChatSession,
