@@ -3,7 +3,7 @@
 
 from django.test import SimpleTestCase
 
-from ai.search import SearchEngine
+from apps.ai.search import SearchEngine
 
 
 class SearchEngineTests(SimpleTestCase):
