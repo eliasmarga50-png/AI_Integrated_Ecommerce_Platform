@@ -16,6 +16,7 @@ class AIViewsTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username="view_user",
+            email="view@example.com",
             password="testpass123",
         )
 
@@ -99,5 +100,4 @@ class AIViewsTests(TestCase):
             response.status_code,
             200,
         )
-
 

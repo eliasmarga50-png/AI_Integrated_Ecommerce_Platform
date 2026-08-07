@@ -7,8 +7,8 @@ from unittest.mock import Mock
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from ai.chatbot import ChatbotEngine, ChatResponse
-from ai.models import (
+from apps.ai.chatbot import ChatbotEngine, ChatResponse
+from apps.ai.models import (
     AIChatMessage,
     AIChatSession,
 )
@@ -22,6 +22,7 @@ class ChatbotEngineTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username="chatbot_user",
+            email="chat@exam.com",
             password="testpass123",
         )
 

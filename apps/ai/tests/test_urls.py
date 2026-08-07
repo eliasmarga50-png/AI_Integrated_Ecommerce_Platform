@@ -4,7 +4,7 @@
 from django.test import SimpleTestCase
 from django.urls import resolve, reverse
 
-from ai import views
+from apps.ai import views
 
 
 class AIURLTests(SimpleTestCase):

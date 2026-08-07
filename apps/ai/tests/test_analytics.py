@@ -4,8 +4,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from ai.analytics import AnalyticsEngine
-from ai.models import AIAnalyticsLog
+from apps.ai.analytics import AnalyticsEngine
+from apps.ai.models import AIAnalyticsLog
 
 
 User = get_user_model()
@@ -18,6 +18,7 @@ class AnalyticsEngineTests(TestCase):
 
         self.user = User.objects.create_user(
             username="analytics_user",
+            email="enal@example.com",
             password="testpass123",
         )
 

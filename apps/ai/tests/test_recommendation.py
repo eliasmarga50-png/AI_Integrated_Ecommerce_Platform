@@ -5,7 +5,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from ai.recommendation import RecommendationEngine
+from apps.ai.recommendation import RecommendationEngine
 
 
 User = get_user_model()
@@ -18,6 +18,7 @@ class RecommendationEngineTests(TestCase):
 
         self.user = User.objects.create_user(
             username="recommendation_user",
+            email="rec@exam.com",
             password="testpass123",
         )
 

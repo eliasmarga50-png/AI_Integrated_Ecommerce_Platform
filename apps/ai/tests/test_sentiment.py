@@ -3,7 +3,7 @@
 
 from django.test import SimpleTestCase
 
-from ai.sentiment import SentimentEngine
+from apps.ai.sentiment import SentimentEngine
 
 
 class SentimentEngineTests(SimpleTestCase):
