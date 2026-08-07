@@ -25,6 +25,7 @@ class AIModelTestMixin:
     def setUp(self):
         self.user = User.objects.create_user(
             username="ai_test_user",
+            email="views@example.com",
             password="testpass123",
         )
 
