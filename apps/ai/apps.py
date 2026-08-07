@@ -24,7 +24,7 @@ class AIConfig(AppConfig):
 
     default_auto_field = "django.db.models.BigAutoField"
 
-    name = "ai"
+    name = "apps.ai"
 
     verbose_name = "AI Services"
 
