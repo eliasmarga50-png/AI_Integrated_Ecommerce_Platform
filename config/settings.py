@@ -224,6 +224,10 @@ DEFAULT_FROM_EMAIL = config(
 # PAYMENT CONFIGURATION
 # ============================================================
 
+# ------------------------------------------------------------
+# Chapa
+# ------------------------------------------------------------
+
 CHAPA_SECRET_KEY = config(
     "CHAPA_SECRET_KEY",
     default="",
@@ -238,6 +242,16 @@ CHAPA_CALLBACK_URL = config(
     "CHAPA_CALLBACK_URL",
     default="",
 )
+
+CHAPA_RETURN_URL = config(
+    "CHAPA_RETURN_URL",
+    default="",
+)
+
+
+# ------------------------------------------------------------
+# Telebirr
+# ------------------------------------------------------------
 
 TELEBIRR_APP_ID = config(
     "TELEBIRR_APP_ID",
@@ -254,6 +268,16 @@ TELEBIRR_CALLBACK_URL = config(
     default="",
 )
 
+TELEBIRR_RETURN_URL = config(
+    "TELEBIRR_RETURN_URL",
+    default="",
+)
+
+
+# ------------------------------------------------------------
+# Stripe
+# ------------------------------------------------------------
+
 STRIPE_SECRET_KEY = config(
     "STRIPE_SECRET_KEY",
     default="",
@@ -269,6 +293,11 @@ STRIPE_WEBHOOK_SECRET = config(
     default="",
 )
 
+
+# ------------------------------------------------------------
+# PayPal
+# ------------------------------------------------------------
+
 PAYPAL_CLIENT_ID = config(
     "PAYPAL_CLIENT_ID",
     default="",
@@ -282,6 +311,21 @@ PAYPAL_CLIENT_SECRET = config(
 PAYPAL_MODE = config(
     "PAYPAL_MODE",
     default="sandbox",
+)
+
+PAYPAL_ENVIRONMENT = config(
+    "PAYPAL_ENVIRONMENT",
+    default=PAYPAL_MODE,
+)
+
+PAYPAL_RETURN_URL = config(
+    "PAYPAL_RETURN_URL",
+    default="",
+)
+
+PAYPAL_CANCEL_URL = config(
+    "PAYPAL_CANCEL_URL",
+    default="",
 )
 
 
