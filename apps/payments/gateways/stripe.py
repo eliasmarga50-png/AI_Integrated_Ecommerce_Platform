@@ -2,6 +2,8 @@
 
 
 import stripe
+from decimal import Decimal
+
 from django.conf import settings
 
 from .base import BasePaymentGateway
@@ -24,8 +26,12 @@ class StripeGateway(BasePaymentGateway):
         Create a Stripe PaymentIntent.
         """
 
+        amount = int(
+            Decimal(str(payment.amount)) * Decimal("100")
+        )
+
         intent = stripe.PaymentIntent.create(
-            amount=int(payment.amount * 100),
+            amount=amount,
             currency=payment.currency.lower(),
             automatic_payment_methods={
                 "enabled": True,
@@ -48,10 +54,7 @@ class StripeGateway(BasePaymentGateway):
             "raw": intent,
         }
 
-    def verify_payment(
-        self,
-        payment_intent_id,
-    ):
+    def verify_payment(self, payment_intent_id):
         """
         Retrieve a PaymentIntent.
         """
@@ -60,14 +63,9 @@ class StripeGateway(BasePaymentGateway):
             payment_intent_id
         )
 
-        return self.normalize_verification(
-            intent
-        )
+        return self.normalize_verification(intent)
 
-    def refund_payment(
-        self,
-        payment_intent_id,
-    ):
+    def refund_payment(self, payment_intent_id):
         """
         Refund a successful payment.
         """
@@ -83,29 +81,40 @@ class StripeGateway(BasePaymentGateway):
             "raw": refund,
         }
 
-    def normalize_verification(
-        self,
-        intent,
-    ):
+    def normalize_verification(self, intent):
         """
         Convert Stripe's PaymentIntent
         into our application's common format.
         """
+
+        latest_charge = getattr(
+            intent,
+            "latest_charge",
+            None,
+        )
+
+        payment_method = getattr(
+            intent,
+            "payment_method",
+            None,
+        )
+
+        client_secret = getattr(
+            intent,
+            "client_secret",
+            None,
+        )
 
         return {
             "verified": (
                 intent.status == "succeeded"
             ),
             "transaction_reference": intent.id,
-            "gateway_reference": intent.latest_charge,
-            "amount": intent.amount / 100,
+            "gateway_reference": latest_charge,
+            "amount": Decimal(intent.amount) / Decimal("100"),
             "currency": intent.currency.upper(),
-            "payment_method": (
-                intent.payment_method
-            ),
+            "payment_method": payment_method,
             "status": intent.status,
-            "client_secret": (
-                intent.client_secret
-            ),
+            "client_secret": client_secret,
             "raw": intent,
         }
