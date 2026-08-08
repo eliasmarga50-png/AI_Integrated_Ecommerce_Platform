@@ -329,6 +329,52 @@ PAYPAL_CANCEL_URL = config(
 )
 
 
+CHAPA_RETURN_URL = config(
+    "CHAPA_RETURN_URL",
+    default="http://127.0.0.1:8000/payments/success/",
+)
+
+TELEBIRR_RETURN_URL = config(
+    "TELEBIRR_RETURN_URL",
+    default="http://127.0.0.1:8000/payments/success/",
+)
+
+TELEBIRR_BASE_URL = config(
+    "TELEBIRR_BASE_URL",
+    default="",
+)
+
+TELEBIRR_MERCHANT_ID = config(
+    "TELEBIRR_MERCHANT_ID",
+    default="",
+)
+
+TELEBIRR_PRIVATE_KEY = config(
+    "TELEBIRR_PRIVATE_KEY",
+    default="",
+)
+
+TELEBIRR_PUBLIC_KEY = config(
+    "TELEBIRR_PUBLIC_KEY",
+    default="",
+)
+
+PAYPAL_RETURN_URL = config(
+    "PAYPAL_RETURN_URL",
+    default="http://127.0.0.1:8000/payments/success/",
+)
+
+PAYPAL_CANCEL_URL = config(
+    "PAYPAL_CANCEL_URL",
+    default="http://127.0.0.1:8000/payments/cancel/",
+)
+
+PAYPAL_ENVIRONMENT = config(
+    "PAYPAL_ENVIRONMENT",
+    default="sandbox",
+)
+
+
 # ============================================================
 # AI CONFIGURATION
 # ============================================================
