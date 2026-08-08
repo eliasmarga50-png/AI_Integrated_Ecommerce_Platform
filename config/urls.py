@@ -69,6 +69,11 @@ urlpatterns = [
     ),
     
     path(
+      "dashboard/",
+      include("apps.dashboard.urls")
+    ),
+    
+    path(
        "ai/",
        include("apps.ai.urls")
     ),
