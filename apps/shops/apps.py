@@ -3,9 +3,6 @@
 
 from django.apps import AppConfig
 
-from django.apps import AppConfig
-
-
 class ShopsConfig(AppConfig):
     """
     Configuration for the shops application.
@@ -17,11 +14,6 @@ class ShopsConfig(AppConfig):
 
     verbose_name = "Shops"
 
-    def ready(self):
-        """
-        Application startup configuration.
-        """
-
-        pass
+   
 
 
