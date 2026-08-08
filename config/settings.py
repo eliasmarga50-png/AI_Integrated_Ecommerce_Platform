@@ -1,50 +1,65 @@
 
 
 from pathlib import Path
-from decouple import config
+
+from decouple import config, Csv
+
+
+# ============================================================
+# BASE
+# ============================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ==========================
-# Core Settings
-# ==========================
+
+# ============================================================
+# SECURITY
+# ============================================================
 
 SECRET_KEY = config("SECRET_KEY")
 
-DEBUG = config("DEBUG", default=True, cast=bool)
+DEBUG = config(
+    "DEBUG",
+    default=True,
+    cast=bool,
+)
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
-    default="127.0.0.1,localhost"
-).split(",")
+    default="127.0.0.1,localhost",
+    cast=Csv(),
+)
 
-# ==========================
-# Installed Apps
-# ==========================
+
+# ============================================================
+# APPLICATIONS
+# ============================================================
 
 INSTALLED_APPS = [
+    # Django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
-    "apps.accounts",
-    "apps.products",
-    "apps.shops",
-    "apps.cart",
-    "apps.orders",
+
+    # Project applications
+    "apps.accounts.apps.AccountsConfig",
+    "apps.products.apps.ProductsConfig",
+    "apps.shops.apps.ShopsConfig",
+    "apps.cart.apps.CartConfig",
+    "apps.orders.apps.OrdersConfig",
     "apps.payments",
     "apps.reviews",
-    "apps.dashboard",
-    "apps.ai",
-    
+    "apps.ai.apps.AIConfig",
+    "apps.dashboard.apps.DashboardConfig",
 ]
 
-# ==========================
-# Middleware
-# ==========================
+
+# ============================================================
+# MIDDLEWARE
+# ============================================================
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -56,17 +71,31 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+# ============================================================
+# URL / SERVER
+# ============================================================
+
 ROOT_URLCONF = "config.urls"
 
-# ==========================
-# Templates
-# ==========================
+WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
+
+
+# ============================================================
+# TEMPLATES
+# ============================================================
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+
+        "DIRS": [
+            BASE_DIR / "templates",
+        ],
+
         "APP_DIRS": True,
+
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
@@ -77,12 +106,10 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "config.wsgi.application"
-ASGI_APPLICATION = "config.asgi.application"
 
-# ==========================
-# Database
-# ==========================
+# ============================================================
+# DATABASE
+# ============================================================
 
 DATABASES = {
     "default": {
@@ -91,42 +118,65 @@ DATABASES = {
     }
 }
 
-# ==========================
-# Password Validation
-# ==========================
+
+# ============================================================
+# AUTHENTICATION
+# ============================================================
+
+AUTH_USER_MODEL = "accounts.User"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "UserAttributeSimilarityValidator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "MinimumLengthValidator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "CommonPasswordValidator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "NumericPasswordValidator"
+        ),
     },
 ]
 
-# ==========================
-# Internationalization
-# ==========================
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
+
+
+# ============================================================
+# INTERNATIONALIZATION
+# ============================================================
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = config(
+    "TIME_ZONE",
+    default="UTC",
+)
 
 USE_I18N = True
-
 USE_TZ = True
 
-# ==========================
-# Static & Media
-# ==========================
 
-STATIC_URL = "static/"
+# ============================================================
+# STATIC FILES
+# ============================================================
+
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -134,11 +184,125 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+
+# ============================================================
+# MEDIA FILES
+# ============================================================
+
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL="accounts.User"
+# ============================================================
+# CSRF
+# ============================================================
+
+CSRF_TRUSTED_ORIGINS = config(
+    "CSRF_TRUSTED_ORIGINS",
+    default="",
+    cast=Csv(),
+)
+
+
+# ============================================================
+# EMAIL
+# ============================================================
+
+EMAIL_BACKEND = config(
+    "EMAIL_BACKEND",
+    default="django.core.mail.backends.console.EmailBackend",
+)
+
+DEFAULT_FROM_EMAIL = config(
+    "DEFAULT_FROM_EMAIL",
+    default="webmaster@localhost",
+)
+
+
+# ============================================================
+# PAYMENT CONFIGURATION
+# ============================================================
+
+CHAPA_SECRET_KEY = config(
+    "CHAPA_SECRET_KEY",
+    default="",
+)
+
+CHAPA_PUBLIC_KEY = config(
+    "CHAPA_PUBLIC_KEY",
+    default="",
+)
+
+CHAPA_CALLBACK_URL = config(
+    "CHAPA_CALLBACK_URL",
+    default="",
+)
+
+TELEBIRR_APP_ID = config(
+    "TELEBIRR_APP_ID",
+    default="",
+)
+
+TELEBIRR_APP_KEY = config(
+    "TELEBIRR_APP_KEY",
+    default="",
+)
+
+TELEBIRR_CALLBACK_URL = config(
+    "TELEBIRR_CALLBACK_URL",
+    default="",
+)
+
+STRIPE_SECRET_KEY = config(
+    "STRIPE_SECRET_KEY",
+    default="",
+)
+
+STRIPE_PUBLIC_KEY = config(
+    "STRIPE_PUBLIC_KEY",
+    default="",
+)
+
+STRIPE_WEBHOOK_SECRET = config(
+    "STRIPE_WEBHOOK_SECRET",
+    default="",
+)
+
+PAYPAL_CLIENT_ID = config(
+    "PAYPAL_CLIENT_ID",
+    default="",
+)
+
+PAYPAL_CLIENT_SECRET = config(
+    "PAYPAL_CLIENT_SECRET",
+    default="",
+)
+
+PAYPAL_MODE = config(
+    "PAYPAL_MODE",
+    default="sandbox",
+)
+
+
+# ============================================================
+# AI CONFIGURATION
+# ============================================================
+
+OPENAI_API_KEY = config(
+    "OPENAI_API_KEY",
+    default="",
+)
+
+GOOGLE_API_KEY = config(
+    "GOOGLE_API_KEY",
+    default="",
+)
+
+
+# ============================================================
+# DEFAULT PRIMARY KEY
+# ============================================================
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
