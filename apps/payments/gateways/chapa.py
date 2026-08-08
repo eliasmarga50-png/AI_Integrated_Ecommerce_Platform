@@ -87,46 +87,56 @@ class ChapaGateway(BasePaymentGateway):
             "Refund integration is not implemented."
         )
 
-    def normalize_verification(
-        self,
-        response,
-    ):
+    def normalize_verification(self, response):
         """
-        Convert Chapa verification response
-        into a provider-independent structure.
+        Convert Chapa verification responses into
+        the application's provider-independent format.
+
+        Supports both:
+        1. BasePaymentGateway responses
+        2. Raw Chapa responses
         """
 
-        if not response["success"]:
-            return response
+        # Base gateway response
+        if "success" in response:
+            if not response["success"]:
+                return response
 
-        data = response["data"]
+            data = response.get("data", {})
 
-        payment_data = data.get(
-            "data",
-            {},
-        )
+            # Chapa may wrap the transaction inside data.
+            payment_data = data.get(
+                "data",
+                data,
+            )
+
+        else:
+            # Raw Chapa response
+            payment_data = response.get(
+                "data",
+                {},
+            )
+
+            if (
+                not payment_data
+                and response.get("status") == "success"
+            ):
+                payment_data = response
 
         return {
             "verified": (
-                payment_data.get("status")
-                == "success"
+                response.get("status") == "success"
+                or payment_data.get("status") == "success"
             ),
-            "transaction_reference": payment_data.get(
-                "tx_ref"
+            "transaction_reference": (
+                payment_data.get("tx_ref")
             ),
-            "gateway_reference": payment_data.get(
-                "reference"
+            "gateway_reference": (
+                payment_data.get("reference")
             ),
-            "amount": payment_data.get(
-                "amount"
-            ),
-            "currency": payment_data.get(
-                "currency"
-            ),
-            "payment_method": payment_data.get(
-                "method"
-            ),
-            "raw": data,
+            "amount": payment_data.get("amount"),
+            "currency": payment_data.get("currency"),
+            "payment_method": payment_data.get("method"),
+            "status": payment_data.get("status"),
+            "raw": response,
         }
-
-
