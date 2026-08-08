@@ -82,6 +82,12 @@ class Payment(models.Model):
         editable=False,
         default=False,
     )
+    
+    gateway_reference = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
 
     def save(self, *args, **kwargs):
         if not self.transaction_reference:
