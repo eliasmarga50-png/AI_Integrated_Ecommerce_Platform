@@ -9,16 +9,20 @@ URL configuration for the Payments application.
 from django.urls import path
 
 from .views import (
+    PaymentCheckoutView,
     PaymentCreateView,
     PaymentDetailView,
     PaymentInitializeView,
     PaymentListView,
     PaymentRefundView,
+    PaymentSuccessView,
     PaymentVerifyView,
     PaymentWebhookView,
 )
 
+
 app_name = "payments"
+
 
 urlpatterns = [
 
@@ -42,6 +46,18 @@ urlpatterns = [
         "<int:pk>/",
         PaymentDetailView.as_view(),
         name="detail",
+    ),
+
+    path(
+        "checkout/<int:payment_id>/",
+        PaymentCheckoutView.as_view(),
+        name="checkout",
+    ),
+
+    path(
+        "success/<int:payment_id>/",
+        PaymentSuccessView.as_view(),
+        name="success",
     ),
 
     # -------------------------------------------------
@@ -70,34 +86,31 @@ urlpatterns = [
     # Gateway webhooks
     # -------------------------------------------------
 
-    
-   
     path(
-    "webhooks/chapa/",
-    PaymentWebhookView.as_view(),
-    {"gateway": "chapa"},
-    name="chapa-webhook",
-),
+        "webhooks/chapa/",
+        PaymentWebhookView.as_view(),
+        {"gateway": "chapa"},
+        name="chapa-webhook",
+    ),
 
-path(
-    "webhooks/stripe/",
-    PaymentWebhookView.as_view(),
-    {"gateway": "stripe"},
-    name="stripe-webhook",
-),
+    path(
+        "webhooks/stripe/",
+        PaymentWebhookView.as_view(),
+        {"gateway": "stripe"},
+        name="stripe-webhook",
+    ),
 
-path(
-    "webhooks/paypal/",
-    PaymentWebhookView.as_view(),
-    {"gateway": "paypal"},
-    name="paypal-webhook",
-),
+    path(
+        "webhooks/paypal/",
+        PaymentWebhookView.as_view(),
+        {"gateway": "paypal"},
+        name="paypal-webhook",
+    ),
 
-path(
-    "webhooks/telebirr/",
-    PaymentWebhookView.as_view(),
-    {"gateway": "telebirr"},
-    name="telebirr-webhook",
-),
-
+    path(
+        "webhooks/telebirr/",
+        PaymentWebhookView.as_view(),
+        {"gateway": "telebirr"},
+        name="telebirr-webhook",
+    ),
 ]
