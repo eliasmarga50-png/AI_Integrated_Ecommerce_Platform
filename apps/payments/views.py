@@ -6,10 +6,16 @@ Views for the Payments application.
 """
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+)
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.shortcuts import (
+    get_object_or_404,
+    redirect,
+    render,
+)
 from django.views import View
 from django.views.generic import (
     CreateView,
@@ -29,7 +35,10 @@ from .webhooks import (
 )
 
 
-class PaymentListView(LoginRequiredMixin, ListView):
+class PaymentListView(
+    LoginRequiredMixin,
+    ListView,
+):
     """
     Display the authenticated user's payments.
     """
@@ -42,12 +51,17 @@ class PaymentListView(LoginRequiredMixin, ListView):
         return (
             Payment.objects
             .select_related("order")
-            .filter(user=self.request.user)
+            .filter(
+                user=self.request.user
+            )
             .order_by("-created_at")
         )
 
 
-class PaymentDetailView(LoginRequiredMixin, DetailView):
+class PaymentDetailView(
+    LoginRequiredMixin,
+    DetailView,
+):
     """
     Display a single payment.
     """
@@ -60,11 +74,16 @@ class PaymentDetailView(LoginRequiredMixin, DetailView):
         return (
             Payment.objects
             .select_related("order")
-            .filter(user=self.request.user)
+            .filter(
+                user=self.request.user
+            )
         )
 
 
-class PaymentCreateView(LoginRequiredMixin, CreateView):
+class PaymentCreateView(
+    LoginRequiredMixin,
+    CreateView,
+):
     """
     Create a payment record.
     """
@@ -74,14 +93,17 @@ class PaymentCreateView(LoginRequiredMixin, CreateView):
     template_name = "payments/payment_form.html"
 
     def form_valid(self, form):
-        order = self.request.user.orders.get(
-            pk=self.kwargs["order_id"]
+        order = get_object_or_404(
+            self.request.user.orders,
+            pk=self.kwargs["order_id"],
         )
 
         payment = PaymentService.create_payment(
             order=order,
             user=self.request.user,
-            gateway=form.cleaned_data["gateway"],
+            gateway=form.cleaned_data[
+                "gateway"
+            ],
         )
 
         messages.success(
@@ -90,12 +112,77 @@ class PaymentCreateView(LoginRequiredMixin, CreateView):
         )
 
         return redirect(
-            "payments:initialize",
-            pk=payment.pk,
+            "payments:checkout",
+            payment_id=payment.pk,
         )
 
 
-class PaymentInitializeView(LoginRequiredMixin, View):
+class PaymentCheckoutView(
+    LoginRequiredMixin,
+    View,
+):
+    """
+    Initialize a payment with its gateway
+    and redirect the customer to the gateway
+    checkout page when available.
+    """
+
+    def get(self, request, payment_id):
+        payment = get_object_or_404(
+            Payment,
+            pk=payment_id,
+            user=request.user,
+        )
+
+        response = (
+            PaymentService.initialize_payment(
+                payment
+            )
+        )
+
+        checkout_url = response.get(
+            "checkout_url"
+        )
+
+        # Some gateways return the checkout URL
+        # nested inside their provider response.
+        if not checkout_url:
+            data = response.get(
+                "data",
+                {},
+            )
+
+            if isinstance(data, dict):
+                nested_data = data.get(
+                    "data",
+                    data,
+                )
+
+                if isinstance(
+                    nested_data,
+                    dict,
+                ):
+                    checkout_url = (
+                        nested_data.get(
+                            "checkout_url"
+                        )
+                    )
+
+        if checkout_url:
+            return redirect(
+                checkout_url
+            )
+
+        return JsonResponse(
+            response,
+            status=200,
+        )
+
+
+class PaymentInitializeView(
+    LoginRequiredMixin,
+    View,
+):
     """
     Initialize payment with the selected gateway.
     """
@@ -107,14 +194,19 @@ class PaymentInitializeView(LoginRequiredMixin, View):
             user=request.user,
         )
 
-        response = PaymentService.initialize_payment(
-            payment
+        response = (
+            PaymentService.initialize_payment(
+                payment
+            )
         )
 
         return JsonResponse(response)
 
 
-class PaymentVerifyView(LoginRequiredMixin, View):
+class PaymentVerifyView(
+    LoginRequiredMixin,
+    View,
+):
     """
     Verify a payment after gateway processing.
     """
@@ -132,7 +224,34 @@ class PaymentVerifyView(LoginRequiredMixin, View):
             )
         )
 
-        return JsonResponse(verification)
+        return JsonResponse(
+            verification
+        )
+
+
+class PaymentSuccessView(
+    LoginRequiredMixin,
+    View,
+):
+    """
+    Display the successful payment page.
+    """
+
+    def get(self, request, payment_id):
+        payment = get_object_or_404(
+            Payment,
+            pk=payment_id,
+            user=request.user,
+            status=Payment.Status.COMPLETED,
+        )
+
+        return render(
+            request,
+            "payments/payment_success.html",
+            {
+                "payment": payment,
+            },
+        )
 
 
 class PaymentRefundView(
@@ -155,7 +274,9 @@ class PaymentRefundView(
             pk=pk,
         )
 
-        form = PaymentRefundForm(request.POST)
+        form = PaymentRefundForm(
+            request.POST
+        )
 
         if not form.is_valid():
             return JsonResponse(
@@ -163,8 +284,10 @@ class PaymentRefundView(
                 status=400,
             )
 
-        result = PaymentService.refund_payment(
-            payment
+        result = (
+            PaymentService.refund_payment(
+                payment
+            )
         )
 
         return JsonResponse(result)
@@ -177,7 +300,7 @@ class PaymentWebhookView(View):
 
     http_method_names = ["post"]
 
-    def post(self, request):
+    def post(self, request, gateway=None):
         handler = PaymentWebhookHandler(
             gateway_secret="CHANGE_ME"
         )
