@@ -1,0 +1,96 @@
+
+
+
+{% extends "base.html" %}
+
+{% block title %}
+    Payment Successful
+{% endblock %}
+
+{% block content %}
+
+<section class="payment-success">
+
+    <div class="container">
+
+        <div class="payment-success__card">
+
+            <div class="payment-success__icon">
+                ✓
+            </div>
+
+            <h1>
+                Payment Successful
+            </h1>
+
+            <p>
+                Your payment has been successfully
+                completed.
+            </p>
+
+
+            <div class="payment-success__details">
+
+                <div>
+                    <span>Payment ID</span>
+                    <strong>
+                        #{{ payment.id }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Order</span>
+                    <strong>
+                        #{{ payment.order.id }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Amount</span>
+                    <strong>
+                        {{ payment.amount }}
+                        {{ payment.currency }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Gateway</span>
+                    <strong>
+                        {{ payment.gateway|title }}
+                    </strong>
+                </div>
+
+                {% if payment.gateway_reference %}
+
+                    <div>
+                        <span>Gateway Reference</span>
+                        <strong>
+                            {{ payment.gateway_reference }}
+                        </strong>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="payment-success__actions">
+
+                <a
+                    href="{% url 'payments:list' %}"
+                    class="btn btn-primary"
+                >
+                    View Payments
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
