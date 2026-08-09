@@ -92,14 +92,23 @@ class TelebirrGateway(BasePaymentGateway):
 
     def sign_payload(self, payload):
         """
-        Sign the request.
+        Generate the Telebirr request signature.
 
-        Replace this implementation with the signing
-        algorithm required by Telebirr.
+        The production signing implementation should be
+        supplied according to the merchant credentials and
+        official Telebirr integration specification.
         """
 
+        if not self.private_key:
+            raise ValueError(
+                "TELEBIRR_PRIVATE_KEY is required "
+                "for Telebirr request signing."
+            )
+
         raise NotImplementedError(
-            "Implement Telebirr request signing."
+            "Telebirr signing algorithm must be "
+            "implemented according to the merchant "
+            "integration specification."
         )
 
     def initialize_payment(self, payment):
@@ -176,5 +185,3 @@ class TelebirrGateway(BasePaymentGateway):
             "payment_method": None,
             "raw": data,
         }
-
-
