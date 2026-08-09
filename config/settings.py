@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "apps.orders.apps.OrdersConfig",
     "apps.payments",
     "apps.reviews",
+    "apps.dashboard",
     "apps.ai.apps.AIConfig",
     "apps.dashboard.apps.DashboardConfig",
 ]

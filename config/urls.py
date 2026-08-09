@@ -87,6 +87,14 @@ urlpatterns = [
         "reviews/",
         include("apps.reviews.urls"),
     ),
+    
+    #====================
+    #  DASHBOARD
+    #====================
+    path(
+      "dashboard/",
+      include("apps.dashboard.urls"),
+    ),
 
     # ========================================================
     # AI
