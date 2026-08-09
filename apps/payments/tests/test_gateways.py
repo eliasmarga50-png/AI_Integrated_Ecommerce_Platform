@@ -1,6 +1,7 @@
 
 
 
+from decimal import Decimal
 from unittest.mock import Mock, patch
 
 from django.test import TestCase
@@ -14,32 +15,49 @@ from apps.payments.gateways.telebirr import TelebirrGateway
 class GatewayTests(TestCase):
     """
     Tests for supported payment gateways.
+
+    External payment providers are mocked so that
+    these tests never make real network requests.
     """
 
     def setUp(self):
         self.payment = Mock()
-        self.payment.amount = "250.00"
+
+        self.payment.id = 1
+        self.payment.amount = Decimal("250.00")
         self.payment.currency = "ETB"
         self.payment.transaction_reference = "PAY-123456"
         self.payment.gateway_reference = None
 
-    # -------------------------
-    # Chapa
-    # -------------------------
+        self.payment.user = Mock()
+        self.payment.user.id = 1
+        self.payment.user.email = "elias@example.com"
+        self.payment.user.first_name = "Elias"
+        self.payment.user.last_name = "Marga"
 
-    @patch("requests.post")
-    def test_chapa_initialize_payment(self, mock_post):
+        self.payment.order = Mock()
+        self.payment.order.id = 1
 
-        mock_response = Mock()
-        mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "status": "success",
+    # =====================================================
+    # CHAPA
+    # =====================================================
+
+    @patch.object(ChapaGateway, "request")
+    def test_chapa_initialize_payment(
+        self,
+        mock_request,
+    ):
+        mock_request.return_value = {
+            "success": True,
+            "status_code": 200,
             "data": {
-                "checkout_url": "https://checkout.chapa.co/test"
+                "status": "success",
+                "data": {
+                    "checkout_url":
+                        "https://checkout.chapa.co/test"
+                },
             },
         }
-
-        mock_post.return_value = mock_response
 
         gateway = ChapaGateway()
 
@@ -47,21 +65,29 @@ class GatewayTests(TestCase):
             self.payment
         )
 
-        self.assertIn(
-            "checkout_url",
-            response,
+        self.assertTrue(
+            response["success"]
         )
 
-    @patch("requests.get")
-    def test_chapa_verify_payment(self, mock_get):
+        self.assertIn(
+            "checkout_url",
+            response["data"]["data"],
+        )
 
-        mock_response = Mock()
-        mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "status": "success"
+        mock_request.assert_called_once()
+
+    @patch.object(ChapaGateway, "request")
+    def test_chapa_verify_payment(
+        self,
+        mock_request,
+    ):
+        mock_request.return_value = {
+            "success": True,
+            "status_code": 200,
+            "data": {
+                "status": "success",
+            },
         }
-
-        mock_get.return_value = mock_response
 
         gateway = ChapaGateway()
 
@@ -71,8 +97,9 @@ class GatewayTests(TestCase):
 
         self.assertIsNotNone(response)
 
-    def test_chapa_normalize_verification(self):
+        mock_request.assert_called_once()
 
+    def test_chapa_normalize_verification(self):
         gateway = ChapaGateway()
 
         raw = {
@@ -82,34 +109,58 @@ class GatewayTests(TestCase):
                 "reference": "CHAPA-001",
                 "amount": "250.00",
                 "currency": "ETB",
+                "status": "success",
             },
         }
 
-        normalized = gateway.normalize_verification(raw)
+        normalized = gateway.normalize_verification(
+            raw
+        )
 
-        self.assertTrue(normalized["verified"])
+        self.assertTrue(
+            normalized["verified"]
+        )
+
         self.assertEqual(
             normalized["amount"],
             "250.00",
         )
 
-    # -------------------------
-    # Telebirr
-    # -------------------------
+        self.assertEqual(
+            normalized["currency"],
+            "ETB",
+        )
 
-    @patch("requests.post")
+        self.assertEqual(
+            normalized["transaction_reference"],
+            "PAY-123",
+        )
+
+    # =====================================================
+    # TELEBIRR
+    # =====================================================
+
+    @patch.object(
+        TelebirrGateway,
+        "sign_payload",
+        return_value="TEST-SIGNATURE",
+    )
+    @patch.object(
+        TelebirrGateway,
+        "request",
+    )
     def test_telebirr_initialize_payment(
         self,
-        mock_post,
+        mock_request,
+        mock_sign,
     ):
-
-        mock_response = Mock()
-        mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "code": "SUCCESS"
+        mock_request.return_value = {
+            "success": True,
+            "status_code": 200,
+            "data": {
+                "code": "SUCCESS",
+            },
         }
-
-        mock_post.return_value = mock_response
 
         gateway = TelebirrGateway()
 
@@ -119,23 +170,34 @@ class GatewayTests(TestCase):
 
         self.assertIsNotNone(result)
 
-    # -------------------------
-    # Stripe
-    # -------------------------
+        self.assertTrue(
+            result["success"]
+        )
 
-    @patch("requests.post")
+        mock_sign.assert_called_once()
+
+        mock_request.assert_called_once()
+
+    # =====================================================
+    # STRIPE
+    # =====================================================
+
+    @patch(
+        "apps.payments.gateways.stripe.stripe.PaymentIntent.create"
+    )
     def test_stripe_initialize_payment(
         self,
-        mock_post,
+        mock_create,
     ):
+        mock_intent = Mock()
 
-        mock_response = Mock()
-        mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "id": "pi_test"
-        }
+        mock_intent.id = "pi_test"
+        mock_intent.client_secret = (
+            "secret_test"
+        )
+        mock_intent.status = "requires_payment_method"
 
-        mock_post.return_value = mock_response
+        mock_create.return_value = mock_intent
 
         gateway = StripeGateway()
 
@@ -145,23 +207,69 @@ class GatewayTests(TestCase):
 
         self.assertIsNotNone(result)
 
-    # -------------------------
-    # PayPal
-    # -------------------------
+        self.assertTrue(
+            result["success"]
+        )
 
-    @patch("requests.post")
+        self.assertEqual(
+            result["payment_intent_id"],
+            "pi_test",
+        )
+
+        mock_create.assert_called_once()
+
+        call_kwargs = (
+            mock_create.call_args.kwargs
+        )
+
+        self.assertEqual(
+            call_kwargs["amount"],
+            25000,
+        )
+
+        self.assertEqual(
+            call_kwargs["currency"],
+            "etb",
+        )
+
+    # =====================================================
+    # PAYPAL
+    # =====================================================
+
+    @patch(
+        "apps.payments.gateways.paypal.PaypalServersdkClient"
+    )
     def test_paypal_initialize_payment(
         self,
-        mock_post,
+        mock_client_class,
     ):
+        mock_client = Mock()
 
-        mock_response = Mock()
-        mock_response.raise_for_status.return_value = None
-        mock_response.json.return_value = {
-            "id": "PAYPAL-001"
+        mock_orders = Mock()
+
+        mock_result = Mock()
+
+        mock_result.body = {
+            "id": "PAYPAL-001",
+            "status": "CREATED",
+            "links": [
+                {
+                    "rel": "approve",
+                    "href":
+                        "https://paypal.test/approve",
+                }
+            ],
         }
 
-        mock_post.return_value = mock_response
+        mock_orders.create_order.return_value = (
+            mock_result
+        )
+
+        mock_client.orders = mock_orders
+
+        mock_client_class.return_value = (
+            mock_client
+        )
 
         gateway = PayPalGateway()
 
@@ -171,13 +279,40 @@ class GatewayTests(TestCase):
 
         self.assertIsNotNone(result)
 
-    @patch("requests.post")
+        self.assertTrue(
+            result["success"]
+        )
+
+        self.assertEqual(
+            result["order_id"],
+            "PAYPAL-001",
+        )
+
+        self.assertEqual(
+            result["status"],
+            "CREATED",
+        )
+
+        self.assertEqual(
+            result["approval_url"],
+            "https://paypal.test/approve",
+        )
+
+        mock_orders.create_order.assert_called_once()
+
+    # =====================================================
+    # NETWORK ERROR
+    # =====================================================
+
+    @patch.object(
+        ChapaGateway,
+        "request",
+    )
     def test_gateway_network_error(
         self,
-        mock_post,
+        mock_request,
     ):
-
-        mock_post.side_effect = Exception(
+        mock_request.side_effect = Exception(
             "Network Error"
         )
 
@@ -187,6 +322,5 @@ class GatewayTests(TestCase):
             gateway.initialize_payment(
                 self.payment
             )
-
 
 
