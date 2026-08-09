@@ -2,180 +2,168 @@
 
 
 {% extends "base.html" %}
-<link rel="stylesheet" href="{% static 'css/payments.css' %}">
+{% load static %}
 
 {% block title %}
-My Payments
+    My Payments
+{% endblock %}
+
+{% block extra_css %}
+    <link
+        rel="stylesheet"
+        href="{% static 'css/pages/payment.css' %}"
+    >
 {% endblock %}
 
 {% block content %}
 
-<div class="container mt-4">
+<section class="payments-page">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="container">
 
-        <div>
-            <h2>My Payments</h2>
-            <p class="text-muted">
-                View and track all of your payment transactions.
-            </p>
-        </div>
+        <div class="page-header">
 
-    </div>
+            <div>
+                <h1>My Payments</h1>
 
-    {% if payments %}
-
-    <div class="table-responsive">
-
-        <table class="table table-bordered table-hover align-middle">
-
-            <thead class="table-dark">
-
-                <tr>
-
-                    <th>Order</th>
-
-                    <th>Gateway</th>
-
-                    <th>Amount</th>
-
-                    <th>Status</th>
-
-                    <th>Date</th>
-
-                    <th class="text-center">
-                        Actions
-                    </th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-            {% for payment in payments %}
-
-                <tr>
-
-                    <td>
-
-                        #{{ payment.order.id }}
-
-                    </td>
-
-                    <td>
-
-                        {{ payment.get_gateway_display }}
-
-                    </td>
-
-                    <td>
-
-                        {{ payment.amount }}
-                        {{ payment.currency }}
-
-                    </td>
-
-                    <td>
-
-                        {% if payment.status == "completed" %}
-
-                            <span class="badge bg-success">
-                                Completed
-                            </span>
-
-                        {% elif payment.status == "pending" %}
-
-                            <span class="badge bg-warning text-dark">
-                                Pending
-                            </span>
-
-                        {% elif payment.status == "failed" %}
-
-                            <span class="badge bg-danger">
-                                Failed
-                            </span>
-
-                        {% else %}
-
-                            <span class="badge bg-secondary">
-                                {{ payment.status }}
-                            </span>
-
-                        {% endif %}
-
-                    </td>
-
-                    <td>
-
-                        {{ payment.created_at|date:"M d, Y" }}
-
-                    </td>
-
-                    <td class="text-center">
-
-                        <a
-                            href="{% url 'payments:detail' payment.pk %}"
-                            class="btn btn-sm btn-primary">
-
-                            View
-
-                        </a>
-
-                        {% if payment.status == "pending" %}
-
-                        <a
-                            href="{% url 'payments:initialize' payment.pk %}"
-                            class="btn btn-sm btn-success">
-
-                            Continue
-
-                        </a>
-
-                        {% endif %}
-
-                    </td>
-
-                </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    {% else %}
-
-    <div class="card shadow-sm">
-
-        <div class="card-body text-center">
-
-            <h4>No Payments Found</h4>
-
-            <p class="text-muted">
-
-                You haven't made any payments yet.
-
-            </p>
-
-            <a
-                href="{% url 'orders:list' %}"
-                class="btn btn-primary">
-
-                View Orders
-
-            </a>
+                <p>
+                    View your payment history and
+                    payment status.
+                </p>
+            </div>
 
         </div>
 
+
+        {% if payments %}
+
+            <div class="payments-list">
+
+                {% for payment in payments %}
+
+                    <article class="payment-card">
+
+                        <div class="payment-card__header">
+
+                            <div>
+                                <h2>
+                                    Payment #{{ payment.id }}
+                                </h2>
+
+                                <span>
+                                    Order #{{ payment.order.id }}
+                                </span>
+                            </div>
+
+                            <span class="payment-status">
+                                {{ payment.status|title }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="payment-card__body">
+
+                            <div class="payment-info">
+
+                                <span class="payment-info__label">
+                                    Amount
+                                </span>
+
+                                <strong>
+                                    {{ payment.amount }}
+                                    {{ payment.currency }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="payment-info">
+
+                                <span class="payment-info__label">
+                                    Gateway
+                                </span>
+
+                                <strong>
+                                    {{ payment.gateway|title }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="payment-info">
+
+                                <span class="payment-info__label">
+                                    Transaction
+                                </span>
+
+                                <strong>
+                                    {{ payment.transaction_reference }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="payment-info">
+
+                                <span class="payment-info__label">
+                                    Created
+                                </span>
+
+                                <strong>
+                                    {{ payment.created_at }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="payment-card__actions">
+
+                            <a
+                                href="{% url 'payments:detail' payment.pk %}"
+                                class="btn btn-secondary"
+                            >
+                                View Details
+                            </a>
+
+                            {% if payment.status != "completed" %}
+
+                                <a
+                                    href="{% url 'payments:checkout' payment_id=payment.pk %}"
+                                    class="btn btn-primary"
+                                >
+                                    Continue Payment
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h2>No payments yet</h2>
+
+                <p>
+                    Your payment history will appear
+                    here after you make a payment.
+                </p>
+
+            </div>
+
+        {% endif %}
+
     </div>
 
-    {% endif %}
-
-</div>
+</section>
 
 {% endblock %}
-
-
