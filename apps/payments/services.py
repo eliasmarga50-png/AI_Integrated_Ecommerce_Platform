@@ -42,7 +42,9 @@ class PaymentService:
         Return the appropriate gateway instance.
         """
 
-        gateway_class = cls.GATEWAYS.get(provider.lower())
+        gateway_class = cls.GATEWAYS.get(
+            provider.lower()
+        )
 
         if gateway_class is None:
             raise ValueError(
@@ -69,12 +71,17 @@ class PaymentService:
 
     @classmethod
     @transaction.atomic
-    def verify_payment(
-        cls,
-        payment,
-    ):
+    def verify_payment(cls, payment):
         """
         Verify payment with the selected gateway.
+
+        Gateway implementations may return either:
+
+        1. An already-normalized response containing
+           ``verified``, ``amount`` and ``currency``.
+
+        2. A raw provider response which must be passed
+           through the gateway's normalization method.
         """
 
         gateway = cls.get_gateway(
@@ -85,25 +92,61 @@ class PaymentService:
             payment.transaction_reference
         )
 
-        if hasattr(
-            gateway,
-            "normalize_verification",
+        # -------------------------------------------------
+        # Normalize provider response when necessary.
+        # -------------------------------------------------
+        #
+        # A normalized response already contains "verified".
+        # This is also important for tests/mocks because a
+        # plain Mock pretends to have arbitrary attributes.
+        #
+        if not (
+            isinstance(verification, dict)
+            and "verified" in verification
         ):
-            verification = (
-                gateway.normalize_verification(
-                    verification
-                )
+            normalize = getattr(
+                gateway,
+                "normalize_verification",
+                None,
             )
 
-        if not verification["verified"]:
+            if callable(normalize):
+                verification = normalize(
+                    verification
+                )
+
+        # -------------------------------------------------
+        # Gateway verification
+        # -------------------------------------------------
+
+        if not isinstance(
+            verification,
+            dict,
+        ):
+            raise InvalidTransactionError(
+                "Invalid gateway verification response."
+            )
+
+        if not verification.get(
+            "verified",
+            False,
+        ):
             raise InvalidTransactionError(
                 "Gateway verification failed."
             )
+
+        # -------------------------------------------------
+        # Validate local payment data
+        # -------------------------------------------------
 
         cls.validate_payment(
             payment,
             verification,
         )
+
+        # -------------------------------------------------
+        # Complete payment
+        # -------------------------------------------------
 
         cls.mark_completed(
             payment,
