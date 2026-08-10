@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     "apps.orders.apps.OrdersConfig",
     "apps.payments",
     "apps.reviews",
-    "apps.dashboard",
     "apps.ai.apps.AIConfig",
     "apps.dashboard.apps.DashboardConfig",
 ]
@@ -249,6 +248,11 @@ CHAPA_RETURN_URL = config(
     default="",
 )
 
+CHAPA_WEBHOOK_SECRET = config(
+    "CHAPA_WEBHOOK_SECRET",
+    default="",
+)
+
 
 # ------------------------------------------------------------
 # Telebirr
@@ -271,6 +275,11 @@ TELEBIRR_CALLBACK_URL = config(
 
 TELEBIRR_RETURN_URL = config(
     "TELEBIRR_RETURN_URL",
+    default="",
+)
+
+TELEBIRR_WEBHOOK_SECRET = config(
+    "TELEBIRR_WEBHOOK_SECRET",
     default="",
 )
 
@@ -326,6 +335,11 @@ PAYPAL_RETURN_URL = config(
 
 PAYPAL_CANCEL_URL = config(
     "PAYPAL_CANCEL_URL",
+    default="",
+)
+
+PAYPAL_WEBHOOK_SECRET = config(
+    "PAYPAL_WEBHOOK_SECRET",
     default="",
 )
 
