@@ -5,16 +5,16 @@ from decimal import Decimal
 
 from django.db import transaction
 
+from apps.products.models import Product
+
 from .exceptions import (
     EmptyCartError,
     InsufficientStockError,
     ProductUnavailableError,
 )
-
 from .models import Order, OrderItem
 from .utils import generate_order_number
 
-from apps.products.models import product
 
 class OrderService:
     """
@@ -38,112 +38,112 @@ class OrderService:
         return total
 
     @staticmethod
-@transaction.atomic
-def create_order_from_cart(
-    cart,
-    shipping_address,
-    shipping_city,
-    shipping_phone,
-):
-    """
-    Create an Order and its OrderItems from a Cart.
+    @transaction.atomic
+    def create_order_from_cart(
+        cart,
+        shipping_address,
+        shipping_city,
+        shipping_phone,
+    ):
+        """
+        Create an Order and its OrderItems from a Cart.
 
-    Inventory is validated and reserved atomically so that
-    concurrent checkouts cannot oversell available stock.
-    """
+        Inventory is validated and reserved atomically so that
+        concurrent checkouts cannot oversell available stock.
+        """
 
-    cart_items = list(
-        cart.items.select_related("product")
-    )
-
-    if not cart_items:
-        raise EmptyCartError(
-            "Cannot create an order from an empty cart."
+        cart_items = list(
+            cart.items.select_related("product")
         )
 
-    product_ids = [
-        cart_item.product_id
-        for cart_item in cart_items
-    ]
+        if not cart_items:
+            raise EmptyCartError(
+                "Cannot create an order from an empty cart."
+            )
 
-    locked_products = {
-        product.id: product
-        for product in (
-            Product.objects
-            .select_for_update()
-            .filter(id__in=product_ids)
-        )
-    }
-
-    total_amount = Decimal("0.00")
-
-    for cart_item in cart_items:
-        product = locked_products.get(
+        product_ids = [
             cart_item.product_id
-        )
-
-        if product is None:
-            raise ProductUnavailableError(
-                "One or more products are no longer available."
-            )
-
-        if not product.is_available:
-            raise ProductUnavailableError(
-                f"{product.name} is no longer available."
-            )
-
-        if cart_item.quantity > product.stock:
-            raise InsufficientStockError(
-                f"Insufficient stock for {product.name}."
-            )
-
-    order = Order.objects.create(
-        user=cart.owner,
-        order_number=generate_order_number(),
-        total_amount=Decimal("0.00"),
-        shipping_address=shipping_address,
-        shipping_city=shipping_city,
-        shipping_phone=shipping_phone,
-    )
-
-    for cart_item in cart_items:
-        product = locked_products[
-            cart_item.product_id
+            for cart_item in cart_items
         ]
 
-        subtotal = (
-            product.price
-            * cart_item.quantity
+        locked_products = {
+            product.id: product
+            for product in (
+                Product.objects
+                .select_for_update()
+                .filter(id__in=product_ids)
+            )
+        }
+
+        total_amount = Decimal("0.00")
+
+        for cart_item in cart_items:
+            product = locked_products.get(
+                cart_item.product_id
+            )
+
+            if product is None:
+                raise ProductUnavailableError(
+                    "One or more products are no longer available."
+                )
+
+            if not product.is_available:
+                raise ProductUnavailableError(
+                    f"{product.name} is no longer available."
+                )
+
+            if cart_item.quantity > product.stock:
+                raise InsufficientStockError(
+                    f"Insufficient stock for {product.name}."
+                )
+
+        order = Order.objects.create(
+            user=cart.owner,
+            order_number=generate_order_number(),
+            total_amount=Decimal("0.00"),
+            shipping_address=shipping_address,
+            shipping_city=shipping_city,
+            shipping_phone=shipping_phone,
         )
 
-        OrderItem.objects.create(
-            order=order,
-            product=product,
-            product_name=product.name,
-            unit_price=product.price,
-            quantity=cart_item.quantity,
-            subtotal=subtotal,
-        )
-
-        product.stock -= cart_item.quantity
-        product.save(
-            update_fields=[
-                "stock",
-                "updated_at",
+        for cart_item in cart_items:
+            product = locked_products[
+                cart_item.product_id
             ]
+
+            subtotal = (
+                product.price
+                * cart_item.quantity
+            )
+
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                product_name=product.name,
+                unit_price=product.price,
+                quantity=cart_item.quantity,
+                subtotal=subtotal,
+            )
+
+            product.stock -= cart_item.quantity
+            product.save(
+                update_fields=[
+                    "stock",
+                    "updated_at",
+                ]
+            )
+
+            total_amount += subtotal
+
+        order.total_amount = total_amount
+        order.save(
+            update_fields=[
+                "total_amount",
+                "updated_at",
+            ],
         )
 
-        total_amount += subtotal
-
-    order.total_amount = total_amount
-    order.save(
-        update_fields=[
-            "total_amount",
-            "updated_at",
-        ],
-    )
-
-    return order
+        return order
 
     @staticmethod
     def get_user_orders(user):
