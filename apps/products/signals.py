@@ -33,8 +33,7 @@ def prepare_product(sender, instance, **kwargs):
 
     if instance.stock <= 0:
         instance.is_available = False
-    else:
-        instance.is_available = True
+  
 
 
 @receiver(post_save, sender=Product)
