@@ -16,6 +16,9 @@ from django.shortcuts import (
     redirect,
     render,
 )
+
+from django.conf import settings
+
 from django.views import View
 from django.views.generic import (
     CreateView,
@@ -296,13 +299,49 @@ class PaymentRefundView(
 class PaymentWebhookView(View):
     """
     Receive payment gateway webhooks.
+
+    Each gateway endpoint receives its own configured
+    webhook secret. Missing configuration fails closed.
     """
 
     http_method_names = ["post"]
 
+    WEBHOOK_SECRETS = {
+        Payment.Gateway.CHAPA: "CHAPA_WEBHOOK_SECRET",
+        Payment.Gateway.TELEBIRR: "TELEBIRR_WEBHOOK_SECRET",
+        Payment.Gateway.STRIPE: "STRIPE_WEBHOOK_SECRET",
+        Payment.Gateway.PAYPAL: "PAYPAL_WEBHOOK_SECRET",
+    }
+
     def post(self, request, gateway=None):
+        if gateway not in self.WEBHOOK_SECRETS:
+            return JsonResponse(
+                {
+                    "status": "error",
+                    "message": "Unsupported payment gateway.",
+                },
+                status=400,
+            )
+
+        setting_name = self.WEBHOOK_SECRETS[gateway]
+        gateway_secret = getattr(
+            settings,
+            setting_name,
+            "",
+        )
+
+        if not gateway_secret:
+            return JsonResponse(
+                {
+                    "status": "error",
+                    "message": "Webhook configuration is unavailable.",
+                },
+                status=503,
+            )
+
         handler = PaymentWebhookHandler(
-            gateway_secret="CHANGE_ME"
+            gateway=gateway,
+            gateway_secret=gateway_secret,
         )
 
         return payment_webhook_response(
