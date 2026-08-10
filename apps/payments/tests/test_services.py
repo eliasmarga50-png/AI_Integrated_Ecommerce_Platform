@@ -153,9 +153,33 @@ class PaymentServiceTests(TestCase):
             gateway_reference="TXN001",
         )
         self.payment.refresh_from_db()
+        self.order.refresh_from_db()
         self.assertEqual(
             self.payment.status,
             Payment.Status.COMPLETED,
+        )
+        
+        self.assertEqual(
+            self.order.status,
+            Order.Status.CONFIRMED, 
+        )
+
+    def test_mark_completed_does_not_regress_order_state(self):
+        self.order.status = Order.Status.PROCESSING
+        self.order.save(
+            update_fields=["status"]
+        )
+
+        PaymentService.mark_completed(
+            self.payment,
+            gateway_reference="TXN002",
+        )
+
+        self.order.refresh_from_db()
+
+        self.assertEqual(
+            self.order.status,
+            Order.Status.PROCESSING,
         )
 
     def test_cannot_complete_twice(self):
