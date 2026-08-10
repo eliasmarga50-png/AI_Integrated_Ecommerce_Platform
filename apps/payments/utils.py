@@ -17,6 +17,8 @@ from datetime import timedelta
 
 from django.utils import timezone
 
+from datetime import datetime, timezone as dt_timezone
+
 
 def generate_transaction_reference(prefix: str = "PAY") -> str:
     """
@@ -95,12 +97,65 @@ def is_timestamp_valid(
     tolerance_seconds: int = 300,
 ) -> bool:
     """
-    Validate that a timestamp falls within the allowed window.
+    Validate a webhook timestamp.
 
-    Default tolerance is 5 minutes.
+    Accepts:
+    - timezone-aware datetime objects
+    - Unix timestamps represented as strings or numbers
+    - ISO-8601 datetime strings
+
+    Invalid values fail closed.
     """
-    now = timezone.now()
+    if timestamp is None:
+        return False
 
-    return abs(now - timestamp) <= timedelta(
-        seconds=tolerance_seconds
-    )	
+    try:
+        if isinstance(timestamp, (int, float)):
+            timestamp_value = datetime.fromtimestamp(
+                timestamp,
+                tz=dt_timezone.utc,
+            )
+
+        elif isinstance(timestamp, datetime):
+            timestamp_value = timestamp
+
+        elif isinstance(timestamp, str):
+            value = timestamp.strip()
+
+            if not value:
+                return False
+
+            # Unix timestamp.
+            try:
+                timestamp_value = datetime.fromtimestamp(
+                    float(value),
+                    tz=dt_timezone.utc,
+                )
+
+            except ValueError:
+                # ISO-8601 timestamp.
+                timestamp_value = datetime.fromisoformat(
+                    value.replace(
+                        "Z",
+                        "+00:00",
+                    )
+                )
+
+        else:
+            return False
+
+        if timestamp_value.tzinfo is None:
+            timestamp_value = timestamp_value.replace(
+                tzinfo=dt_timezone.utc
+            )
+
+        now = timezone.now()
+
+        return abs(
+            now - timestamp_value
+        ) <= timedelta(
+            seconds=tolerance_seconds
+        )
+
+    except (TypeError, ValueError, OverflowError):
+        return False
