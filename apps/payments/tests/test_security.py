@@ -53,7 +53,8 @@ class PaymentSecurityTests(TestCase):
         )
 
         self.handler = PaymentWebhookHandler(
-            gateway_secret="secret123"
+            gateway="chapa",
+            gateway_secret="secret123",
         )
 
     @patch(

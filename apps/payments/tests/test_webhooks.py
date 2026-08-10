@@ -5,15 +5,9 @@ from decimal import Decimal
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory, TestCase
 
 from apps.orders.models import Order
-from apps.payments.models import Payment
-from apps.payments.webhooks import (
-    PaymentWebhookHandler,
-    payment_webhook_response,
-)
-
 from apps.payments.exceptions import (
     AmountMismatchError,
     CurrencyMismatchError,
@@ -21,7 +15,12 @@ from apps.payments.exceptions import (
     ReplayAttackError,
     SignatureVerificationError,
 )
-
+from apps.payments.models import Payment
+from apps.payments.utils import is_timestamp_valid
+from apps.payments.webhooks import (
+    PaymentWebhookHandler,
+    payment_webhook_response,
+)
 
 User = get_user_model()
 
@@ -29,7 +28,6 @@ User = get_user_model()
 class PaymentWebhookTests(TestCase):
 
     def setUp(self):
-
         self.user = User.objects.create_user(
             username="elias",
             email="elias@example.com",
@@ -54,9 +52,9 @@ class PaymentWebhookTests(TestCase):
         )
 
         self.handler = PaymentWebhookHandler(
-            gateway_secret="secret123"
+             gateway="chapa",
+            gateway_secret="secret123",
         )
-
 
     @patch(
         "apps.payments.webhooks.verify_hmac_signature",
@@ -75,14 +73,11 @@ class PaymentWebhookTests(TestCase):
         mock_timestamp,
         mock_signature,
     ):
-
         payload = {
-            "transaction_id":
-                self.payment.transaction_reference,
+            "transaction_id": self.payment.transaction_reference,
             "amount": "250.00",
             "currency": "ETB",
         }
-
 
         self.handler.process_webhook(
             payload=payload,
@@ -90,9 +85,7 @@ class PaymentWebhookTests(TestCase):
             timestamp="123456",
         )
 
-
         mock_complete.assert_called_once()
-
 
     @patch(
         "apps.payments.webhooks.verify_hmac_signature",
@@ -107,25 +100,18 @@ class PaymentWebhookTests(TestCase):
         mock_timestamp,
         mock_signature,
     ):
-
         payload = {
-            "transaction_id":
-                self.payment.transaction_reference,
+            "transaction_id": self.payment.transaction_reference,
             "amount": "250.00",
             "currency": "ETB",
         }
 
-
-        with self.assertRaises(
-            SignatureVerificationError
-        ):
-
+        with self.assertRaises(SignatureVerificationError):
             self.handler.process_webhook(
                 payload=payload,
                 signature="wrong",
                 timestamp="123456",
             )
-
 
     @patch(
         "apps.payments.webhooks.is_timestamp_valid",
@@ -135,17 +121,12 @@ class PaymentWebhookTests(TestCase):
         self,
         mock_timestamp,
     ):
-
-        with self.assertRaises(
-            ReplayAttackError
-        ):
-
+        with self.assertRaises(ReplayAttackError):
             self.handler.process_webhook(
                 payload={},
                 signature="signature",
                 timestamp="old",
             )
-
 
     @patch(
         "apps.payments.webhooks.verify_hmac_signature",
@@ -160,23 +141,17 @@ class PaymentWebhookTests(TestCase):
         mock_timestamp,
         mock_signature,
     ):
-
         payload = {
             "amount": "250.00",
             "currency": "ETB",
         }
 
-
-        with self.assertRaises(
-            InvalidTransactionError
-        ):
-
+        with self.assertRaises(InvalidTransactionError):
             self.handler.process_webhook(
                 payload=payload,
                 signature="signature",
                 timestamp="123",
             )
-
 
     @patch(
         "apps.payments.webhooks.verify_hmac_signature",
@@ -191,24 +166,18 @@ class PaymentWebhookTests(TestCase):
         mock_timestamp,
         mock_signature,
     ):
-
         payload = {
             "transaction_id": "UNKNOWN",
             "amount": "250.00",
             "currency": "ETB",
         }
 
-
-        with self.assertRaises(
-            InvalidTransactionError
-        ):
-
+        with self.assertRaises(InvalidTransactionError):
             self.handler.process_webhook(
                 payload=payload,
                 signature="signature",
                 timestamp="123",
             )
-
 
     @patch(
         "apps.payments.webhooks.verify_hmac_signature",
@@ -223,25 +192,18 @@ class PaymentWebhookTests(TestCase):
         mock_timestamp,
         mock_signature,
     ):
-
         payload = {
-            "transaction_id":
-                self.payment.transaction_reference,
+            "transaction_id": self.payment.transaction_reference,
             "amount": "100.00",
             "currency": "ETB",
         }
 
-
-        with self.assertRaises(
-            AmountMismatchError
-        ):
-
+        with self.assertRaises(AmountMismatchError):
             self.handler.process_webhook(
                 payload=payload,
                 signature="signature",
                 timestamp="123",
             )
-
 
     @patch(
         "apps.payments.webhooks.verify_hmac_signature",
@@ -256,25 +218,18 @@ class PaymentWebhookTests(TestCase):
         mock_timestamp,
         mock_signature,
     ):
-
         payload = {
-            "transaction_id":
-                self.payment.transaction_reference,
+            "transaction_id": self.payment.transaction_reference,
             "amount": "250.00",
             "currency": "USD",
         }
 
-
-        with self.assertRaises(
-            CurrencyMismatchError
-        ):
-
+        with self.assertRaises(CurrencyMismatchError):
             self.handler.process_webhook(
                 payload=payload,
                 signature="signature",
                 timestamp="123",
             )
-
 
     @patch(
         "apps.payments.webhooks.verify_hmac_signature",
@@ -289,32 +244,21 @@ class PaymentWebhookTests(TestCase):
         mock_timestamp,
         mock_signature,
     ):
-
-        self.payment.status = (
-            Payment.Status.COMPLETED
-        )
-
+        self.payment.status = Payment.Status.COMPLETED
         self.payment.save()
 
-
         payload = {
-            "transaction_id":
-                self.payment.transaction_reference,
+            "transaction_id": self.payment.transaction_reference,
             "amount": "250.00",
             "currency": "ETB",
         }
 
-
-        with self.assertRaises(
-            ReplayAttackError
-        ):
-
+        with self.assertRaises(ReplayAttackError):
             self.handler.process_webhook(
                 payload=payload,
                 signature="signature",
                 timestamp="123",
             )
-
 
     @patch(
         "apps.payments.webhooks.PaymentWebhookHandler.process_webhook"
@@ -323,7 +267,6 @@ class PaymentWebhookTests(TestCase):
         self,
         mock_process,
     ):
-
         mock_process.return_value = self.payment
 
         factory = RequestFactory()
@@ -334,16 +277,72 @@ class PaymentWebhookTests(TestCase):
             content_type="application/json",
         )
 
-
         response = payment_webhook_response(
             self.handler,
             request,
         )
 
-
         self.assertEqual(
             response.status_code,
             200,
         )
+
+    @patch(
+        "apps.payments.webhooks.verify_hmac_signature",
+        return_value=True,
+    )
+    @patch(
+        "apps.payments.webhooks.is_timestamp_valid",
+        return_value=True,
+    )
+    def test_gateway_mismatch_rejected(
+        self,
+        mock_timestamp,
+        mock_signature,
+    ):
+        payload = {
+            "transaction_id": self.payment.transaction_reference,
+            "amount": "250.00",
+            "currency": "ETB",
+        }
+
+        handler = PaymentWebhookHandler(
+            gateway="stripe",
+            gateway_secret="secret123",
+        )
+
+        with self.assertRaises(InvalidTransactionError):
+            handler.process_webhook(
+                payload=payload,
+                signature="signature",
+                timestamp="123456",
+            )
+
+    @patch(
+        "apps.payments.webhooks.is_timestamp_valid",
+        return_value=True,
+    )
+    def test_missing_signature_rejected(
+        self,
+        mock_timestamp,
+    ):
+        payload = {
+            "transaction_id": self.payment.transaction_reference,
+            "amount": "250.00",
+            "currency": "ETB",
+        }
+
+        with self.assertRaises(SignatureVerificationError):
+            self.handler.process_webhook(
+                payload=payload,
+                signature=None,
+                timestamp="123456",
+            )
+
+    def test_invalid_timestamp_rejected(self):
+        self.assertFalse(
+            is_timestamp_valid("not-a-timestamp")
+        )
+
 
 
