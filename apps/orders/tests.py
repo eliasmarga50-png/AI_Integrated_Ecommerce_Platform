@@ -10,6 +10,7 @@ from django.urls import reverse
 from apps.cart.models import Cart, CartItem
 from apps.products.models import Category, Product
 
+from .exceptions import EmptyCartError, ProductUnavailableError
 from .forms import CheckoutForm
 from .models import Order, OrderItem
 from .services import OrderService
@@ -284,6 +285,66 @@ class OrderServiceTests(OrderTestMixin, TestCase):
             Decimal("1000.00"),
         )
 
+    def test_create_order_from_empty_cart_fails(self):
+        with self.assertRaises(EmptyCartError):
+            OrderService.create_order_from_cart(
+                cart=self.cart,
+                shipping_address="Bole, Addis Ababa",
+                shipping_city="Addis Ababa",
+                shipping_phone="0912345678",
+            )
+
+        self.assertEqual(
+            Order.objects.count(),
+            0,
+        )
+
+    def test_create_order_rejects_unavailable_product(self):
+        self.product.is_available = False
+        self.product.save(
+            update_fields=["is_available"],
+        )
+
+        CartItem.objects.create(
+            cart=self.cart,
+            product=self.product,
+            quantity=1,
+        )
+
+        with self.assertRaises(ProductUnavailableError):
+            OrderService.create_order_from_cart(
+                cart=self.cart,
+                shipping_address="Bole, Addis Ababa",
+                shipping_city="Addis Ababa",
+                shipping_phone="0912345678",
+            )
+
+        self.assertEqual(
+            Order.objects.count(),
+            0,
+        )
+
+    def test_create_order_decrements_stock(self):
+        CartItem.objects.create(
+            cart=self.cart,
+            product=self.product,
+            quantity=2,
+        )
+
+        OrderService.create_order_from_cart(
+            cart=self.cart,
+            shipping_address="Bole, Addis Ababa",
+            shipping_city="Addis Ababa",
+            shipping_phone="0912345678",
+        )
+
+        self.product.refresh_from_db()
+
+        self.assertEqual(
+            self.product.stock,
+            8,
+        )
+
     def test_create_order_from_cart(self):
         CartItem.objects.create(
             cart=self.cart,
@@ -521,5 +582,3 @@ class OrderViewTests(OrderTestMixin, TestCase):
             response.status_code,
             404,
         )
-
-
