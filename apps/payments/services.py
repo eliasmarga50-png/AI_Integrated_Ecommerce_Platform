@@ -9,6 +9,8 @@ from decimal import Decimal
 
 from django.db import transaction
 
+from apps.orders.models import Order
+
 from .exceptions import (
     AmountMismatchError,
     CurrencyMismatchError,
@@ -219,8 +221,8 @@ class PaymentService:
 
         order = payment.order
 
-        if hasattr(order, "status"):
-            order.status = "PAID"
+        if order.status == Order.Status.PENDING:
+            order.status = Order.Status.CONFIRMED
             order.save(
                 update_fields=["status"]
             )
