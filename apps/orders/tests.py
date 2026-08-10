@@ -304,6 +304,12 @@ class OrderServiceTests(OrderTestMixin, TestCase):
         self.product.save(
             update_fields=["is_available"],
         )
+        
+        self.product.refresh_from_db()
+        
+        self.assertFalse(
+           self.product.is_available,
+        )
 
         CartItem.objects.create(
             cart=self.cart,
