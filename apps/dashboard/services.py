@@ -97,6 +97,7 @@ class DashboardService:
         return (
             Product.objects
             .filter(shop=shop)
+            .select_related("category", "shop")
             .order_by("-created_at")
         )
 
