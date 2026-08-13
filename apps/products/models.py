@@ -4,7 +4,7 @@
 from django.db import models
 from django.utils.text import slugify
 from apps.products.validators import validate_price
-
+from apps.shops.models import Shop
 
 class Category(models.Model):
     """
@@ -60,6 +60,14 @@ class Product(models.Model):
         Category,
         on_delete=models.CASCADE,
         related_name="products",
+    )
+    
+    shop = models.ForeignKey(
+        Shop,
+        on_delete=models.CASCADE,
+        related_name="products",
+        null=True,
+        blank=True,
     )
 
     name = models.CharField(
