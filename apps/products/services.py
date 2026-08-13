@@ -97,16 +97,6 @@ class ProductService:
 
         product = form.save()
 
-        logger.info(
-            "Product updated: %s",
-            product.name,
-        )
-
-        ProductService.handle_product_saved(
-            product,
-            created=False,
-        )
-
         return product
 
     @staticmethod
