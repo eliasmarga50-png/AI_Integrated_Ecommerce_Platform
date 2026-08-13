@@ -1,0 +1,138 @@
+
+
+
+
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+    Seller Dashboard
+{% endblock %}
+
+{% block header %}
+    <h1>Seller Dashboard</h1>
+{% endblock %}
+
+{% block sidebar %}
+    <ul>
+        <li>
+            <a href="{% url 'dashboard:seller_dashboard' %}">
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'shops:shop_list' %}">
+                My Shops
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'shops:shop_create' %}">
+                Create Shop
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'products:list' %}">
+                Products
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-section">
+
+    <div class="dashboard-card">
+        <h2>Welcome, {{ user.get_full_name|default:user.username }}</h2>
+
+        {% if shop %}
+            <p>
+                Shop:
+                <strong>{{ shop.name }}</strong>
+            </p>
+        {% else %}
+            <p>
+                You do not have a shop yet.
+            </p>
+
+            <a href="{% url 'shops:shop_create' %}">
+                Create your shop
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Products</h2>
+
+        <p>
+            Total products:
+            <strong>{{ products|length }}</strong>
+        </p>
+    </div>
+
+    <div class="dashboard-card">
+
+        <h2>Your Products</h2>
+
+        {% if products %}
+
+            <div class="product-list">
+
+                {% for product in products %}
+
+                    <article class="product-card">
+
+                        <h3>
+                            {{ product.name }}
+                        </h3>
+
+                        <p>
+                            Category:
+                            {{ product.category.name }}
+                        </p>
+
+                        <p>
+                            Price:
+                            {{ product.price }}
+                        </p>
+
+                        <p>
+                            Stock:
+                            {{ product.stock }}
+                        </p>
+
+                        {% if product.is_available %}
+                            <p>Available</p>
+                        {% else %}
+                            <p>Unavailable</p>
+                        {% endif %}
+
+                        <a
+                            href="{% url 'products:detail' slug=product.slug %}"
+                        >
+                            View Product
+                        </a>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p>
+                You don't have any products yet.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
