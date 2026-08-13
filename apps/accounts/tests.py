@@ -94,3 +94,41 @@ class UtilityTest(TestCase):
             email,
             "admin@example.com",
         )
+
+class UserRoleMethodTest(TestCase):
+
+    def test_customer_role_method(self):
+        user = User.objects.create_user(
+            username="customer_method",
+            email="customer_method@example.com",
+            password="Password123",
+            role=User.Role.CUSTOMER,
+        )
+
+        self.assertTrue(user.is_customer())
+        self.assertFalse(user.is_seller())
+        self.assertFalse(user.is_admin())
+
+    def test_seller_role_method(self):
+        user = User.objects.create_user(
+            username="seller_method",
+            email="seller_method@example.com",
+            password="Password123",
+            role=User.Role.SELLER,
+        )
+
+        self.assertFalse(user.is_customer())
+        self.assertTrue(user.is_seller())
+        self.assertFalse(user.is_admin())
+
+    def test_admin_role_method(self):
+        user = User.objects.create_user(
+            username="admin_method",
+            email="admin_method@example.com",
+            password="Password123",
+            role=User.Role.ADMIN,
+        )
+
+        self.assertFalse(user.is_customer())
+        self.assertFalse(user.is_seller())
+        self.assertTrue(user.is_admin())
