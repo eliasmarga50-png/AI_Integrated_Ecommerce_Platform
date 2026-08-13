@@ -106,14 +106,7 @@ class ProductService:
         Delete a product.
         """
 
-        product_name = product.name
-
         product.delete()
-
-        logger.warning(
-            "Product deleted: %s",
-            product_name,
-        )
 
         # Future:
         # archive_product(product)
