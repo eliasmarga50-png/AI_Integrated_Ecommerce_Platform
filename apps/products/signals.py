@@ -10,6 +10,7 @@ from .models import Product
 from .utils import generate_sku, generate_slug
 from .services import ProductService
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -26,50 +27,42 @@ def prepare_product(sender, instance, **kwargs):
 
     # Future field
     if hasattr(instance, "sku") and not instance.sku:
-        instance.sku = generate_sku(
-            instance.category.name,
-            instance.name,
-        )
+        if not instance.sku:
+            instance.sku = generate_sku(
+                instance.category.name,
+                instance.name,
+            )
 
     if instance.stock <= 0:
         instance.is_available = False
-  
 
 
 @receiver(post_save, sender=Product)
-def after_product_saved(sender, instance, created, **kwargs):
+def after_product_saved(
+    sender,
+    instance,
+    created,
+    **kwargs,
+):
     """
-    Execute actions after saving a product.
+    Handle product lifecycle events
+    after a product is saved.
     """
 
-    if created:
-        logger.info(
-            "New product created: %s",
-            instance.name,
-        )
-
-        # Future:
-        # create_inventory(instance)
-        # notify_admin(instance)
-        # create_search_index(instance)
-        # generate_thumbnail(instance)
-
-    else:
-        logger.info(
-            "Product updated: %s",
-            instance.name,
-        )
-
-        # Future:
-        # clear_product_cache(instance)
-        # update_search_index(instance)
-        # sync_marketplace(instance)
+    ProductService.handle_product_saved(
+        instance,
+        created=created,
+    )
 
 
 @receiver(post_delete, sender=Product)
-def after_product_deleted(sender, instance, **kwargs):
+def after_product_deleted(
+    sender,
+    instance,
+    **kwargs,
+):
     """
-    Execute actions after deleting a product.
+    Handle product deletion.
     """
 
     logger.warning(
@@ -81,10 +74,3 @@ def after_product_deleted(sender, instance, **kwargs):
     # remove_product_images(instance)
     # delete_search_index(instance)
     # archive_product(instance)
-
-@receiver(post_save, sender=Product)
-def after_product_saved(sender, instance, created, **kwargs):
-    ProductService.handle_product_saved(
-        instance,
-        created=created,
-    )
