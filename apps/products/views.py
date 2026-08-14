@@ -10,6 +10,7 @@ from django.views.generic import (
     UpdateView,
 )
 
+from apps.shops.models import Shop
 from django.shortcuts import get_object_or_404
 from .forms import ProductForm
 from .models import Category, Product
@@ -101,6 +102,23 @@ class ProductCreateView(CreateView):
         )
 
     def form_valid(self, form):
+    	if self.request.user.is_seller():
+    		shop=Shop.objects.filter(
+    		    owner=self.request.user,
+    		    is_active=True,
+    		).first
+    		
+    		if shop is None:
+    			form.add_error(
+    			  None,
+    			  "You need active shops before creating products."
+    			)
+    			
+    			return self.form_invalid(form)
+    		
+    		form.instance.shop=shop
+    		
+    		
     	self.object=ProductService.create_product(
     	      form
     	)
