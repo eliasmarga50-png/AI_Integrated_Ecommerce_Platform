@@ -101,9 +101,13 @@ class ProductCreateView(CreateView):
         )
 
     def form_valid(self, form):
-        ProductService.create_product(form)
+    	self.object=ProductService.create_product(
+    	      form
+    	)
 
-        return super().form_valid(form)
+        return redirect(
+           self.get_success_url()
+        )
 
 
 class ProductUpdateView(UpdateView):
@@ -131,7 +135,13 @@ class ProductUpdateView(UpdateView):
         )
 
     def form_valid(self, form):
-        ProductService.update_product(form)
+        self.object=ProductService.update_product(
+            form
+        )
+        
+        return redirect(
+            self.get_success_url()
+        )
 
         return super().form_valid(form)
 
