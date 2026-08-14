@@ -10,6 +10,7 @@ from django.views.generic import (
     UpdateView,
 )
 
+from django.shortcuts import get_object_or_404
 from .forms import ProductForm
 from .models import Category, Product
 from .permissions import ProductPermission
@@ -57,7 +58,8 @@ class CategoryProductListView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
-        self.category = Category.objects.get(
+        self.category = get_objects_or_404(
+            Category,
             slug=self.kwargs["slug"]
         )
 
