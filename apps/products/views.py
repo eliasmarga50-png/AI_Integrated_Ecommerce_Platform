@@ -1,6 +1,7 @@
 
 
 
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -11,7 +12,6 @@ from django.views.generic import (
 )
 
 from apps.shops.models import Shop
-from django.shortcuts import get_object_or_404
 from .forms import ProductForm
 from .models import Category, Product
 from .permissions import ProductPermission
@@ -66,7 +66,7 @@ class CategoryProductListView(ListView):
         if query:
             return ProductService.search_products(
                 query
-        )
+            )
         
         return ProductService.available_products()
 
@@ -102,29 +102,27 @@ class ProductCreateView(CreateView):
         )
 
     def form_valid(self, form):
-    	if self.request.user.is_seller():
-    		shop=Shop.objects.filter(
-    		    owner=self.request.user,
-    		    is_active=True,
-    		).first
+        if self.request.user.is_seller():
+            shop = Shop.objects.filter(
+                owner=self.request.user,
+                is_active=True,
+            ).first()  # Note: Added parentheses here to actually call the method
     		
-    		if shop is None:
-    			form.add_error(
-    			  None,
-    			  "You need active shops before creating products."
-    			)
+            if shop is None:
+                form.add_error(
+                    None,
+                    "You need active shops before creating products."
+                )
     			
-    			return self.form_invalid(form)
+                return self.form_invalid(form)
     		
-    		form.instance.shop=shop
+            form.instance.shop = shop
     		
-    		
-    	self.object=ProductService.create_product(
-    	      form
-    	)
-
+        self.object = ProductService.create_product(
+            form
+        )
         return redirect(
-           self.get_success_url()
+            self.get_success_url()
         )
 
 
@@ -153,7 +151,7 @@ class ProductUpdateView(UpdateView):
         )
 
     def form_valid(self, form):
-        self.object=ProductService.update_product(
+        self.object = ProductService.update_product(
             form
         )
         
@@ -161,7 +159,6 @@ class ProductUpdateView(UpdateView):
             self.get_success_url()
         )
 
-        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy(
