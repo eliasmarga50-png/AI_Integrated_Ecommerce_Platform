@@ -4,6 +4,9 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 from django.shortcuts import render, redirect
 from .forms import LoginForm, UserRegistrationForm
@@ -119,3 +122,78 @@ def profile(request):
             "user": request.user
         },
     )
+    
+
+@login_required
+def profile_edit(request):
+    user = request.user
+
+    if request.method == "POST":
+        user.first_name = request.POST.get(
+            "first_name",
+            "",
+        ).strip()
+
+        user.last_name = request.POST.get(
+            "last_name",
+            "",
+        ).strip()
+
+        user.phone_number = request.POST.get(
+            "phone_number",
+            "",
+        ).strip()
+
+        user.save()
+
+        messages.success(
+            request,
+            "Profile updated successfully.",
+        )
+
+        return redirect("accounts:profile")
+
+    return render(
+        request,
+        "accounts/profile_edit.html",
+        {"user": user},
+    )
+
+
+@login_required
+def password_change(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(
+            request.user,
+            request.POST,
+        )
+
+        if form.is_valid():
+            user = form.save()
+
+            update_session_auth_hash(
+                request,
+                user,
+            )
+
+            messages.success(
+                request,
+                "Password changed successfully.",
+            )
+
+            return redirect(
+                "accounts:profile"
+            )
+    else:
+        form = PasswordChangeForm(
+            request.user
+        )
+
+    return render(
+        request,
+        "accounts/password_change.html",
+        {"form": form},
+    )
+    
+    
+    
