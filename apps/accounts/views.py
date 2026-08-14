@@ -103,7 +103,7 @@ def user_logout(request):
         "You have been logged out."
     )
 
-    return redirect("accounts:}login")
+    return redirect("accounts:login")
 
 
 @login_required
