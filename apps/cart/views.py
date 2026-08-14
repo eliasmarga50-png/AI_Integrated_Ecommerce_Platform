@@ -51,12 +51,17 @@ def add_to_cart(request, product_id):
         user=request.user
     )
 
-    quantity = int(
-        request.POST.get(
-            "quantity",
-            1,
-        )
-    )
+    try:
+    	quantity = int(
+           request.POST.get(
+                "quantity",
+                1,
+           )
+       )
+    
+    except (TypeError, ValueError):
+        quantity=1
+    
 
     CartService.add_product(
         cart=cart,
@@ -84,12 +89,15 @@ def update_cart_item(request, product_id):
         user=request.user
     )
 
-    quantity = int(
+    try:
+    	quantity = int(
         request.POST.get(
             "quantity",
             1,
         )
-    )
+      )
+    except  (TypeError, ValueError):
+    	quantity=1
 
     CartService.update_quantity(
         cart=cart,
