@@ -67,9 +67,29 @@ class PaymentService:
             payment.gateway
         )
 
-        return gateway.initialize_payment(
+        response = gateway.initialize_payment(
             payment
         )
+        gateway_reference = (
+            response.get("payment_intent_id")
+            or response.get("order_id")
+            or response.get("gateway_reference")
+        )
+        if gateway_reference:
+        	payment.gateway_reference(
+        	   gateway_reference
+        	)
+        	payment.status=(
+        	   Payment.Status.PROCESSING
+        	)
+        	payment.save(
+        	   update_fields=[
+        	      "gateway_reference",
+        	      "status",
+        	      "updated_at",
+        	   ]
+        	)
+        return response
 
     @classmethod
     @transaction.atomic
