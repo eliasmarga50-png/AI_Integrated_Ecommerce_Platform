@@ -59,13 +59,13 @@ Review Details
 
 {% if request.user == review.user %}
 
-    <a href="{% url 'reviews:update_review' review.pk %}">
+    <a href="{% url 'reviews:review_update' review.pk %}">
         Edit
     </a>
 
     |
 
-    <a href="{% url 'reviews:delete_review' review.pk %}">
+    <a href="{% url 'reviews:review_delete' review.pk %}">
         Delete
     </a>
 

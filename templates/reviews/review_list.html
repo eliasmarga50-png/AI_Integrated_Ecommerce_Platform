@@ -21,7 +21,7 @@ Reviews
 
 {% if user.is_authenticated %}
 <p>
-    <a href="{% url 'reviews:create_review' product.id %}">
+    <a href="{% url 'reviews:review_create' product.id %}">
         Write a Review
     </a>
 </p>
@@ -69,13 +69,13 @@ Reviews
 
             {% if request.user == review.user %}
 
-                <a href="{% url 'reviews:update_review' review.pk %}">
+                <a href="{% url 'reviews:review_update' review.pk %}">
                     Edit
                 </a>
 
                 |
 
-                <a href="{% url 'reviews:delete_review' review.pk %}">
+                <a href="{% url 'reviews:review_delete' review.pk %}">
                     Delete
                 </a>
 
@@ -93,7 +93,7 @@ Reviews
 
     {% if user.is_authenticated %}
 
-        <a href="{% url 'reviews:create_review' product.id %}">
+        <a href="{% url 'reviews:review_create' product.id %}">
             Be the first to write a review
         </a>
 
