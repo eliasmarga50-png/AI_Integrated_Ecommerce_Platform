@@ -3,6 +3,7 @@
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
 from apps.products.models import Product
 
@@ -31,6 +32,7 @@ def cart_detail(request):
 
 
 @login_required
+@require_POST
 def add_to_cart(request, product_id):
     """
     Add a product to the user's cart.
@@ -75,6 +77,7 @@ def add_to_cart(request, product_id):
 
 
 @login_required
+@require_POST
 def update_cart_item(request, product_id):
     """
     Update the quantity of a product in the cart.
@@ -111,6 +114,7 @@ def update_cart_item(request, product_id):
 
 
 @login_required
+@require_POST
 def remove_from_cart(request, product_id):
     """
     Remove a product from the user's cart.
@@ -136,6 +140,7 @@ def remove_from_cart(request, product_id):
 
 
 @login_required
+@require_POST
 def clear_cart(request):
     """
     Remove all products from the user's cart.
