@@ -241,6 +241,13 @@ class PaymentService:
         """
         Create a payment record.
         """
+        
+        payment_method_map = {
+           Payment.Gateway.CHAPA : Payment.PaymentMethod.MOBILE_MONEY,
+           Payment.Gateway.TELEBIRR : Payment.PaymentMethod.MOBILE_MONEY,
+           Payment.Gateway.STRIPE : Payment.PaymentMethod.CARD,
+           Payment.Gateway.PAYPAL : Payment.PaymentMethod.CARD,
+        }
 
         if Payment.objects.filter(
             order=order
@@ -253,6 +260,7 @@ class PaymentService:
             gateway=gateway,
             amount=order.total_amount,
             currency=order.currency,
+            payment_method=payment_method_map[gateway],
         )
 
         return payment
