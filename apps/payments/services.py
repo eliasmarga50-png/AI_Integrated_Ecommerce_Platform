@@ -109,9 +109,14 @@ class PaymentService:
         gateway = cls.get_gateway(
             payment.gateway
         )
+        
+        verification_reference = (
+            payment.gateway_reference 
+            or payment.transaction_reference
+        )
 
         verification = gateway.verify_payment(
-            payment.transaction_reference
+            verification_reference
         )
 
         # -------------------------------------------------
