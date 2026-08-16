@@ -147,6 +147,8 @@ class OrderService:
                 "updated_at",
             ],
         )
+        
+        cart.items.all().delete()
 
         return order
 
