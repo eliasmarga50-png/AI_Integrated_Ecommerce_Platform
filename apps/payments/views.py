@@ -275,6 +275,7 @@ class PaymentRefundView(
         payment = get_object_or_404(
             Payment,
             pk=pk,
+            status=Payment.Status.COMPLETED,
         )
 
         form = PaymentRefundForm(
