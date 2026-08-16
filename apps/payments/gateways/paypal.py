@@ -5,6 +5,7 @@ from django.conf import settings
 
 from paypalserversdk.http.auth.o_auth_2 import ClientCredentialsAuthCredentials
 from paypalserversdk.paypal_serversdk_client import PaypalServersdkClient
+from paypalserversdk.configuration import Environment
 
 from .base import BasePaymentGateway
 
@@ -23,7 +24,12 @@ class PayPalGateway(BasePaymentGateway):
                 o_auth_client_id=settings.PAYPAL_CLIENT_ID,
                 o_auth_client_secret=settings.PAYPAL_CLIENT_SECRET,
             ),
-            environment=settings.PAYPAL_ENVIRONMENT,
+            environment=(
+                Environment.SANDBOX,
+                if settings.PAYPAL_ENVIRONMENT == "sandbox"
+                else Environment.PRODUCTION
+            ),
+            
         )
 
         self.orders = self.client.orders
