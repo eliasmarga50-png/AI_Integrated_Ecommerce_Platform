@@ -293,6 +293,16 @@ class PaymentRefundView(
                 payment
             )
         )
+        
+        if result.get("success"):
+        	payment.status = Payment.Status.REFUNDED
+        	
+        	payment.save(
+        	    update_fields=[
+        	       "status",
+        	       "updated_at",
+        	    ]
+        	)
 
         return JsonResponse(result)
 
