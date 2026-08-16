@@ -130,7 +130,7 @@ class PaymentCheckoutView(
     checkout page when available.
     """
 
-    def get(self, request, payment_id):
+    def post(self, request, payment_id):
         payment = get_object_or_404(
             Payment,
             pk=payment_id,
@@ -240,7 +240,7 @@ class PaymentSuccessView(
     Display the successful payment page.
     """
 
-    def get(self, request, payment_id):
+    def post(self, request, payment_id):
         payment = get_object_or_404(
             Payment,
             pk=payment_id,
