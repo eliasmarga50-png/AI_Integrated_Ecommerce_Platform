@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.shortcuts import  redirect, render
 from django.http import Http404
 
+from apps.cart.services import CartService
 from .forms import CheckoutForm
 from .services import OrderService
 from .models import Order
@@ -67,7 +68,9 @@ def checkout(request):
         form = CheckoutForm(request.POST)
 
         if form.is_valid():
-            cart = request.user.cart
+            cart = CartService.get_or_create_cart(
+               request.user
+            )
 
             order = OrderService.create_order_from_cart(
                 cart=cart,
