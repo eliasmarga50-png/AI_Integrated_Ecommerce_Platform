@@ -126,9 +126,14 @@ class OrderService:
             )
 
             product.stock -= cart_item.quantity
+            
+            if product.stock==0:
+            	product.is_available=False
+            	
             product.save(
                 update_fields=[
                     "stock",
+                    "is_available",
                     "updated_at",
                 ]
             )
