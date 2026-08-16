@@ -74,6 +74,7 @@ class Payment(models.Model):
     payment_method = models.CharField(
         max_length=20,
         choices=PaymentMethod.choices,
+        default=PaymentMethod.CARD,
     )
 
     transaction_reference = models.CharField(
