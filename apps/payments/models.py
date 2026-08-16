@@ -80,7 +80,8 @@ class Payment(models.Model):
         max_length=100,
         unique=True,
         editable=False,
-        default=False,
+        blank=True,
+        null=True,
     )
     
     gateway_reference = models.CharField(
