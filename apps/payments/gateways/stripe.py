@@ -69,6 +69,15 @@ class StripeGateway(BasePaymentGateway):
         """
         Refund a successful payment.
         """
+        
+        payment_intent_id=(
+            payment.gateway_reference
+        )
+        
+        if not payment_intent_id:
+        	raise ValueError(
+        	   "stripe payment reference method is missing."
+        	)
 
         refund = stripe.Refund.create(
             payment_intent=payment_intent_id
