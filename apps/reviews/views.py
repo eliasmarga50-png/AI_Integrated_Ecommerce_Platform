@@ -43,6 +43,23 @@ def create_review(request, product_id):
         form = ReviewForm(request.POST)
 
         if form.is_valid():
+            if ReviewService.user_has_reviewed(
+               request.user,
+               product,
+            ):
+            	form.add_error(
+              	  None,
+              	  "You have already reviewed this product.",
+            	)
+            	
+            	return render(
+            	   request,
+            	   "reviews/review_form.html",
+            	   {
+            	      "form": form,
+            	      "product": product,
+            	   },
+            	)
             ReviewService.create_review(
                 user=request.user,
                 product=product,
