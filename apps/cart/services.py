@@ -33,6 +33,30 @@ class CartService:
         If the product already exists in the cart,
         increase its quantity.
         """
+        
+        if not product.is_available:
+        	raise ValueError(
+        	   "Product is not available."
+        	)
+        
+        existing_quantity = (
+            CartItem.objects
+            .filter(
+              cart=cart,
+              product=product,
+            )
+            .values_list(
+              "quantity",
+              flat=True,
+            )
+            .first()
+            or 0
+        )
+        
+        if existing_quantity + quantity > product.stock:
+        	raise ValueError(
+        	   "Requested quantity exceeds available stock."
+        	)
 
         if quantity <= 0:
             raise ValueError(
@@ -64,6 +88,11 @@ class CartService:
         """
         Update the quantity of a product in the cart.
         """
+        
+        if quantity > product.stock:
+        	raise ValueError(
+        	   "Requested quantity exceeds available stock."
+        	)
 
         if quantity <= 0:
             raise ValueError(
