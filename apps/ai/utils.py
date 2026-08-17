@@ -91,9 +91,23 @@ def remove_duplicate_items(items: Iterable):
     unique = []
 
     for item in items:
-        if item not in seen:
-            seen.add(item)
-            unique.append(item)
+    	if isinstance(item, dict):
+    		key =(
+    		    item.get("id")
+    		    or item.get("pk")
+    		    or repr(item)
+    		)
+    	else:
+    		key=getattr(
+    		    item,
+    		    "pk",
+    		    item,
+    		)
+    	if key in seen:
+    		continue
+    	
+    	seen.add(key)
+    	unique.append(item)
 
     return unique
 
