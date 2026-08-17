@@ -19,17 +19,15 @@ class PayPalGateway(BasePaymentGateway):
         super().__init__()
 
         self.client = PaypalServersdkClient(
-            client_credentials_auth_credentials=
-            ClientCredentialsAuthCredentials(
+            client_credentials_auth_credentials=ClientCredentialsAuthCredentials(
                 o_auth_client_id=settings.PAYPAL_CLIENT_ID,
                 o_auth_client_secret=settings.PAYPAL_CLIENT_SECRET,
             ),
             environment=(
-                Environment.SANDBOX,
+                Environment.SANDBOX
                 if settings.PAYPAL_ENVIRONMENT == "sandbox"
                 else Environment.PRODUCTION
             ),
-            
         )
 
         self.orders = self.client.orders

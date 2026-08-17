@@ -187,16 +187,3 @@ def serialize_product(product):
             else None
         ),
     }
-    
-"results": [
-    serialize_product(product)
-    for product in results
-],
-
-
-"results": [
-    serialize_product(product)
-    for product in results
-],
-
-

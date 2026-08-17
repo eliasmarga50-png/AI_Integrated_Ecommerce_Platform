@@ -59,16 +59,24 @@ class CategoryProductListView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
+        self.category = get_object_or_404(
+            Category,
+            slug=self.kwargs["slug"],
+        )
         query = self.request.GET.get(
-           "q",
+            "q",
             "",
         ).strip()
         if query:
             return ProductService.search_products(
                 query
+            ).filter(
+                category=self.category
             )
-        
-        return ProductService.available_products()
+
+        return ProductService.products_by_category(
+            self.category
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
