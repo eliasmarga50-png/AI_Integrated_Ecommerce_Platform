@@ -3,6 +3,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+import logging
+
+logger = logging.getLogger(__name__)
 
 from .forms import ShopCreateForm, ShopUpdateForm
 from .models import Shop
@@ -45,8 +48,16 @@ def shop_create(request):
                 )
                 messages.success(request, "Shop created successfully!")
                 return redirect("shops:shop_list")
-            except Exception as e:
-                form.add_error(None, f"Could not create shop: {e}")
+            except Exception:
+            	logger.exception(
+            	   "Failed to create shop for user %s",
+            	   request.user.pk,
+            	)
+            	
+            	form.add_error(
+            	   None,
+            	   "Could not create the shop, please try again.",
+            	)
 
     else:
         form = ShopCreateForm()
