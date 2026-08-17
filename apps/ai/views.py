@@ -173,5 +173,30 @@ def analytics(request):
             "analytics": dashboard,
         }
     )
+    
+def serialize_product(product):
+    return {
+        "id": product.id,
+        "name": product.name,
+        "slug": product.slug,
+        "price": str(product.price),
+        "description": product.description,
+        "category": (
+            product.category.name
+            if product.category
+            else None
+        ),
+    }
+    
+"results": [
+    serialize_product(product)
+    for product in results
+],
+
+
+"results": [
+    serialize_product(product)
+    for product in results
+],
 
 
