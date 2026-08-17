@@ -8,6 +8,10 @@ Responsible for generating product recommendations using
 multiple recommendation strategies.
 """
 
+
+from django.db.models import Count
+
+from apps.products.models import Product
 from .utils import remove_duplicate_items
 
 
@@ -124,9 +128,19 @@ class RecommendationEngine:
         Return globally popular products.
         """
 
-        # Placeholder
-
-        return []
+        return list(
+           Product.objects
+           .filter(is_available=True)
+           .annotate(
+              purchase_count=Count(
+                  "order_items"
+              )
+           )
+           .order_by(
+              "-purchase_count",
+              "-created_at"
+           )[:limit]
+        )
 
     # --------------------------------------------------
     # Recently Viewed
@@ -160,9 +174,11 @@ class RecommendationEngine:
         Recommend newly added products.
         """
 
-        # Placeholder
-
-        return []
+        return list(
+           Product.objects
+           .filter(is_available=True)
+           .order_by("-created_at")[:limit]
+        )
 
     # --------------------------------------------------
     # Ranking
