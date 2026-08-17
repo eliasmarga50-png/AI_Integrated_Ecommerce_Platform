@@ -243,10 +243,7 @@ CHAPA_CALLBACK_URL = config(
     default="",
 )
 
-CHAPA_RETURN_URL = config(
-    "CHAPA_RETURN_URL",
-    default="",
-)
+
 
 CHAPA_WEBHOOK_SECRET = config(
     "CHAPA_WEBHOOK_SECRET",
@@ -273,10 +270,7 @@ TELEBIRR_CALLBACK_URL = config(
     default="",
 )
 
-TELEBIRR_RETURN_URL = config(
-    "TELEBIRR_RETURN_URL",
-    default="",
-)
+
 
 TELEBIRR_WEBHOOK_SECRET = config(
     "TELEBIRR_WEBHOOK_SECRET",
