@@ -10,6 +10,9 @@ The engine is intentionally modular so it can evolve from
 simple keyword searching to AI-powered semantic search.
 """
 
+from django.db.models import Q
+
+from apps.products.models import Product
 from .utils import normalize_text, remove_duplicate_items
 
 
@@ -69,7 +72,22 @@ class SearchEngine:
 
         # Placeholder
 
-        return []
+        if not query:
+        	return []
+        
+        return list(
+           Product.objects
+           .filter(
+              is_available=True,
+           )
+           .filter(
+              Q(name__icontains=query)
+              |  Q(description__icontains=query)
+              |  Q(category__name__icontains=query)
+           )
+           .select_related("category")
+           .distinict()
+        )
 
     # --------------------------------------------------
     # Semantic Search
