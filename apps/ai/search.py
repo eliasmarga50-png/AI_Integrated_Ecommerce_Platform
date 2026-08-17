@@ -70,7 +70,7 @@ class SearchEngine:
         Standard database keyword search.
         """
 
-        # Placeholder
+       
 
         if not query:
         	return []
@@ -86,7 +86,7 @@ class SearchEngine:
               |  Q(category__name__icontains=query)
            )
            .select_related("category")
-           .distinict()
+           .distinct()
         )
 
     # --------------------------------------------------
@@ -122,9 +122,18 @@ class SearchEngine:
         Search inside categories.
         """
 
-        # Placeholder
-
-        return []
+        if not query:
+        	return []
+        
+        return list(
+           Products.objects
+           .filter(
+              is_available=True,
+              category__name__icontains=query,
+           )
+           .select_related("category")
+           .distinct()
+        )
 
     # --------------------------------------------------
     # Spell Correction
