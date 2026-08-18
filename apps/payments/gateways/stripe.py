@@ -65,7 +65,7 @@ class StripeGateway(BasePaymentGateway):
 
         return self.normalize_verification(intent)
 
-    def refund_payment(self, payment_intent_id):
+    def refund_payment(self, payment):
         """
         Refund a successful payment.
         """
