@@ -55,7 +55,9 @@
                 <input
                     type="search"
                     name="q"
+                    class="search-input"
                     placeholder="Search products..."
+                    autocomplete="off"
                 >
 
                 <button type="submit">
@@ -63,6 +65,11 @@
                 </button>
 
             </form>
+            
+            <div class="search-results"></div>
+            <div class="search-loading" hidden>
+                Searching... 
+            </div>
 
             <!-- ============================================== -->
             <!-- Right Side -->

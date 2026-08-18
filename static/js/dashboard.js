@@ -22,7 +22,7 @@ const Dashboard = {
 
     config: {
         refreshInterval: 60000, // 60 seconds
-        endpoint: "/dashboard/api/"
+        endpoint: "/dashboard/"
     },
 
     state: {

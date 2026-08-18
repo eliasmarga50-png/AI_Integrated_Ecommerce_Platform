@@ -104,9 +104,18 @@ const Chatbot = {
                             "application/json",
 
                         "X-CSRFToken":
-                            Checkout.getCSRFToken()
+                            this.getCSRFToken()
+                         
 
                     },
+                    
+                    getCSRFToken() {
+
+    return document.querySelector(
+        "[name=csrfmiddlewaretoken]"
+    )?.value || "";
+
+},
 
                     body: JSON.stringify({
 
@@ -133,7 +142,7 @@ const Chatbot = {
 
                 "assistant",
 
-                data.reply
+                data.message
 
             );
 

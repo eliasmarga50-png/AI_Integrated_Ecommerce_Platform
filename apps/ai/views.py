@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST
 from django.urls import reverse
+from uuid import UUID 
+from .models import AIChatSession
 
 from .services import AIService
 
@@ -28,7 +30,22 @@ def chatbot(request):
     AI chatbot endpoint.
     """
     try:
+        
         data = json.loads(request.body)
+        
+        session = None
+        session_id = data.get("session_id")
+        
+        if session_id:
+            try:
+                session = AIChatSession.objects.get(
+                    id=UUID(session_id),
+                    user=request.user,
+                    is_active=True,
+                )
+            except (ValueError, AIChatSession.DoesNotExist):
+                session = None
+
         message = data.get("message", "").strip()
 
         if not message:
@@ -43,6 +60,7 @@ def chatbot(request):
         response = ai_service.chat(
             user=request.user,
             message=message,
+            session=session,
         )
 
         return JsonResponse(
@@ -75,7 +93,6 @@ def search(request):
     """
     query = request.GET.get("q", "").strip()
     
-    
     if not query:
         return JsonResponse(
             {
@@ -85,7 +102,6 @@ def search(request):
             }
         )
 
-    
     user = request.user if request.user.is_authenticated else None
 
     results = ai_service.search_products(
@@ -138,7 +154,6 @@ def sentiment(request):
         data = json.loads(request.body)
         text = data.get("text", "").strip()
 
-        # FIX: Prevent empty strings from hitting your AI engine
         if not text:
             return JsonResponse(
                 {

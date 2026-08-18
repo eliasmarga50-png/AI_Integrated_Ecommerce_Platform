@@ -6,159 +6,61 @@
 <html lang="en">
 
 <head>
-
-    <!-- ========================================================= -->
-    <!-- Basic Page Metadata                                        -->
-    <!-- ========================================================= -->
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="description"
-        content="AI Ecommerce Platform"
-    >
-
-    <meta
-        name="author"
-        content="AI Ecommerce"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Ecommerce Platform">
+    <meta name="author" content="AI Ecommerce">
 
     <title>
-        {% block title %}
-            AI Ecommerce
-        {% endblock %}
+        {% block title %}AI Ecommerce{% endblock %}
     </title>
 
-    <!-- ========================================================= -->
-    <!-- Base CSS                                                   -->
-    <!-- ========================================================= -->
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="{% static 'css/base/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/typography.css' %}">
 
-    <link
-        rel="stylesheet"
-        href="{% static 'css/base/reset.css' %}"
-    >
+    <!-- Layout -->
+    <link rel="stylesheet" href="{% static 'css/layout/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout/grid.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout/responsive.css' %}">
 
-    <link
-        rel="stylesheet"
-        href="{% static 'css/base/variables.css' %}"
-    >
+    <!-- Utility Classes -->
+    <link rel="stylesheet" href="{% static 'css/utilities/spacing.css' %}">
+    <link rel="stylesheet" href="{% static 'css/utilities/display.css' %}">
+    <link rel="stylesheet" href="{% static 'css/utilities/flex.css' %}">
+    <link rel="stylesheet" href="{% static 'css/utilities/text.css' %}">
+    <link rel="stylesheet" href="{% static 'css/utilities/colors.css' %}">
+    <link rel="stylesheet" href="{% static 'css/utilities/borders.css' %}">
+    <link rel="stylesheet" href="{% static 'css/utilities/shadows.css' %}">
+    <link rel="stylesheet" href="{% static 'css/utilities/visibility.css' %}">
 
-    <link
-        rel="stylesheet"
-        href="{% static 'css/base/typography.css' %}"
-    >
-
-    <!-- ========================================================= -->
-    <!-- Layout                                                     -->
-    <!-- ========================================================= -->
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/layout/layout.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/layout/grid.css' %}"
-    >
-
-    <!-- ========================================================= -->
-    <!-- Utility Classes                                            -->
-    <!-- ========================================================= -->
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/utilities/spacing.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/utilities/display.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/utilities/flex.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/utilities/text.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/utilities/colors.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/utilities/borders.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/utilities/shadows.css' %}"
-    >
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/utilities/visibility.css' %}"
-    >
-
-    <!-- ========================================================= -->
-    <!-- Page Specific CSS                                          -->
-    <!-- ========================================================= -->
-
-    {% block extra_css %}
-    {% endblock %}
-
+    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
 
-    <!-- ========================================================= -->
-    <!-- Navigation                                                 -->
-    <!-- ========================================================= -->
-
     {% include "includes/navbar.html" %}
-
-    <!-- ========================================================= -->
-    <!-- Flash Messages                                             -->
-    <!-- ========================================================= -->
-
     {% include "includes/alerts.html" %}
 
-    <!-- ========================================================= -->
-    <!-- Main Page Content                                          -->
-    <!-- ========================================================= -->
-
     <main class="container py-4">
-
         {% block content %}
-
+        <!-- Child pages will automatically inject their code here -->
         {% endblock %}
-
     </main>
-
-    <!-- ========================================================= -->
-    <!-- Footer                                                     -->
-    <!-- ========================================================= -->
 
     {% include "includes/footer.html" %}
 
-    <!-- ========================================================= -->
-    <!-- Page Specific JavaScript                                   -->
-    <!-- ========================================================= -->
+    <!-- Core Global JavaScript -->
+    <script src="{% static 'js/alerts.js' %}" defer></script>
+    <script src="{% static 'js/validation.js' %}" defer></script>
+    <script src="{% static 'js/navbar.js' %}" defer></script>
+    <script src="{% static 'js/search.js' %}" defer></script>
+    <script src="{% static 'js/cart.js' %}" defer></script>
+    <script src="{% static 'js/chatbot.js' %}" defer></script>
+    <script src="{% static 'js/app.js' %}" defer></script>
 
-    {% block extra_js %}
-    {% endblock %}
+    {% block extra_js %}{% endblock %}
 
 </body>
-
 </html>
