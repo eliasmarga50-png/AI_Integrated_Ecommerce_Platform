@@ -2,8 +2,16 @@
 
 
 {% extends "base.html" %}
+{% load static %}
 
-<link rel="stylesheet"  href="{% static 'css/payments.css'  %}"
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/payments.css' %}"
+>
+
+{% endblock %}
 
 {% block title %}
 Payment Details
