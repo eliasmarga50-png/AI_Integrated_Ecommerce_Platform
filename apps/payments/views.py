@@ -240,12 +240,12 @@ class PaymentSuccessView(
     Display the successful payment page.
     """
 
-    def post(self, request, payment_id):
+    def get(self, request, payment_id):
         payment = get_object_or_404(
             Payment,
             pk=payment_id,
             user=request.user,
-            status=Payment.Status.COMPLETED,
+            
         )
 
         return render(
