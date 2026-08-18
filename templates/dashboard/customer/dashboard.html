@@ -1,0 +1,101 @@
+
+
+
+
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+Customer Dashboard
+{% endblock %}
+
+{% block header %}
+<h1>Customer Dashboard</h1>
+{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-section">
+
+    <div class="dashboard-card">
+
+        <h2>
+            Welcome,
+            {{ user.get_full_name|default:user.username }}
+        </h2>
+
+        <p>
+            Manage your orders and reviews from here.
+        </p>
+
+    </div>
+
+    <div class="dashboard-card">
+
+        <h2>Recent Orders</h2>
+
+        {% if recent_orders %}
+
+            {% for order in recent_orders %}
+
+                <article class="dashboard-item">
+
+                    <strong>
+                        {{ order.order_number }}
+                    </strong>
+
+                    <span>
+                        {{ order.status }}
+                    </span>
+
+                    <span>
+                        {{ order.total_amount }}
+                        {{ order.currency }}
+                    </span>
+
+                </article>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>You have no orders yet.</p>
+
+        {% endif %}
+
+    </div>
+
+    <div class="dashboard-card">
+
+        <h2>Recent Reviews</h2>
+
+        {% if recent_reviews %}
+
+            {% for review in recent_reviews %}
+
+                <article class="dashboard-item">
+
+                    <strong>
+                        {{ review.product.name }}
+                    </strong>
+
+                    <span>
+                        {{ review.rating }}/5
+                    </span>
+
+                </article>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>You have not written any reviews yet.</p>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
