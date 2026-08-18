@@ -287,6 +287,17 @@ class PaymentRefundView(
                 form.errors,
                 status=400,
             )
+        refund_amount=form.cleaned_data["amount"]
+        
+        if refund_amount != payment.amount:
+        	return JsonResponse(
+        	     {
+        	        "errors": (
+        	           "only full refunds are currently supported."
+        	           )
+        	     },
+        	     status=400,
+        	)
 
         result = (
             PaymentService.refund_payment(
