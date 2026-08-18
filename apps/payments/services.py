@@ -76,7 +76,7 @@ class PaymentService:
             or response.get("gateway_reference")
         )
         if gateway_reference:
-        	payment.gateway_reference(
+        	payment.gateway_reference = (
         	   gateway_reference
         	)
         	payment.status=(
