@@ -21,7 +21,7 @@
 const Chatbot = {
 
     config: {
-        endpoint: "/chatbot/api/"
+        endpoint: "/ai/chat/"
     },
 
     state: {
