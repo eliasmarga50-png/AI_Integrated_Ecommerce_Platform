@@ -10,6 +10,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST
+from django.urls import reverse
 
 from .services import AIService
 
@@ -179,6 +180,12 @@ def serialize_product(product):
         "id": product.id,
         "name": product.name,
         "slug": product.slug,
+        "url": reverse(
+              "products:detail", 
+              kwargs={
+                "slug": product.slug,
+              },
+        ),
         "price": str(product.price),
         "description": product.description,
         "category": (
