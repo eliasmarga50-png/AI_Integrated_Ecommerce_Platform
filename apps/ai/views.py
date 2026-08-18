@@ -72,7 +72,7 @@ def chatbot(request):
 # Search
 # --------------------------------------------------
 
-@login_required
+
 @require_GET
 def search(request):
     """
@@ -80,6 +80,8 @@ def search(request):
     """
 
     query = request.GET.get("q", "").strip()
+    
+    
 
     results = ai_service.search_products(
         query=query,
