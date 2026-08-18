@@ -212,13 +212,19 @@ Payment Details
 
                     {% if payment.status == "pending" %}
 
-                    <a
-                        href="{% url 'payments:initialize' payment.pk %}"
-                        class="btn btn-success">
+                    <form
+    method="post"
+    action="{% url 'payments:initialize' payment.pk %}"
+>
+    {% csrf_token %}
 
-                        Continue Payment
-
-                    </a>
+    <button
+        type="submit"
+        class="btn btn-success"
+    >
+        Continue Payment
+    </button>
+</form>
 
                     {% endif %}
 
