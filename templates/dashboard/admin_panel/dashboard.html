@@ -1,0 +1,59 @@
+
+
+
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block header %}
+<h1>Admin Dashboard</h1>
+{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-section">
+
+    <div class="dashboard-card">
+        <h2>Users</h2>
+        <strong>{{ total_users }}</strong>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Products</h2>
+        <strong>{{ total_products }}</strong>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Orders</h2>
+        <strong>{{ total_orders }}</strong>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Reviews</h2>
+        <strong>{{ total_reviews }}</strong>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Payments</h2>
+        <strong>{{ total_payments }}</strong>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Shops</h2>
+        <strong>{{ total_shops }}</strong>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Revenue</h2>
+        <strong>
+            {{ revenue }}
+        </strong>
+    </div>
+
+</section>
+
+{% endblock %}
+
+
