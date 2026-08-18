@@ -27,11 +27,8 @@ def chatbot(request):
     """
     AI chatbot endpoint.
     """
-
     try:
-
         data = json.loads(request.body)
-
         message = data.get("message", "").strip()
 
         if not message:
@@ -58,7 +55,6 @@ def chatbot(request):
         )
 
     except json.JSONDecodeError:
-
         return JsonResponse(
             {
                 "success": False,
@@ -72,20 +68,29 @@ def chatbot(request):
 # Search
 # --------------------------------------------------
 
-
 @require_GET
 def search(request):
     """
     AI search endpoint.
     """
-
     query = request.GET.get("q", "").strip()
     
     
+    if not query:
+        return JsonResponse(
+            {
+                "success": True,
+                "query": "",
+                "results": [],
+            }
+        )
+
+    
+    user = request.user if request.user.is_authenticated else None
 
     results = ai_service.search_products(
         query=query,
-        user=request.user,
+        user=user,
     )
 
     return JsonResponse(
@@ -107,7 +112,6 @@ def recommendations(request):
     """
     Personalized recommendations.
     """
-
     products = ai_service.recommend_products(
         request.user,
     )
@@ -130,12 +134,19 @@ def sentiment(request):
     """
     Analyze text sentiment.
     """
-
     try:
-
         data = json.loads(request.body)
+        text = data.get("text", "").strip()
 
-        text = data.get("text", "")
+        # FIX: Prevent empty strings from hitting your AI engine
+        if not text:
+            return JsonResponse(
+                {
+                    "success": False,
+                    "error": "Text is required.",
+                },
+                status=400,
+            )
 
         result = ai_service.analyze_sentiment(text)
 
@@ -147,7 +158,6 @@ def sentiment(request):
         )
 
     except json.JSONDecodeError:
-
         return JsonResponse(
             {
                 "success": False,
@@ -167,7 +177,6 @@ def analytics(request):
     """
     AI dashboard analytics.
     """
-
     dashboard = ai_service.analytics.dashboard()
 
     return JsonResponse(
@@ -177,16 +186,24 @@ def analytics(request):
         }
     )
     
+
+# --------------------------------------------------
+# Helpers
+# --------------------------------------------------
+
 def serialize_product(product):
+    """
+    Helper function to transform product data for JSON.
+    """
     return {
         "id": product.id,
         "name": product.name,
         "slug": product.slug,
         "url": reverse(
-              "products:detail", 
-              kwargs={
+            "products:detail", 
+            kwargs={
                 "slug": product.slug,
-              },
+            },
         ),
         "price": str(product.price),
         "description": product.description,
