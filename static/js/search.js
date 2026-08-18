@@ -114,7 +114,7 @@ const Search = {
 
             const response = await fetch(
 
-                `/search/?q=${encodeURIComponent(query)}`,
+                `/ai/search/?q=${encodeURIComponent(query)}`,
 
                 {
                     signal: this.controller.signal,
