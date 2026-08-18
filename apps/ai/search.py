@@ -126,7 +126,7 @@ class SearchEngine:
         	return []
         
         return list(
-           Products.objects
+           Product.objects
            .filter(
               is_available=True,
               category__name__icontains=query,
