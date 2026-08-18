@@ -7,7 +7,7 @@
     <!-- Shop Logo -->
     <!-- ============================================== -->
 
-    <a href="{{ shop.get_absolute_url }}">
+    <a href="{% url 'shops:shop_detail' shop.slug %}">
 
         {% if shop.logo %}
 
@@ -37,7 +37,7 @@
 
         <h3>
 
-            <a href="{{ shop.get_absolute_url }}">
+            <a href="{% url 'shops:shop_detail' shop.slug %}">
 
                 {{ shop.name }}
 
@@ -87,10 +87,7 @@
 
     <div class="mt-3">
 
-        <a
-            href="{{ shop.get_absolute_url }}"
-            class="btn"
-        >
+        <a href="{% url 'shops:shop_detail' shop.slug %}">
 
             Visit Shop
 
