@@ -143,18 +143,23 @@ class ChatbotEngine:
         """
         Generate an AI response.
 
-        Currently returns a placeholder until an AI provider
+        
         (OpenAI, Gemini, etc.) is connected.
         """
 
         if self.provider is None:
             return (
-                "Hello! I'm your AI shopping assistant. "
-                "The AI provider has not been configured yet."
+                "The AI assistant is currently  "
+                "unavailable because Gemini is not configured."
             )
 
         try:
-            return self.provider.generate(prompt)
+            return self.provider.generate(
+                prompt=prompt,
+                system_instruction=(
+                   PromptLibrary.SYSTEM_PROMPT
+                ),
+            )
 
         except Exception:
             return (
