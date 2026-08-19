@@ -14,6 +14,8 @@ from .utils import (
     normalize_text,
 )
 
+from .prompts import PromptLibrary
+
 
 class SentimentEngine:
     """
@@ -49,26 +51,62 @@ class SentimentEngine:
         "late",
         "disappointed",
     }
+    
+    def __init__(self, provider=None):
+        self.provider = provider
 
     def predict(self, text):
-        """
-        Analyze sentiment.
-
-        Returns:
-
-        {
-            "sentiment": "...",
-            "confidence": ...,
-            "score": ...
-        }
-        """
-
         text = normalize_text(text)
 
+        if self.provider is not None:
+            try:
+                result = self.provider.generate_json(
+                    PromptLibrary.SENTIMENT_ANALYSIS.format(
+                        text=text
+                    ),
+                    system_instruction=(
+                        "Return valid JSON only."
+                    ),
+                )
+
+                sentiment = str(
+                    result.get(
+                        "sentiment",
+                        self.NEUTRAL,
+                    )
+                ).lower()
+
+                if sentiment not in {
+                    self.POSITIVE,
+                    self.NEGATIVE,
+                    self.NEUTRAL,
+                }:
+                    sentiment = self.NEUTRAL
+
+                confidence = float(
+                    result.get(
+                        "confidence",
+                        0,
+                    )
+                )
+
+                if confidence <= 1:
+                    confidence *= 100
+
+                return {
+                    "sentiment": sentiment,
+                    "confidence": round(
+                        confidence,
+                        2,
+                    ),
+                    "score": 0,
+                }
+
+            except Exception:
+                pass
+
         score = self.sentiment_score(text)
-
         sentiment = self.classify(score)
-
         confidence = self.calculate_confidence(score)
 
         return {
@@ -76,10 +114,6 @@ class SentimentEngine:
             "confidence": confidence,
             "score": score,
         }
-
-    # --------------------------------------------------
-    # Sentiment Score
-    # --------------------------------------------------
 
     def sentiment_score(self, text):
         """
@@ -181,5 +215,6 @@ class SentimentEngine:
             "negative": negative,
             "neutral": neutral,
         }
+
 
 
