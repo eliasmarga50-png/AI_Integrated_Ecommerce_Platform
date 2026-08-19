@@ -14,6 +14,7 @@ from .chatbot import ChatbotEngine
 from .recommendation import RecommendationEngine
 from .search import SearchEngine
 from .sentiment import SentimentEngine
+from .providers import GeminiProvider
 
 
 class AIService:
@@ -29,10 +30,23 @@ class AIService:
     """
 
     def __init__(self):
-        self.chatbot = ChatbotEngine()
-        self.recommendation = RecommendationEngine()
-        self.search = SearchEngine()
-        self.sentiment = SentimentEngine()
+        self.provider = (
+             GeminiProvider.from_settings()
+        )
+        
+        self.chatbot = ChatbotEngine(
+            provider=self.provider
+        )
+        
+        self.recommendation = RecommendationEngine(
+            provider=self.provider
+        )
+        self.search = SearchEngine(
+            provider=self.provider
+        )
+        self.sentiment = SentimentEngine(
+           provider=self.provider
+        )
         self.analytics = AnalyticsEngine()
 
     # --------------------------------------------------
