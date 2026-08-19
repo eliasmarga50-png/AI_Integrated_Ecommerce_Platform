@@ -1,0 +1,48 @@
+
+
+
+{% extends "base.html" %}
+
+{% block title %}
+{{ category.name }} | AI Ecommerce
+{% endblock %}
+
+{% block content %}
+
+<section class="category-page">
+
+    <h1>
+        {{ category.name }}
+    </h1>
+
+    {% if category.description %}
+        <p>
+            {{ category.description }}
+        </p>
+    {% endif %}
+
+    {% if products %}
+
+        <div class="grid">
+
+            {% for product in products %}
+
+                {% include "includes/product_card.html" %}
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <p>
+            No products are available in this category.
+        </p>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}
+
+
