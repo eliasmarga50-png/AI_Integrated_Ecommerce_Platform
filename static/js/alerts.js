@@ -65,10 +65,27 @@ const Alerts = {
 
         alert.className = `alert alert-${type}`;
 
-        alert.innerHTML = `
-            <span class="alert-message">${message}</span>
-            <button class="alert-close">&times;</button>
-        `;
+        const messageElement =
+    document.createElement("span");
+
+messageElement.className =
+    "alert-message";
+
+messageElement.textContent =
+    message;
+
+const closeButton =
+    document.createElement("button");
+
+closeButton.className =
+    "alert-close";
+
+closeButton.type = "button";
+
+closeButton.textContent = "×";
+
+alert.appendChild(messageElement);
+alert.appendChild(closeButton);
 
         this.dom.container.appendChild(alert);
 
