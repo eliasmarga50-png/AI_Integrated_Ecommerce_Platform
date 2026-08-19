@@ -393,9 +393,16 @@ OPENAI_API_KEY = config(
     default="",
 )
 
-GOOGLE_API_KEY = config(
-    "GOOGLE_API_KEY",
+
+
+GEMINI_API_KEY = config(
+    "GEMINI_API_KEY",
     default="",
+)
+
+GEMINI_MODEL = config(
+    "GEMINI_MODEL",
+    default="gemini-2.5-flash-lite",
 )
 
 
