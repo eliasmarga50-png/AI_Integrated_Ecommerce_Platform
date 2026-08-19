@@ -9,6 +9,13 @@ business insights.
 """
 
 from .models import AIAnalyticsLog
+from .models import (
+    AIAnalyticsLog,
+    AIChatSession,
+    RecommendationLog,
+    SearchQuery,
+    SentimentAnalysis,
+)
 
 
 class AnalyticsEngine:
@@ -83,9 +90,20 @@ class AnalyticsEngine:
         - Zero-result searches
         - Category trends
         """
+        
+        searches = (
+              SearchQuery.objects
+              .values("query")
+              .annotate(
+              count=Count("query")
+        )
+        .order_by("-count")[:10]
+        )
 
         return {
-            "popular_searches": [],
+            "popular_searches": list(
+                searches
+            ),
         }
 
     # --------------------------------------------------
@@ -109,9 +127,13 @@ class AnalyticsEngine:
         """
         AI chatbot usage.
         """
+        
+        from django.db.models import Count
+        
+        total = AIChatSession.objects.count()
 
         return {
-            "total_conversations": 0,
+            "total_conversations": total,
         }
 
     # --------------------------------------------------
