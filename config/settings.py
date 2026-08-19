@@ -317,20 +317,7 @@ PAYPAL_MODE = config(
     default="sandbox",
 )
 
-PAYPAL_ENVIRONMENT = config(
-    "PAYPAL_ENVIRONMENT",
-    default=PAYPAL_MODE,
-)
 
-PAYPAL_RETURN_URL = config(
-    "PAYPAL_RETURN_URL",
-    default="",
-)
-
-PAYPAL_CANCEL_URL = config(
-    "PAYPAL_CANCEL_URL",
-    default="",
-)
 
 PAYPAL_WEBHOOK_SECRET = config(
     "PAYPAL_WEBHOOK_SECRET",
