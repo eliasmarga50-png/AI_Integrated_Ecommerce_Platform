@@ -1,6 +1,5 @@
 
 
-
 """
 Search engine.
 
@@ -15,6 +14,11 @@ from django.db.models import Q
 from apps.products.models import Product
 from .utils import normalize_text, remove_duplicate_items
 from .prompts import PromptLibrary
+from .models import SearchQuery
+from .utils import (
+    calculate_execution_time,
+    start_timer,
+)
 
 
 class SearchEngine:
@@ -34,6 +38,8 @@ class SearchEngine:
         """
         Main search entry point.
         """
+        # Start the clock to measure how fast this specific search runs
+        timer = start_timer()
 
         query = normalize_text(query)
 
@@ -60,7 +66,20 @@ class SearchEngine:
             corrected_query,
         )
 
-        return results[:limit]
+        # Cut the results to the requested limit
+        results = results[:limit]
+
+        # Log the search in the database if a user is logged in
+        if user is not None:
+            SearchQuery.objects.create(
+                user=user,
+                query=query,
+                corrected_query=corrected_query,
+                results_count=len(results),
+                search_time=calculate_execution_time(timer),
+            )
+
+        return results
 
     # --------------------------------------------------
     # Keyword Search
@@ -73,7 +92,6 @@ class SearchEngine:
         """
         Standard database keyword search.
         """
-
         if not query:
             return []
         
@@ -107,9 +125,6 @@ class SearchEngine:
         - Vector database
         - Similarity search
         """
-
-        # Placeholder
-
         return []
 
     # --------------------------------------------------
@@ -123,7 +138,6 @@ class SearchEngine:
         """
         Search inside categories.
         """
-
         if not query:
             return []
         
@@ -193,14 +207,7 @@ class SearchEngine:
     ):
         """
         Detect user search intent.
-
-        Examples:
-        - Product search
-        - Category search
-        - Brand search
-        - Price search
         """
-
         return "product"
 
     # --------------------------------------------------
@@ -214,16 +221,7 @@ class SearchEngine:
     ):
         """
         Rank search results.
-
-        Future ranking factors:
-
-        - Relevance
-        - Popularity
-        - Rating
-        - AI similarity
-        - Seller reputation
         """
-
         return products
 
     # --------------------------------------------------
@@ -237,14 +235,5 @@ class SearchEngine:
     ):
         """
         Apply optional filters.
-
-        Examples:
-        - Brand
-        - Price
-        - Rating
-        - Availability
         """
-
         return products
-
-
