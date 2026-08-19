@@ -10,6 +10,7 @@ multiple recommendation strategies.
 
 
 from django.db.models import Count
+from .models import RecommendationLog
 
 from apps.products.models import Product
 from .utils import remove_duplicate_items
@@ -41,6 +42,16 @@ class RecommendationEngine:
 
         recommendations = remove_duplicate_items(
             recommendations
+        )
+        
+        # Fixed: Log is now correctly aligned inside the function
+        RecommendationLog.objects.create(
+            user=user,
+            recommendation_type="mixed",
+            recommended_products=[
+                product.id
+                for product in recommendations
+            ],
         )
 
         return recommendations[:limit]
@@ -217,15 +228,6 @@ class RecommendationEngine:
     ):
         """
         Final ranking algorithm.
-
-        Future ranking factors:
-
-        - AI similarity score
-        - Purchase frequency
-        - Product rating
-        - Product popularity
-        - Seller reputation
         """
 
         return products
-
