@@ -49,26 +49,53 @@ class RecommendationEngine:
     # Personalized
     # --------------------------------------------------
 
-    def personalized(self, user):
-        """
-        Personalized recommendations.
-
-        Future inputs:
-        - Purchase history
-        - Browsing history
-        - Search history
-        - Favorite categories
-        """
+    def personalized(self, user, limit=10):
 
         if user is None:
             return []
 
-        # Placeholder
-        return []
+        purchased_categories = (
+            Product.objects
+            .filter(
+                order_items__order__user=user,
+            )
+            .values(
+                "category_id"
+            )
+            .annotate(
+                purchases=Count(
+                    "order_items"
+                )
+            )
+            .order_by(
+                "-purchases"
+            )
+            .values_list(
+                "category_id",
+                flat=True,
+            )
+        )
 
-    # --------------------------------------------------
-    # Similar Products
-    # --------------------------------------------------
+        category_ids = list(
+            purchased_categories[:5]
+        )
+
+        if not category_ids:
+            return []
+
+        return list(
+            Product.objects
+            .filter(
+                is_available=True,
+                category_id__in=category_ids,
+            )
+            .exclude(
+                order_items__order__user=user
+            )
+            .select_related("category")
+            .distinct()
+            .order_by("-created_at")[:limit]
+        )
 
     def similar_products(
         self,
@@ -201,5 +228,4 @@ class RecommendationEngine:
         """
 
         return products
-
 
