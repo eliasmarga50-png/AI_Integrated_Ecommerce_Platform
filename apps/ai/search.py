@@ -14,12 +14,16 @@ from django.db.models import Q
 
 from apps.products.models import Product
 from .utils import normalize_text, remove_duplicate_items
+from .prompts import PromptLibrary
 
 
 class SearchEngine:
     """
     AI Search Engine.
     """
+    
+    def __init__(self, provider=None):
+        self.provider = provider
 
     def search(
         self,
@@ -70,10 +74,8 @@ class SearchEngine:
         Standard database keyword search.
         """
 
-       
-
         if not query:
-        	return []
+            return []
         
         return list(
            Product.objects
@@ -123,7 +125,7 @@ class SearchEngine:
         """
 
         if not query:
-        	return []
+            return []
         
         return list(
            Product.objects
@@ -139,23 +141,51 @@ class SearchEngine:
     # Spell Correction
     # --------------------------------------------------
 
-    def correct_spelling(
-        self,
-        query,
-    ):
+    def correct_spelling(self, query):
         """
-        Correct common spelling mistakes.
+        Correct spelling using AI provider.
+        """
+        if not query or self.provider is None:
+            return query
 
-        Future:
-        - Dictionary lookup
-        - AI spell correction
-        """
+        try:
+            result = self.provider.generate_json(
+                PromptLibrary.PRODUCT_SEARCH.format(
+                    query=query
+                ),
+                system_instruction=(
+                    "Return valid JSON only."
+                ),
+            )
+
+            corrected = result.get(
+                "corrected_search_terms"
+            )
+
+            if isinstance(
+                corrected,
+                str,
+            ) and corrected.strip():
+                return corrected.strip()
+
+            keywords = result.get(
+                "keywords",
+                []
+            )
+
+            if isinstance(
+                keywords,
+                list
+            ) and keywords:
+                return " ".join(
+                    str(x)
+                    for x in keywords
+                )
+
+        except Exception:
+            pass
 
         return query
-
-    # --------------------------------------------------
-    # Intent Detection
-    # --------------------------------------------------
 
     def detect_intent(
         self,
