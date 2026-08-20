@@ -19,7 +19,11 @@ from .utils import remove_duplicate_items
 class RecommendationEngine:
     """
     AI Recommendation Engine.
+    
     """
+    
+    def __init__(self, provider=None):
+    	self.provider=provider
 
     def recommend(self, user=None, limit=10):
         """

@@ -29,7 +29,7 @@ class AIService:
     - Analytics
     """
 
-    def __init__(self):
+    def __init__(self, provider=None):
         self.provider = (
              GeminiProvider.from_settings()
         )
